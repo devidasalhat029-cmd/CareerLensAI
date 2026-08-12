@@ -1,0 +1,300 @@
+{% extends "base.html" %}
+
+{% block title %}CareerAI | Career Result{% endblock %}
+
+{% block content %}
+
+<style>
+.result-page {
+    min-height: 100vh;
+    padding: 45px 20px;
+    background:
+        radial-gradient(circle at 10% 10%, #e5f6ff, transparent 30%),
+        radial-gradient(circle at 90% 10%, #eeeaff, transparent 30%),
+        #f8faff;
+}
+
+.result-container {
+    max-width: 850px;
+    margin: auto;
+}
+
+.result-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.result-header h1 {
+    color: #2d334d;
+}
+
+.result-header p {
+    color: #7b8297;
+    margin-top: 8px;
+}
+
+.result-card {
+    background: white;
+    padding: 35px;
+    border-radius: 25px;
+    border: 1px solid #e4e7f0;
+    box-shadow: 0 18px 50px rgba(50,60,120,.10);
+}
+
+.result-icon {
+    width: 85px;
+    height: 85px;
+    margin: auto;
+    border-radius: 50%;
+    background: #eeecff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 40px;
+}
+
+.result-card h2 {
+    text-align: center;
+    color: #30364e;
+    margin-top: 20px;
+}
+
+.career-name {
+    text-align: center;
+    color: #5b52d6;
+    font-size: 27px;
+    font-weight: 900;
+    margin-top: 8px;
+}
+
+.score-box {
+    width: 190px;
+    margin: 25px auto;
+    padding: 18px;
+    text-align: center;
+    border-radius: 18px;
+    background: #f4f3ff;
+}
+
+.score-label {
+    display: block;
+    color: #7b8297;
+    font-size: 13px;
+}
+
+.score-value {
+    display: block;
+    margin-top: 5px;
+    color: #5148c7;
+    font-size: 30px;
+    font-weight: 900;
+}
+
+.section-title {
+    margin-top: 30px;
+    color: #30364e;
+}
+
+.reason {
+    margin-top: 10px;
+    color: #656c82;
+    line-height: 1.7;
+}
+
+.scores {
+    margin-top: 18px;
+}
+
+.score-row {
+    margin-bottom: 16px;
+}
+
+.score-row-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    color: #41465d;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.progress {
+    height: 10px;
+    background: #e8e9f0;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    border-radius: 20px;
+    background: linear-gradient(
+        90deg,
+        #247edc,
+        #6858df,
+        #d4519b
+    );
+}
+
+.button-row {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.btn {
+    padding: 13px 22px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 800;
+}
+
+.retake-btn {
+    color: white;
+    background: linear-gradient(
+        90deg,
+        #247edc,
+        #6858df
+    );
+}
+
+.dashboard-btn {
+    color: #5c53d7;
+    background: #efeeff;
+}
+</style><div class="result-page"><div class="result-container">
+
+    <div class="result-header">
+
+        <h1>
+            🎯 Career Assessment Result
+        </h1>
+
+        <p>
+            Your personalized career assessment result
+        </p>
+
+    </div>
+
+
+    <div class="result-card">
+
+        <div class="result-icon">
+            🧠
+        </div>
+
+
+        <h2>
+            Recommended Career
+        </h2>
+
+
+        <div class="career-name">
+
+            {{ career|default("Career Recommendation") }}
+
+        </div>
+
+
+        <div class="score-box">
+
+            <span class="score-label">
+                Your Score
+            </span>
+
+            <span class="score-value">
+
+                {{ score|default(0) }}
+                /
+                {{ total|default(0) }}
+
+            </span>
+
+        </div>
+
+
+        {% if reason %}
+
+            <h3 class="section-title">
+                💡 Why This Career?
+            </h3>
+
+            <p class="reason">
+                {{ reason }}
+            </p>
+
+        {% endif %}
+
+
+        {% if scores %}
+
+            <h3 class="section-title">
+                📊 Assessment Breakdown
+            </h3>
+
+
+            <div class="scores">
+
+                {% for category, category_score in scores.items() %}
+
+                    <div class="score-row">
+
+                        <div class="score-row-top">
+
+                            <span>
+                                {{ category }}
+                            </span>
+
+                            <span>
+                                {{ category_score }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="progress">
+
+                            <div
+                                class="progress-bar"
+                                style="width: {{ category_score }}%;"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+
+        <div class="button-row">
+
+            <a
+                href="{{ url_for('career_test') }}"
+                class="btn retake-btn"
+            >
+                🔄 Retake Test
+            </a>
+
+
+            <a
+                href="{{ url_for('student_dashboard') }}"
+                class="btn dashboard-btn"
+            >
+                🏠 Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>{% endblock %}

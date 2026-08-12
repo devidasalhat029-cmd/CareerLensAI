@@ -1,0 +1,471 @@
+{% extends "base.html" %}
+
+{% block title %}
+CareerLens.ai | Interview Question Practice
+{% endblock %}
+
+{% block content %}
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#070b18;
+    color:white;
+}
+
+.practice-page{
+    min-height:100vh;
+    padding:45px 7%;
+    background:
+        radial-gradient(circle at 10% 10%, rgba(0,170,255,.16), transparent 30%),
+        radial-gradient(circle at 90% 20%, rgba(145,50,255,.18), transparent 30%),
+        linear-gradient(135deg,#070b18,#10162b,#080b17);
+}
+
+.hero{
+    text-align:center;
+    max-width:850px;
+    margin:auto;
+}
+
+.badge{
+    display:inline-block;
+    padding:9px 18px;
+    border-radius:30px;
+    background:rgba(0,180,255,.12);
+    border:1px solid rgba(0,190,255,.35);
+    color:#62d9ff;
+    font-size:14px;
+    margin-bottom:18px;
+}
+
+.hero h1{
+    font-size:48px;
+    margin:5px 0 15px;
+    background:linear-gradient(90deg,#4ddcff,#9d6cff,#ff63c3);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.hero p{
+    color:#aeb8d0;
+    font-size:17px;
+    line-height:1.7;
+}
+
+.category-box{
+    max-width:1000px;
+    margin:40px auto 25px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:15px;
+}
+
+.category{
+    padding:18px;
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,.09);
+    background:rgba(255,255,255,.045);
+    color:#dce5ff;
+    cursor:pointer;
+    transition:.25s;
+    text-align:center;
+}
+
+.category:hover{
+    transform:translateY(-4px);
+    border-color:#43cfff;
+}
+
+.category.active{
+    background:linear-gradient(135deg,#087cff,#803cff);
+    border-color:transparent;
+    color:white;
+}
+
+.question-card{
+    max-width:1000px;
+    margin:30px auto;
+    padding:35px;
+    border-radius:25px;
+    background:rgba(16,23,45,.88);
+    border:1px solid rgba(255,255,255,.09);
+    box-shadow:0 20px 60px rgba(0,0,0,.35);
+}
+
+.top-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.question-number{
+    color:#62d9ff;
+    font-weight:bold;
+}
+
+.difficulty{
+    padding:7px 14px;
+    border-radius:20px;
+    background:rgba(255,255,255,.08);
+    color:#cbd5ee;
+    font-size:13px;
+}
+
+.question{
+    font-size:27px;
+    line-height:1.5;
+    margin:20px 0 25px;
+}
+
+.answer{
+    width:100%;
+    min-height:180px;
+    resize:vertical;
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,.12);
+    background:#090e20;
+    color:white;
+    padding:18px;
+    font-size:16px;
+    outline:none;
+}
+
+.answer:focus{
+    border-color:#39cfff;
+    box-shadow:0 0 0 3px rgba(57,207,255,.08);
+}
+
+.buttons{
+    display:flex;
+    justify-content:flex-end;
+    gap:12px;
+    margin-top:20px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    border:none;
+    padding:13px 22px;
+    border-radius:12px;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.btn-clear{
+    background:#202943;
+    color:#dce5ff;
+}
+
+.btn-next{
+    background:linear-gradient(135deg,#087cff,#813cff);
+    color:white;
+}
+
+.feedback{
+    display:none;
+    margin-top:25px;
+    padding:20px;
+    border-radius:16px;
+    background:rgba(45,200,140,.08);
+    border:1px solid rgba(45,200,140,.25);
+}
+
+.feedback h3{
+    margin-top:0;
+    color:#5ff0bd;
+}
+
+@media(max-width:600px){
+    .practice-page{
+        padding:30px 18px;
+    }
+
+    .hero h1{
+        font-size:35px;
+    }
+
+    .question-card{
+        padding:22px;
+    }
+
+    .question{
+        font-size:21px;
+    }
+}
+</style><div class="practice-page"><div class="hero">
+
+    <span class="badge">AI POWERED INTERVIEW PRACTICE</span>
+
+    <h1>Interview Question Practice</h1>
+
+    <p>
+        Practice interview questions, improve your answers,
+        and build confidence before your real interview.
+    </p>
+
+</div>
+
+<div class="category-box">
+
+    <div class="category active" onclick="selectCategory('Technical',this)">
+        💻 Technical
+    </div>
+
+    <div class="category" onclick="selectCategory('Programming',this)">
+        👨‍💻 Programming
+    </div>
+
+    <div class="category" onclick="selectCategory('DSA',this)">
+        🧠 DSA
+    </div>
+
+    <div class="category" onclick="selectCategory('DBMS',this)">
+        🗄️ DBMS
+    </div>
+
+    <div class="category" onclick="selectCategory('Web',this)">
+        🌐 Web
+    </div>
+
+    <div class="category" onclick="selectCategory('HR',this)">
+        👔 HR
+    </div>
+
+</div>
+
+
+<div class="question-card">
+
+    <div class="top-row">
+
+        <div class="question-number">
+            Question <span id="questionNo">1</span>
+        </div>
+
+        <div class="difficulty">
+            Difficulty:
+            <span id="difficulty">Medium</span>
+        </div>
+
+    </div>
+
+
+    <div class="question" id="questionText">
+        What is the difference between a compiler and an interpreter?
+    </div>
+
+
+    <textarea
+        id="answer"
+        class="answer"
+        placeholder="Type your answer here...">
+    </textarea>
+
+
+    <div class="buttons">
+
+        <button class="btn btn-clear"
+                onclick="clearAnswer()">
+            Clear
+        </button>
+
+        <button class="btn btn-next"
+                onclick="nextQuestion()">
+            Next Question →
+        </button>
+
+    </div>
+
+
+    <div class="feedback" id="feedback">
+
+        <h3>💡 Practice Tip</h3>
+
+        <p id="feedbackText">
+            Try to explain the answer in your own words
+            and include a simple example.
+        </p>
+
+    </div>
+
+</div>
+
+</div><script>
+
+const questions = {
+
+    Technical: [
+        "What is the difference between a compiler and an interpreter?",
+        "What is object-oriented programming?",
+        "What is the difference between a class and an object?",
+        "What is inheritance?",
+        "What is polymorphism?",
+        "What is encapsulation?",
+        "What is abstraction?",
+        "What is an operating system?",
+        "What is a process?",
+        "What is the difference between a process and a thread?"
+    ],
+
+    Programming: [
+        "What is a variable?",
+        "What is a function?",
+        "What is recursion?",
+        "What is the difference between == and ===?",
+        "What are loops?",
+        "What is an array?",
+        "What is exception handling?",
+        "What is a pointer?",
+        "What is dynamic memory allocation?",
+        "What is the difference between syntax error and logical error?"
+    ],
+
+    DSA: [
+        "What is a data structure?",
+        "What is the difference between an array and a linked list?",
+        "What is a stack?",
+        "What is a queue?",
+        "What is a binary tree?",
+        "What is a binary search tree?",
+        "What is searching?",
+        "What is sorting?",
+        "What is time complexity?",
+        "What is the difference between BFS and DFS?"
+    ],
+
+    DBMS: [
+        "What is DBMS?",
+        "What is a primary key?",
+        "What is a foreign key?",
+        "What is normalization?",
+        "What is SQL?",
+        "What is the difference between DELETE and DROP?",
+        "What is a JOIN?",
+        "What is a transaction?",
+        "What are ACID properties?",
+        "What is an index in a database?"
+    ],
+
+    Web: [
+        "What is HTML?",
+        "What is CSS?",
+        "What is JavaScript?",
+        "What is the difference between frontend and backend?",
+        "What is HTTP?",
+        "What is an API?",
+        "What is responsive web design?",
+        "What is a REST API?",
+        "What is Flask?",
+        "What is the difference between GET and POST?"
+    ],
+
+    HR: [
+        "Tell me about yourself.",
+        "Why should we hire you?",
+        "What are your strengths?",
+        "What is your biggest weakness?",
+        "Why do you want to join our company?",
+        "Where do you see yourself in five years?",
+        "Why did you choose your field?",
+        "Tell me about a challenge you faced.",
+        "How do you handle pressure?",
+        "Do you prefer working alone or in a team?"
+    ]
+
+};
+
+
+let currentCategory = "Technical";
+let currentQuestion = 0;
+
+
+function selectCategory(category, element){
+
+    currentCategory = category;
+    currentQuestion = 0;
+
+    document.querySelectorAll(".category")
+        .forEach(c => c.classList.remove("active"));
+
+    element.classList.add("active");
+
+    showQuestion();
+}
+
+
+function showQuestion(){
+
+    const list = questions[currentCategory];
+
+    const question = list[currentQuestion];
+
+    document.getElementById("questionText")
+        .textContent = question;
+
+    document.getElementById("questionNo")
+        .textContent = currentQuestion + 1;
+
+    document.getElementById("answer")
+        .value = "";
+
+    document.getElementById("feedback")
+        .style.display = "none";
+
+}
+
+
+function nextQuestion(){
+
+    const list = questions[currentCategory];
+
+    currentQuestion++;
+
+    if(currentQuestion >= list.length){
+
+        currentQuestion = 0;
+
+        alert(
+            "🎉 You completed this question set! Starting again with a new question."
+        );
+
+    }
+
+    showQuestion();
+
+}
+
+
+function clearAnswer(){
+
+    document.getElementById("answer").value = "";
+
+}
+
+
+document.getElementById("answer")
+    .addEventListener("input", function(){
+
+        const feedback = document.getElementById("feedback");
+
+        if(this.value.trim().length > 20){
+
+            feedback.style.display = "block";
+
+        }else{
+
+            feedback.style.display = "none";
+
+        }
+
+    });
+
+</script>{% endblock %}

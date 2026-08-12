@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+
+{% block title %}CareerAI | AI Career Analysis{% endblock %}
+
+{% block content %}
+
+<style>
+.analysis-page {
+    min-height: 100vh;
+    padding: 45px 20px;
+    background:
+        radial-gradient(circle at 10% 10%, #e5f6ff, transparent 30%),
+        radial-gradient(circle at 90% 10%, #eeeaff, transparent 30%),
+        #f8faff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.analysis-container {
+    max-width: 900px;
+    margin: auto;
+}
+
+.analysis-header {
+    background: white;
+    padding: 30px;
+    border-radius: 24px;
+    margin-bottom: 20px;
+    border: 1px solid #e5e7f0;
+    box-shadow: 0 15px 40px rgba(50,60,120,.08);
+}
+
+.analysis-header h1 {
+    margin: 0 0 8px;
+    color: #2d334d;
+}
+
+.analysis-header p {
+    margin: 0;
+    color: #7b8297;
+}
+
+.analysis-card {
+    background: white;
+    padding: 30px;
+    border-radius: 24px;
+    margin-bottom: 18px;
+    border: 1px solid #e5e7f0;
+    box-shadow: 0 12px 35px rgba(50,60,120,.08);
+}
+
+.career-box {
+    text-align: center;
+    padding: 25px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #eef7ff, #f2eeff);
+}
+
+.career-icon {
+    font-size: 45px;
+}
+
+.career-box h2 {
+    color: #30364e;
+    margin: 12px 0 5px;
+}
+
+.career-name {
+    color: #5c53d7;
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.match {
+    margin-top: 20px;
+}
+
+.match-number {
+    font-size: 42px;
+    font-weight: 900;
+    color: #247edc;
+}
+
+.progress {
+    height: 13px;
+    background: #e8eaf2;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: {{ match_percentage|default(0) }}%;
+    background: linear-gradient(90deg, #247edc, #6858df, #d4519b);
+    border-radius: 20px;
+}
+
+.section-title {
+    color: #30364e;
+    margin-top: 0;
+}
+
+.info-text {
+    color: #697086;
+    line-height: 1.7;
+}
+
+.button-row {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+.btn {
+    padding: 13px 22px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 800;
+}
+
+.primary-btn {
+    color: white;
+    background: linear-gradient(90deg, #247edc, #6858df);
+}
+
+.secondary-btn {
+    color: #5c53d7;
+    background: #efeeff;
+}
+</style><div class="analysis-page"><div class="analysis-container">
+
+    <div class="analysis-header">
+
+        <h1>
+            🤖 AI Career Analysis
+        </h1>
+
+        <p>
+            Personalized career guidance based on your assessment.
+        </p>
+
+    </div>
+
+
+    <div class="analysis-card">
+
+        <div class="career-box">
+
+            <div class="career-icon">
+                🚀
+            </div>
+
+            <h2>
+                Recommended Career
+            </h2>
+
+            <div class="career-name">
+                {{ career|default("Career Analysis Pending") }}
+            </div>
+
+
+            <div class="match">
+
+                <div class="match-number">
+                    {{ match_percentage|default(0) }}%
+                </div>
+
+                <div>
+                    Career Match
+                </div>
+
+                <div class="progress">
+
+                    <div class="progress-bar"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="analysis-card">
+
+        <h2 class="section-title">
+            💡 Why This Career?
+        </h2>
+
+        <p class="info-text">
+            {{ reason|default("Complete your Career Assessment to receive personalized career recommendations.") }}
+        </p>
+
+    </div>
+
+
+    <div class="analysis-card">
+
+        <h2 class="section-title">
+            ⭐ Recommended Next Steps
+        </h2>
+
+        <p class="info-text">
+            Build relevant skills, complete practical projects,
+            improve your knowledge and explore internship or
+            placement opportunities related to your recommended career.
+        </p>
+
+    </div>
+
+
+    <div class="button-row">
+
+        <a
+            href="{{ url_for('career_test') }}"
+            class="btn primary-btn"
+        >
+            🧠 Take Test Again
+        </a>
+
+        <a
+            href="{{ url_for('student_dashboard') }}"
+            class="btn secondary-btn"
+        >
+            🏠 Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+</div>{% endblock %}

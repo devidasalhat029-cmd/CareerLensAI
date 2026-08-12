@@ -1,0 +1,1321 @@
+{% extends "base.html" %}
+
+{% block title %}
+Technical MCQ Practice | CareerLens.ai
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .technical-page {
+        min-height: 100vh;
+        padding: 45px 6%;
+        color: white;
+        background:
+            radial-gradient(circle at 10% 10%, rgba(124,92,255,.15), transparent 30%),
+            radial-gradient(circle at 90% 20%, rgba(0,210,255,.10), transparent 28%),
+            #080b18;
+    }
+
+    .technical-hero {
+        max-width: 1000px;
+        margin: auto;
+        text-align: center;
+        padding: 25px 20px 35px;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 8px 16px;
+        border-radius: 30px;
+        color: #b9a5ff;
+        background: rgba(124,92,255,.12);
+        border: 1px solid rgba(124,92,255,.35);
+        font-size: 13px;
+        margin-bottom: 18px;
+    }
+
+    .technical-hero h1 {
+        font-size: clamp(34px,5vw,55px);
+        margin-bottom: 14px;
+    }
+
+    .technical-hero h1 span {
+        background: linear-gradient(90deg,#8b5cf6,#00d9ff);
+        -webkit-background-clip: text;
+        color: transparent;
+    }
+
+    .technical-hero p {
+        max-width: 720px;
+        margin: auto;
+        color: #969eb5;
+        line-height: 1.7;
+    }
+
+    .test-container {
+        max-width: 950px;
+        margin: 20px auto 60px;
+    }
+
+    .test-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 22px;
+        background: #10152a;
+        border: 1px solid rgba(255,255,255,.07);
+        border-radius: 17px;
+        margin-bottom: 18px;
+    }
+
+    .test-info {
+        display: flex;
+        gap: 25px;
+        color: #aab1c6;
+        font-size: 14px;
+    }
+
+    .test-info strong {
+        color: white;
+    }
+
+    .timer {
+        color: #9d8aff;
+        font-weight: 700;
+    }
+
+    .question-progress {
+        margin-bottom: 18px;
+    }
+
+    .progress-text {
+        display: flex;
+        justify-content: space-between;
+        color: #8e96ad;
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+
+    .progress-bar {
+        height: 8px;
+        background: #20263a;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .progress-bar span {
+        display: block;
+        width: 2%;
+        height: 100%;
+        background: linear-gradient(90deg,#7c5cff,#00d9ff);
+        border-radius: 20px;
+        transition: .3s;
+    }
+
+    .question-card {
+        background: #10152a;
+        border: 1px solid rgba(255,255,255,.08);
+        border-radius: 23px;
+        padding: 32px;
+        box-shadow: 0 20px 50px rgba(0,0,0,.20);
+    }
+
+    .question-number {
+        color: #9b86ff;
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 13px;
+    }
+
+    .question-text {
+        font-size: 21px;
+        line-height: 1.5;
+        margin-bottom: 25px;
+    }
+
+    .options {
+        display: grid;
+        gap: 13px;
+    }
+
+    .option {
+        width: 100%;
+        padding: 16px;
+        text-align: left;
+        border: 1px solid rgba(255,255,255,.08);
+        border-radius: 13px;
+        background: #151b30;
+        color: #dfe3ee;
+        cursor: pointer;
+        transition: .2s;
+        font-size: 14px;
+    }
+
+    .option:hover {
+        border-color: #7c5cff;
+        transform: translateX(3px);
+    }
+
+    .option.correct {
+        background: rgba(45,205,130,.13);
+        border-color: #2dcd82;
+        color: #70e5aa;
+    }
+
+    .option.wrong {
+        background: rgba(255,75,75,.12);
+        border-color: #ff5b5b;
+        color: #ff8b8b;
+    }
+
+    .option.disabled {
+        cursor: default;
+    }
+
+    .feedback {
+        display: none;
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 12px;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .feedback.show {
+        display: block;
+    }
+
+    .feedback.correct-feedback {
+        background: rgba(45,205,130,.10);
+        border: 1px solid rgba(45,205,130,.3);
+        color: #72e3aa;
+    }
+
+    .feedback.wrong-feedback {
+        background: rgba(255,75,75,.10);
+        border: 1px solid rgba(255,75,75,.3);
+        color: #ff9292;
+    }
+
+    .action-row {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 25px;
+    }
+
+    .next-btn {
+        padding: 12px 23px;
+        border: 0;
+        border-radius: 11px;
+        background: linear-gradient(90deg,#7c5cff,#00bfe8);
+        color: white;
+        font-weight: 700;
+        cursor: pointer;
+        display: none;
+    }
+
+    .result-card {
+        display: none;
+        text-align: center;
+        background: #10152a;
+        border: 1px solid rgba(255,255,255,.08);
+        border-radius: 24px;
+        padding: 45px 25px;
+    }
+
+    .result-icon {
+        font-size: 55px;
+        margin-bottom: 15px;
+    }
+
+    .result-card h2 {
+        font-size: 30px;
+        margin-bottom: 10px;
+    }
+
+    .result-card p {
+        color: #929ab0;
+        margin-bottom: 25px;
+    }
+
+    .score-box {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 40px;
+        border-radius: 17px;
+        background: rgba(124,92,255,.10);
+        border: 1px solid rgba(124,92,255,.25);
+        margin-bottom: 25px;
+    }
+
+    .score-box strong {
+        font-size: 42px;
+        color: #a693ff;
+    }
+
+    .restart-btn {
+        padding: 12px 23px;
+        border: 0;
+        border-radius: 11px;
+        background: linear-gradient(90deg,#7c5cff,#00bfe8);
+        color: white;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    @media(max-width:650px) {
+
+        .technical-page {
+            padding: 30px 4%;
+        }
+
+        .test-top {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .test-info {
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .question-card {
+            padding: 23px;
+        }
+
+        .question-text {
+            font-size: 18px;
+        }
+    }
+
+</style>
+
+
+<div class="technical-page">
+
+    <!-- HERO -->
+
+    <section class="technical-hero">
+
+        <div class="badge">
+            💻 Technical Interview Preparation
+        </div>
+
+        <h1>
+            Test Your <span>Technical Knowledge</span>
+        </h1>
+
+        <p>
+            Practice 50 placement-oriented technical MCQs
+            covering Programming, DBMS, Operating Systems,
+            Computer Networks, OOP and Software Engineering.
+        </p>
+
+    </section>
+
+
+    <div class="test-container">
+
+        <!-- TEST TOP -->
+
+        <div class="test-top">
+
+            <div class="test-info">
+
+                <span>
+                    Questions:
+                    <strong>50</strong>
+                </span>
+
+                <span>
+                    Score:
+                    <strong id="score">0</strong>
+                </span>
+
+                <span>
+                    Level:
+                    <strong>Placement</strong>
+                </span>
+
+            </div>
+
+            <div class="timer">
+                ⏱️ <span id="timer">30:00</span>
+            </div>
+
+        </div>
+
+
+        <!-- PROGRESS -->
+
+        <div class="question-progress">
+
+            <div class="progress-text">
+
+                <span id="questionCount">
+                    Question 1 of 50
+                </span>
+
+                <span id="percentage">
+                    2%
+                </span>
+
+            </div>
+
+            <div class="progress-bar">
+                <span id="progressFill"></span>
+            </div>
+
+        </div>
+
+
+        <!-- QUESTION -->
+
+        <div class="question-card" id="questionCard">
+
+            <div class="question-number" id="questionNumber">
+                QUESTION 01
+            </div>
+
+            <div class="question-text" id="questionText">
+                Loading question...
+            </div>
+
+            <div class="options" id="options"></div>
+
+            <div class="feedback" id="feedback"></div>
+
+            <div class="action-row">
+
+                <button
+                    class="next-btn"
+                    id="nextButton"
+                    onclick="nextQuestion()">
+                    Next Question →
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- RESULT -->
+
+        <div class="result-card" id="resultCard">
+
+            <div class="result-icon">
+                🎉
+            </div>
+
+            <h2>
+                Technical Test Completed!
+            </h2>
+
+            <p>
+                You completed all 50 technical questions.
+            </p>
+
+            <div class="score-box">
+
+                <span>Your Score</span>
+
+                <strong id="finalScore">
+                    0/50
+                </strong>
+
+            </div>
+
+            <br>
+
+            <button
+                class="restart-btn"
+                onclick="restartTest()">
+                🔄 Try Again
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const questions = [
+
+/* 1 */
+
+{
+    q:"Which language is mainly used to style web pages?",
+    o:["HTML","CSS","Python","SQL"],
+    a:1,
+    e:"CSS (Cascading Style Sheets) is used to style and design web pages."
+},
+
+/* 2 */
+
+{
+    q:"Which data structure follows LIFO?",
+    o:["Queue","Stack","Array","Linked List"],
+    a:1,
+    e:"Stack follows LIFO — Last In, First Out."
+},
+
+/* 3 */
+
+{
+    q:"Which data structure follows FIFO?",
+    o:["Stack","Tree","Queue","Graph"],
+    a:2,
+    e:"Queue follows FIFO — First In, First Out."
+},
+
+/* 4 */
+
+{
+    q:"Which keyword is used to create a class in Java?",
+    o:["object","class","struct","define"],
+    a:1,
+    e:"The 'class' keyword is used to define a class in Java."
+},
+
+/* 5 */
+
+{
+    q:"Which of the following is NOT an OOP concept?",
+    o:["Inheritance","Polymorphism","Encapsulation","Compilation"],
+    a:3,
+    e:"Compilation is not one of the four basic OOP concepts."
+},
+
+/* 6 */
+
+{
+    q:"What does SQL stand for?",
+    o:[
+        "Structured Query Language",
+        "Simple Query Language",
+        "System Query Language",
+        "Sequential Query Language"
+    ],
+    a:0,
+    e:"SQL stands for Structured Query Language."
+},
+
+/* 7 */
+
+{
+    q:"Which SQL command is used to retrieve data?",
+    o:["INSERT","UPDATE","SELECT","DELETE"],
+    a:2,
+    e:"SELECT is used to retrieve records from a database."
+},
+
+/* 8 */
+
+{
+    q:"Which SQL command removes a table completely?",
+    o:["DELETE","DROP","REMOVE","CLEAR"],
+    a:1,
+    e:"DROP TABLE removes the complete table structure and data."
+},
+
+/* 9 */
+
+{
+    q:"Which key uniquely identifies each record in a table?",
+    o:["Foreign Key","Primary Key","Candidate Key","Alternate Key"],
+    a:1,
+    e:"A Primary Key uniquely identifies each record."
+},
+
+/* 10 */
+
+{
+    q:"Which key establishes a relationship between two tables?",
+    o:["Primary Key","Foreign Key","Super Key","Unique Key"],
+    a:1,
+    e:"A Foreign Key references a key in another table."
+},
+
+/* 11 */
+
+{
+    q:"Which normal form removes repeating groups?",
+    o:["1NF","2NF","3NF","BCNF"],
+    a:0,
+    e:"First Normal Form (1NF) removes repeating groups and ensures atomic values."
+},
+
+/* 12 */
+
+{
+    q:"Which operating system manages computer hardware and software resources?",
+    o:["Compiler","Operating System","Browser","Database"],
+    a:1,
+    e:"The Operating System manages hardware, memory, processes and software resources."
+},
+
+/* 13 */
+
+{
+    q:"Which of these is an operating system?",
+    o:["MySQL","Linux","Chrome","Python"],
+    a:1,
+    e:"Linux is an operating system."
+},
+
+/* 14 */
+
+{
+    q:"Which scheduling algorithm uses a time quantum?",
+    o:["FCFS","Round Robin","SJF","Priority"],
+    a:1,
+    e:"Round Robin scheduling uses a fixed time quantum."
+},
+
+/* 15 */
+
+{
+    q:"What is a process?",
+    o:[
+        "A program stored on disk",
+        "A program in execution",
+        "A hardware component",
+        "A database record"
+    ],
+    a:1,
+    e:"A process is a program that is currently executing."
+},
+
+/* 16 */
+
+{
+    q:"Which memory is volatile?",
+    o:["ROM","RAM","Hard Disk","SSD"],
+    a:1,
+    e:"RAM is volatile memory because its contents are lost when power is removed."
+},
+
+/* 17 */
+
+{
+    q:"Which device connects different networks?",
+    o:["Switch","Router","Keyboard","Monitor"],
+    a:1,
+    e:"A router forwards packets between different networks."
+},
+
+/* 18 */
+
+{
+    q:"Which protocol is used for web browsing?",
+    o:["FTP","HTTP","SMTP","SSH"],
+    a:1,
+    e:"HTTP is used for communication between web browsers and web servers."
+},
+
+/* 19 */
+
+{
+    q:"Which protocol is commonly used for secure web communication?",
+    o:["HTTP","HTTPS","FTP","SMTP"],
+    a:1,
+    e:"HTTPS encrypts HTTP communication using TLS."
+},
+
+/* 20 */
+
+{
+    q:"What does IP stand for?",
+    o:[
+        "Internet Protocol",
+        "Internet Program",
+        "Internal Protocol",
+        "Information Protocol"
+    ],
+    a:0,
+    e:"IP stands for Internet Protocol."
+},
+
+/* 21 */
+
+{
+    q:"Which layer of the OSI model is responsible for routing?",
+    o:["Transport","Network","Session","Physical"],
+    a:1,
+    e:"The Network layer handles logical addressing and routing."
+},
+
+/* 22 */
+
+{
+    q:"How many layers are present in the OSI model?",
+    o:["5","6","7","8"],
+    a:2,
+    e:"The OSI model has seven layers."
+},
+
+/* 23 */
+
+{
+    q:"Which protocol is used to send emails?",
+    o:["SMTP","HTTP","FTP","DNS"],
+    a:0,
+    e:"SMTP is used to send email messages."
+},
+
+/* 24 */
+
+{
+    q:"Which protocol translates domain names into IP addresses?",
+    o:["FTP","DNS","SMTP","TCP"],
+    a:1,
+    e:"DNS translates domain names such as example.com into IP addresses."
+},
+
+/* 25 */
+
+{
+    q:"Which sorting algorithm has average O(n log n) complexity?",
+    o:["Bubble Sort","Selection Sort","Merge Sort","Linear Search"],
+    a:2,
+    e:"Merge Sort has O(n log n) average and worst-case time complexity."
+},
+
+/* 26 */
+
+{
+    q:"What is the worst-case complexity of linear search?",
+    o:["O(1)","O(log n)","O(n)","O(n²)"],
+    a:2,
+    e:"Linear Search may need to examine every element, giving O(n)."
+},
+
+/* 27 */
+
+{
+    q:"Binary search requires the data to be:",
+    o:["Random","Sorted","Encrypted","Duplicated"],
+    a:1,
+    e:"Binary Search works efficiently on sorted data."
+},
+
+/* 28 */
+
+{
+    q:"Which data structure is commonly used for BFS?",
+    o:["Stack","Queue","Heap","Array"],
+    a:1,
+    e:"Breadth First Search uses a Queue."
+},
+
+/* 29 */
+
+{
+    q:"Which data structure is commonly used for DFS?",
+    o:["Queue","Stack","Hash Table","Heap"],
+    a:1,
+    e:"Depth First Search uses a Stack or recursion."
+},
+
+/* 30 */
+
+{
+    q:"Which data structure stores key-value pairs?",
+    o:["Stack","Queue","Hash Table","Linked List"],
+    a:2,
+    e:"Hash Tables store data using key-value pairs."
+},
+
+/* 31 */
+
+{
+    q:"Which OOP feature allows one class to acquire properties of another?",
+    o:["Encapsulation","Inheritance","Abstraction","Compilation"],
+    a:1,
+    e:"Inheritance allows a class to acquire properties and methods of another class."
+},
+
+/* 32 */
+
+{
+    q:"Which OOP concept hides implementation details?",
+    o:["Inheritance","Abstraction","Polymorphism","Overloading"],
+    a:1,
+    e:"Abstraction hides unnecessary implementation details."
+},
+
+/* 33 */
+
+{
+    q:"Same method name with different parameters is called:",
+    o:["Overriding","Overloading","Inheritance","Encapsulation"],
+    a:1,
+    e:"Method overloading means having methods with the same name but different parameters."
+},
+
+/* 34 */
+
+{
+    q:"Which language is known as an object-oriented programming language?",
+    o:["Java","HTML","CSS","SQL"],
+    a:0,
+    e:"Java is a widely used object-oriented programming language."
+},
+
+/* 35 */
+
+{
+    q:"Which symbol is commonly used for comments in Python?",
+    o:["//","#","<!-- -->","/* */"],
+    a:1,
+    e:"Python uses # for single-line comments."
+},
+
+/* 36 */
+
+{
+    q:"Which keyword defines a function in Python?",
+    o:["function","define","def","fun"],
+    a:2,
+    e:"Python uses the def keyword to define functions."
+},
+
+/* 37 */
+
+{
+    q:"Which collection in Python is ordered and mutable?",
+    o:["Tuple","List","Set","FrozenSet"],
+    a:1,
+    e:"Python lists are ordered and mutable."
+},
+
+/* 38 */
+
+{
+    q:"Which Python data type is immutable?",
+    o:["List","Dictionary","Tuple","Set"],
+    a:2,
+    e:"Tuples are immutable collections in Python."
+},
+
+/* 39 */
+
+{
+    q:"Which symbol is used for exponentiation in Python?",
+    o:["^","**","//","%%"],
+    a:1,
+    e:"Python uses ** for exponentiation."
+},
+
+/* 40 */
+
+{
+    q:"Which software development model follows sequential phases?",
+    o:["Agile","Waterfall","Spiral","Prototype"],
+    a:1,
+    e:"The Waterfall model follows sequential development phases."
+},
+
+/* 41 */
+
+{
+    q:"What does SDLC stand for?",
+    o:[
+        "Software Development Life Cycle",
+        "System Design Life Cycle",
+        "Software Design Logic Cycle",
+        "System Development Logic"
+    ],
+    a:0,
+    e:"SDLC stands for Software Development Life Cycle."
+},
+
+/* 42 */
+
+{
+    q:"Which testing checks individual units of code?",
+    o:["System Testing","Unit Testing","Acceptance Testing","Integration Testing"],
+    a:1,
+    e:"Unit Testing tests individual functions or components."
+},
+
+/* 43 */
+
+{
+    q:"Which testing combines multiple modules?",
+    o:["Unit Testing","Integration Testing","Regression Testing","Smoke Testing"],
+    a:1,
+    e:"Integration Testing checks whether combined modules work correctly together."
+},
+
+/* 44 */
+
+{
+    q:"What does API stand for?",
+    o:[
+        "Application Programming Interface",
+        "Application Program Internet",
+        "Advanced Programming Interface",
+        "Applied Program Integration"
+    ],
+    a:0,
+    e:"API stands for Application Programming Interface."
+},
+
+/* 45 */
+
+{
+    q:"Which HTTP method is commonly used to retrieve data?",
+    o:["POST","GET","PUT","DELETE"],
+    a:1,
+    e:"GET is commonly used to retrieve resources from a server."
+},
+
+/* 46 */
+
+{
+    q:"Which HTTP method is commonly used to create/send data?",
+    o:["GET","POST","DELETE","HEAD"],
+    a:1,
+    e:"POST is commonly used to send data to a server for processing or creation."
+},
+
+/* 47 */
+
+{
+    q:"Which database is a relational database?",
+    o:["MySQL","MongoDB","Redis","Neo4j"],
+    a:0,
+    e:"MySQL is a relational database management system."
+},
+
+/* 48 */
+
+{
+    q:"Which database is NoSQL?",
+    o:["MySQL","Oracle","MongoDB","PostgreSQL"],
+    a:2,
+    e:"MongoDB is a document-oriented NoSQL database."
+},
+
+/* 49 */
+
+{
+    q:"What is Git primarily used for?",
+    o:[
+        "Database management",
+        "Version control",
+        "Web hosting",
+        "Operating system management"
+    ],
+    a:1,
+    e:"Git is a distributed version control system used to track code changes."
+},
+
+/* 50 */
+
+{
+    q:"Which command is used to create a new Git repository?",
+    o:["git start","git init","git new","git create"],
+    a:1,
+    e:"git init initializes a new Git repository."
+}
+
+];
+
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+
+let timeLeft = 1800;
+let timerInterval;
+
+
+/* ================= LOAD QUESTION ================= */
+
+function loadQuestion() {
+
+    answered = false;
+
+    const q = questions[currentQuestion];
+
+
+    /* Question Number */
+
+    document.getElementById("questionNumber").innerText =
+        "QUESTION " +
+        String(currentQuestion + 1).padStart(2, "0");
+
+
+    /* Question */
+
+    document.getElementById("questionText").innerText =
+        q.q;
+
+
+    /* Question Count */
+
+    document.getElementById("questionCount").innerText =
+        "Question " +
+        (currentQuestion + 1) +
+        " of " +
+        questions.length;
+
+
+    /* Progress Percentage */
+
+    const percentage =
+        Math.round(
+            ((currentQuestion + 1) /
+            questions.length) * 100
+        );
+
+
+    document.getElementById("percentage").innerText =
+        percentage + "%";
+
+
+    document.getElementById("progressFill").style.width =
+        percentage + "%";
+
+
+    /* Options */
+
+    const optionsContainer =
+        document.getElementById("options");
+
+    optionsContainer.innerHTML = "";
+
+
+    q.o.forEach(function(option, index) {
+
+        const button =
+            document.createElement("button");
+
+
+        button.className = "option";
+
+
+        button.innerText =
+            String.fromCharCode(65 + index) +
+            ". " +
+            option;
+
+
+        button.onclick = function() {
+
+            selectAnswer(index, button);
+
+        };
+
+
+        optionsContainer.appendChild(button);
+
+    });
+
+
+    /* Reset Feedback */
+
+    const feedback =
+        document.getElementById("feedback");
+
+
+    feedback.className = "feedback";
+
+    feedback.innerText = "";
+
+
+    /* Hide Next Button */
+
+    document.getElementById("nextButton")
+        .style.display = "none";
+
+}
+
+
+/* ================= SELECT ANSWER ================= */
+
+function selectAnswer(selected, button) {
+
+    if (answered) return;
+
+    answered = true;
+
+
+    const q =
+        questions[currentQuestion];
+
+
+    const allOptions =
+        document.querySelectorAll(".option");
+
+
+    /* Disable all options */
+
+    allOptions.forEach(function(btn) {
+
+        btn.classList.add("disabled");
+
+    });
+
+
+    /* Correct Answer */
+
+    if (selected === q.a) {
+
+        button.classList.add("correct");
+
+        score++;
+
+
+        document.getElementById("score")
+            .innerText = score;
+
+
+        showFeedback(
+            true,
+            "Correct! 🎉 " + q.e
+        );
+
+    }
+
+
+    /* Wrong Answer */
+
+    else {
+
+        button.classList.add("wrong");
+
+
+        /* Show correct answer */
+
+        allOptions[q.a]
+            .classList.add("correct");
+
+
+        showFeedback(
+            false,
+            "Incorrect ❌ Correct answer: " +
+            q.o[q.a] +
+            ". " +
+            q.e
+        );
+
+    }
+
+
+    /* Show Next Button */
+
+    document.getElementById("nextButton")
+        .style.display = "inline-block";
+
+}
+
+
+/* ================= FEEDBACK ================= */
+
+function showFeedback(correct, text) {
+
+    const feedback =
+        document.getElementById("feedback");
+
+
+    if (correct) {
+
+        feedback.className =
+            "feedback show correct-feedback";
+
+    }
+
+    else {
+
+        feedback.className =
+            "feedback show wrong-feedback";
+
+    }
+
+
+    feedback.innerText = text;
+
+}
+
+
+/* ================= NEXT QUESTION ================= */
+
+function nextQuestion() {
+
+    currentQuestion++;
+
+
+    /* Test Finished */
+
+    if (currentQuestion >= questions.length) {
+
+        finishTest();
+
+        return;
+
+    }
+
+
+    /* Load Next */
+
+    loadQuestion();
+
+}
+
+
+/* ================= FINISH TEST ================= */
+
+function finishTest() {
+
+    clearInterval(timerInterval);
+
+
+    /* Hide Question */
+
+    document.getElementById("questionCard")
+        .style.display = "none";
+
+
+    /* Hide Progress */
+
+    document.querySelector(".question-progress")
+        .style.display = "none";
+
+
+    /* Hide Top Bar */
+
+    document.querySelector(".test-top")
+        .style.display = "none";
+
+
+    /* Show Result */
+
+    document.getElementById("resultCard")
+        .style.display = "block";
+
+
+    /* Final Score */
+
+    document.getElementById("finalScore")
+        .innerText =
+        score + "/" + questions.length;
+
+}
+
+
+/* ================= TIMER ================= */
+
+function startTimer() {
+
+    timerInterval =
+        setInterval(function() {
+
+            timeLeft--;
+
+
+            let minutes =
+                Math.floor(timeLeft / 60);
+
+
+            let seconds =
+                timeLeft % 60;
+
+
+            document.getElementById("timer")
+                .innerText =
+
+                String(minutes).padStart(2, "0")
+                +
+                ":"
+                +
+                String(seconds).padStart(2, "0");
+
+
+            /* Time Over */
+
+            if (timeLeft <= 0) {
+
+                clearInterval(timerInterval);
+
+                finishTest();
+
+            }
+
+        }, 1000);
+
+}
+
+
+/* ================= RESTART TEST ================= */
+
+function restartTest() {
+
+    currentQuestion = 0;
+
+    score = 0;
+
+    answered = false;
+
+    timeLeft = 1800;
+
+
+    /* Reset Score */
+
+    document.getElementById("score")
+        .innerText = "0";
+
+
+    /* Show Question */
+
+    document.getElementById("questionCard")
+        .style.display = "block";
+
+
+    /* Show Progress */
+
+    document.querySelector(".question-progress")
+        .style.display = "block";
+
+
+    /* Show Top */
+
+    document.querySelector(".test-top")
+        .style.display = "flex";
+
+
+    /* Hide Result */
+
+    document.getElementById("resultCard")
+        .style.display = "none";
+
+
+    /* Restart Timer */
+
+    clearInterval(timerInterval);
+
+
+    loadQuestion();
+
+    startTimer();
+
+}
+
+
+/* ================= START TEST ================= */
+
+loadQuestion();
+
+startTimer();
+
+</script>
+
+{% endblock %}

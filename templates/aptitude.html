@@ -1,0 +1,813 @@
+{% extends "base.html" %}
+
+{% block title %}
+Aptitude Practice | CareerLens.ai
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .aptitude-page {
+        min-height: 100vh;
+        padding: 45px 6%;
+        color: white;
+        background:
+            radial-gradient(circle at 10% 10%, rgba(124,92,255,.15), transparent 30%),
+            radial-gradient(circle at 90% 20%, rgba(0,210,255,.10), transparent 28%),
+            #080b18;
+    }
+
+    /* HERO */
+
+    .aptitude-hero {
+        max-width: 1100px;
+        margin: auto;
+        text-align: center;
+        padding: 25px 20px 35px;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 8px 16px;
+        border-radius: 30px;
+        color: #b9a5ff;
+        background: rgba(124,92,255,.12);
+        border: 1px solid rgba(124,92,255,.35);
+        font-size: 13px;
+        margin-bottom: 18px;
+    }
+
+    .aptitude-hero h1 {
+        font-size: clamp(34px,5vw,55px);
+        margin-bottom: 14px;
+    }
+
+    .aptitude-hero h1 span {
+        background: linear-gradient(90deg,#8b5cf6,#00d9ff);
+        -webkit-background-clip: text;
+        color: transparent;
+    }
+
+    .aptitude-hero p {
+        max-width: 700px;
+        margin: auto;
+        color: #969eb5;
+        line-height: 1.7;
+    }
+
+    /* TOP BAR */
+
+    .test-container {
+        max-width: 950px;
+        margin: 20px auto 60px;
+    }
+
+    .test-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 22px;
+        background: #10152a;
+        border: 1px solid rgba(255,255,255,.07);
+        border-radius: 17px;
+        margin-bottom: 18px;
+    }
+
+    .test-info {
+        display: flex;
+        gap: 25px;
+        color: #aab1c6;
+        font-size: 14px;
+    }
+
+    .test-info strong {
+        color: white;
+    }
+
+    .timer {
+        color: #9d8aff;
+        font-weight: 700;
+    }
+
+    /* PROGRESS */
+
+    .question-progress {
+        margin-bottom: 18px;
+    }
+
+    .progress-text {
+        display: flex;
+        justify-content: space-between;
+        color: #8e96ad;
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+
+    .progress-bar {
+        height: 8px;
+        background: #20263a;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .progress-bar span {
+        display: block;
+        width: 10%;
+        height: 100%;
+        background: linear-gradient(90deg,#7c5cff,#00d9ff);
+        border-radius: 20px;
+        transition: .3s;
+    }
+
+    /* QUESTION */
+
+    .question-card {
+        background: #10152a;
+        border: 1px solid rgba(255,255,255,.08);
+        border-radius: 23px;
+        padding: 32px;
+        box-shadow: 0 20px 50px rgba(0,0,0,.20);
+    }
+
+    .question-number {
+        color: #9b86ff;
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 13px;
+    }
+
+    .question-text {
+        font-size: 21px;
+        line-height: 1.5;
+        margin-bottom: 25px;
+    }
+
+    /* OPTIONS */
+
+    .options {
+        display: grid;
+        gap: 13px;
+    }
+
+    .option {
+        width: 100%;
+        padding: 16px;
+        text-align: left;
+        border: 1px solid rgba(255,255,255,.08);
+        border-radius: 13px;
+        background: #151b30;
+        color: #dfe3ee;
+        cursor: pointer;
+        transition: .2s;
+        font-size: 14px;
+    }
+
+    .option:hover {
+        border-color: #7c5cff;
+        transform: translateX(3px);
+    }
+
+    .option.correct {
+        background: rgba(45,205,130,.13);
+        border-color: #2dcd82;
+        color: #70e5aa;
+    }
+
+    .option.wrong {
+        background: rgba(255,75,75,.12);
+        border-color: #ff5b5b;
+        color: #ff8b8b;
+    }
+
+    .option.disabled {
+        cursor: default;
+    }
+
+    /* FEEDBACK */
+
+    .feedback {
+        display: none;
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 12px;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .feedback.show {
+        display: block;
+    }
+
+    .feedback.correct-feedback {
+        background: rgba(45,205,130,.10);
+        border: 1px solid rgba(45,205,130,.3);
+        color: #72e3aa;
+    }
+
+    .feedback.wrong-feedback {
+        background: rgba(255,75,75,.10);
+        border: 1px solid rgba(255,75,75,.3);
+        color: #ff9292;
+    }
+
+    /* BUTTON */
+
+    .action-row {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 25px;
+    }
+
+    .next-btn {
+        padding: 12px 23px;
+        border: 0;
+        border-radius: 11px;
+        background: linear-gradient(90deg,#7c5cff,#00bfe8);
+        color: white;
+        font-weight: 700;
+        cursor: pointer;
+        display: none;
+    }
+
+    /* RESULT */
+
+    .result-card {
+        display: none;
+        text-align: center;
+        background: #10152a;
+        border: 1px solid rgba(255,255,255,.08);
+        border-radius: 24px;
+        padding: 45px 25px;
+    }
+
+    .result-icon {
+        font-size: 55px;
+        margin-bottom: 15px;
+    }
+
+    .result-card h2 {
+        font-size: 30px;
+        margin-bottom: 10px;
+    }
+
+    .result-card p {
+        color: #929ab0;
+        margin-bottom: 25px;
+    }
+
+    .score-box {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 40px;
+        border-radius: 17px;
+        background: rgba(124,92,255,.10);
+        border: 1px solid rgba(124,92,255,.25);
+        margin-bottom: 25px;
+    }
+
+    .score-box strong {
+        font-size: 42px;
+        color: #a693ff;
+    }
+
+    .restart-btn {
+        padding: 12px 23px;
+        border: 0;
+        border-radius: 11px;
+        background: linear-gradient(90deg,#7c5cff,#00bfe8);
+        color: white;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    /* MOBILE */
+
+    @media(max-width:650px) {
+
+        .aptitude-page {
+            padding: 30px 4%;
+        }
+
+        .test-top {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .test-info {
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .question-card {
+            padding: 23px;
+        }
+
+        .question-text {
+            font-size: 18px;
+        }
+
+    }
+
+</style>
+
+
+<div class="aptitude-page">
+
+    <!-- HERO -->
+
+    <section class="aptitude-hero">
+
+        <div class="badge">
+            🧮 Aptitude Practice
+        </div>
+
+        <h1>
+            Sharpen Your <span>Aptitude Skills</span>
+        </h1>
+
+        <p>
+            Practice placement-level quantitative aptitude,
+            logical reasoning and numerical problems.
+            Choose the correct answer and improve your score.
+        </p>
+
+    </section>
+
+
+    <!-- TEST -->
+
+    <div class="test-container">
+
+        <!-- TOP -->
+
+        <div class="test-top">
+
+            <div class="test-info">
+
+                <span>
+                    Questions:
+                    <strong id="totalQuestions">10</strong>
+                </span>
+
+                <span>
+                    Score:
+                    <strong id="score">0</strong>
+                </span>
+
+                <span>
+                    Level:
+                    <strong>Placement</strong>
+                </span>
+
+            </div>
+
+            <div class="timer">
+                ⏱️ <span id="timer">10:00</span>
+            </div>
+
+        </div>
+
+
+        <!-- PROGRESS -->
+
+        <div class="question-progress">
+
+            <div class="progress-text">
+
+                <span id="questionCount">
+                    Question 1 of 10
+                </span>
+
+                <span id="percentage">
+                    10%
+                </span>
+
+            </div>
+
+            <div class="progress-bar">
+                <span id="progressFill"></span>
+            </div>
+
+        </div>
+
+
+        <!-- QUESTION CARD -->
+
+        <div class="question-card" id="questionCard">
+
+            <div class="question-number" id="questionNumber">
+                QUESTION 01
+            </div>
+
+            <div class="question-text" id="questionText">
+                Loading question...
+            </div>
+
+            <div class="options" id="options">
+            </div>
+
+            <div class="feedback" id="feedback">
+            </div>
+
+            <div class="action-row">
+
+                <button
+                    class="next-btn"
+                    id="nextButton"
+                    onclick="nextQuestion()">
+                    Next Question →
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- RESULT -->
+
+        <div class="result-card" id="resultCard">
+
+            <div class="result-icon">
+                🎉
+            </div>
+
+            <h2>
+                Aptitude Test Completed!
+            </h2>
+
+            <p>
+                Great job! Here is your performance.
+            </p>
+
+            <div class="score-box">
+
+                <span>Your Score</span>
+
+                <strong id="finalScore">
+                    0/10
+                </strong>
+
+            </div>
+
+            <br>
+
+            <button
+                class="restart-btn"
+                onclick="restartTest()">
+                🔄 Try Again
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const questions = [
+
+    {
+        question: "If 20% of a number is 50, what is the number?",
+        options: ["200", "250", "300", "350"],
+        answer: 1,
+        explanation: "20% of 250 = 50. Therefore, the number is 250."
+    },
+
+    {
+        question: "A train travels 120 km in 2 hours. What is its average speed?",
+        options: ["40 km/h", "50 km/h", "60 km/h", "80 km/h"],
+        answer: 2,
+        explanation: "Speed = Distance ÷ Time = 120 ÷ 2 = 60 km/h."
+    },
+
+    {
+        question: "What is the next number in the series: 2, 6, 12, 20, 30, ?",
+        options: ["36", "40", "42", "44"],
+        answer: 2,
+        explanation: "The differences are 4, 6, 8, 10, so the next difference is 12. Answer = 42."
+    },
+
+    {
+        question: "If the ratio of boys to girls is 3:2 and there are 30 boys, how many girls are there?",
+        options: ["15", "20", "25", "30"],
+        answer: 1,
+        explanation: "3 parts = 30, so 1 part = 10. Girls = 2 × 10 = 20."
+    },
+
+    {
+        question: "What is 15% of 240?",
+        options: ["24", "30", "36", "40"],
+        answer: 2,
+        explanation: "15% × 240 = 36."
+    },
+
+    {
+        question: "A person buys an item for ₹500 and sells it for ₹600. What is the profit percentage?",
+        options: ["10%", "15%", "20%", "25%"],
+        answer: 2,
+        explanation: "Profit = 600 - 500 = 100. Profit% = 100/500 × 100 = 20%."
+    },
+
+    {
+        question: "What is the average of 10, 20, 30, 40 and 50?",
+        options: ["25", "30", "35", "40"],
+        answer: 1,
+        explanation: "Average = (10+20+30+40+50) ÷ 5 = 30."
+    },
+
+    {
+        question: "If 5 workers complete a job in 10 days, how many days will 10 workers take, assuming equal efficiency?",
+        options: ["2 days", "5 days", "10 days", "20 days"],
+        answer: 1,
+        explanation: "Workers double, so required time becomes half: 10 ÷ 2 = 5 days."
+    },
+
+    {
+        question: "A clock shows 3:00. What is the angle between the hour and minute hands?",
+        options: ["60°", "90°", "120°", "180°"],
+        answer: 1,
+        explanation: "At 3:00 the hour hand is at 3 and minute hand is at 12, making a 90° angle."
+    },
+
+    {
+        question: "If a number is increased by 25% and becomes 100, what was the original number?",
+        options: ["75", "80", "85", "90"],
+        answer: 1,
+        explanation: "125% of original = 100. Original = 100 ÷ 1.25 = 80."
+    }
+
+];
+
+
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+
+let timeLeft = 600;
+let timerInterval;
+
+
+/* LOAD QUESTION */
+
+function loadQuestion() {
+
+    answered = false;
+
+    const q = questions[currentQuestion];
+
+    document.getElementById("questionNumber").innerText =
+        "QUESTION " +
+        String(currentQuestion + 1).padStart(2,"0");
+
+    document.getElementById("questionText").innerText =
+        q.question;
+
+    document.getElementById("questionCount").innerText =
+        "Question " +
+        (currentQuestion + 1) +
+        " of " +
+        questions.length;
+
+    const percentage =
+        Math.round(
+            ((currentQuestion + 1) /
+            questions.length) * 100
+        );
+
+    document.getElementById("percentage").innerText =
+        percentage + "%";
+
+    document.getElementById("progressFill").style.width =
+        percentage + "%";
+
+    const optionsContainer =
+        document.getElementById("options");
+
+    optionsContainer.innerHTML = "";
+
+    q.options.forEach((option,index) => {
+
+        const button =
+            document.createElement("button");
+
+        button.className = "option";
+
+        button.innerText =
+            String.fromCharCode(65 + index) +
+            ". " +
+            option;
+
+        button.onclick = function() {
+            selectAnswer(index,button);
+        };
+
+        optionsContainer.appendChild(button);
+
+    });
+
+    document.getElementById("feedback").className =
+        "feedback";
+
+    document.getElementById("feedback").innerText =
+        "";
+
+    document.getElementById("nextButton").style.display =
+        "none";
+
+}
+
+
+/* SELECT ANSWER */
+
+function selectAnswer(selected,button) {
+
+    if(answered) return;
+
+    answered = true;
+
+    const q = questions[currentQuestion];
+
+    const allOptions =
+        document.querySelectorAll(".option");
+
+    allOptions.forEach(btn => {
+        btn.classList.add("disabled");
+    });
+
+    if(selected === q.answer) {
+
+        button.classList.add("correct");
+
+        score++;
+
+        document.getElementById("score").innerText =
+            score;
+
+        showFeedback(
+            true,
+            "Correct! 🎉 " + q.explanation
+        );
+
+    } else {
+
+        button.classList.add("wrong");
+
+        allOptions[q.answer].classList.add("correct");
+
+        showFeedback(
+            false,
+            "Not quite. ❌ " +
+            q.explanation
+        );
+
+    }
+
+    document.getElementById("nextButton").style.display =
+        "inline-block";
+
+}
+
+
+/* FEEDBACK */
+
+function showFeedback(correct,text) {
+
+    const feedback =
+        document.getElementById("feedback");
+
+    feedback.className =
+        "feedback show " +
+        (correct
+            ? "correct-feedback"
+            : "wrong-feedback");
+
+    feedback.innerText = text;
+
+}
+
+
+/* NEXT */
+
+function nextQuestion() {
+
+    currentQuestion++;
+
+    if(currentQuestion >= questions.length) {
+
+        finishTest();
+
+        return;
+    }
+
+    loadQuestion();
+
+}
+
+
+/* FINISH */
+
+function finishTest() {
+
+    clearInterval(timerInterval);
+
+    document.getElementById("questionCard")
+        .style.display = "none";
+
+    document.querySelector(".question-progress")
+        .style.display = "none";
+
+    document.querySelector(".test-top")
+        .style.display = "none";
+
+    document.getElementById("resultCard")
+        .style.display = "block";
+
+    document.getElementById("finalScore")
+        .innerText =
+        score + "/" + questions.length;
+
+}
+
+
+/* TIMER */
+
+function startTimer() {
+
+    timerInterval =
+        setInterval(function() {
+
+            timeLeft--;
+
+            let minutes =
+                Math.floor(timeLeft / 60);
+
+            let seconds =
+                timeLeft % 60;
+
+            document.getElementById("timer")
+                .innerText =
+                String(minutes).padStart(2,"0")
+                + ":" +
+                String(seconds).padStart(2,"0");
+
+            if(timeLeft <= 0) {
+
+                clearInterval(timerInterval);
+
+                finishTest();
+
+            }
+
+        },1000);
+
+}
+
+
+/* RESTART */
+
+function restartTest() {
+
+    currentQuestion = 0;
+
+    score = 0;
+
+    timeLeft = 600;
+
+    document.getElementById("score")
+        .innerText = "0";
+
+    document.getElementById("questionCard")
+        .style.display = "block";
+
+    document.querySelector(".question-progress")
+        .style.display = "block";
+
+    document.querySelector(".test-top")
+        .style.display = "flex";
+
+    document.getElementById("resultCard")
+        .style.display = "none";
+
+    clearInterval(timerInterval);
+
+    loadQuestion();
+
+    startTimer();
+
+}
+
+
+/* START */
+
+loadQuestion();
+
+startTimer();
+
+</script>
+
+{% endblock %}

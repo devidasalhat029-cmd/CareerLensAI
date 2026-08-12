@@ -1,0 +1,1618 @@
+{% extends "base.html" %}
+
+{% block title %}Coding Practice | CareerLens.ai{% endblock %}
+
+{% block content %}
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+.coding-page{
+    min-height:100vh;
+    padding:35px 4%;
+    background:
+        radial-gradient(circle at 10% 10%,rgba(0,191,255,.16),transparent 30%),
+        radial-gradient(circle at 90% 20%,rgba(135,206,250,.12),transparent 30%),
+        #07111f;
+    color:#f5fbff;
+}
+
+/* HERO */
+.hero{
+    max-width:1200px;
+    margin:auto;
+    text-align:center;
+    padding:15px 10px 35px;
+}
+
+.badge{
+    display:inline-block;
+    padding:8px 17px;
+    border-radius:30px;
+    color:#7ddcff;
+    background:rgba(0,191,255,.10);
+    border:1px solid rgba(0,191,255,.35);
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.5px;
+}
+
+.hero h1{
+    margin:15px 0 10px;
+    font-size:clamp(34px,5vw,55px);
+}
+
+.hero h1 span{
+    color:#5dd8ff;
+    text-shadow:0 0 25px rgba(0,191,255,.25);
+}
+
+.hero p{
+    color:#91a9bb;
+    max-width:720px;
+    margin:auto;
+    line-height:1.7;
+}
+
+/* LAYOUT */
+.main-layout{
+    max-width:1250px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:290px 1fr;
+    gap:20px;
+}
+
+/* SIDEBAR */
+.sidebar{
+    background:#0b1b2b;
+    border:1px solid rgba(93,216,255,.16);
+    border-radius:20px;
+    padding:18px;
+    height:max-content;
+    box-shadow:0 10px 35px rgba(0,0,0,.20);
+}
+
+.sidebar h3{
+    margin:2px 0 15px;
+    color:#dff8ff;
+}
+
+.filters{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:6px;
+    margin-bottom:15px;
+}
+
+.filter{
+    border:1px solid rgba(255,255,255,.08);
+    background:#10263a;
+    color:#9bb2c2;
+    padding:8px 3px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:11px;
+}
+
+.filter.active{
+    background:#08aeea;
+    color:white;
+    border-color:#5dd8ff;
+}
+
+.problem-list{
+    display:grid;
+    gap:8px;
+    max-height:610px;
+    overflow-y:auto;
+}
+
+.problem{
+    padding:12px;
+    border-radius:10px;
+    background:#102235;
+    border:1px solid transparent;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.problem:hover,
+.problem.active{
+    border-color:#43cdf5;
+    background:#12304a;
+    transform:translateX(2px);
+}
+
+.problem-name{
+    font-size:13px;
+    color:#e7f8ff;
+    margin-bottom:7px;
+}
+
+.level{
+    font-size:10px;
+    padding:3px 8px;
+    border-radius:20px;
+}
+
+.level.easy{
+    color:#67e8c0;
+    background:rgba(55,210,160,.10);
+}
+
+.level.medium{
+    color:#ffd166;
+    background:rgba(255,209,102,.10);
+}
+
+.level.hard{
+    color:#ff8585;
+    background:rgba(255,90,90,.10);
+}
+
+/* WORKSPACE */
+.workspace{
+    min-width:0;
+}
+
+.question-card,
+.editor-card{
+    background:#0b1b2b;
+    border:1px solid rgba(93,216,255,.16);
+    border-radius:20px;
+    box-shadow:0 10px 35px rgba(0,0,0,.20);
+}
+
+.question-card{
+    padding:25px;
+    margin-bottom:18px;
+}
+
+.question-top{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+}
+
+.question-top h2{
+    margin:0;
+    font-size:26px;
+    color:#e9faff;
+}
+
+.meta{
+    margin-top:7px;
+    color:#65d8ff;
+    font-size:12px;
+}
+
+.description{
+    margin-top:18px;
+    color:#c1d1dc;
+    line-height:1.7;
+}
+
+.example{
+    margin-top:18px;
+    padding:16px;
+    border-radius:12px;
+    background:#06101b;
+    border-left:3px solid #42cdf6;
+    color:#a9c2d0;
+    white-space:pre-line;
+    font-family:Consolas,monospace;
+}
+
+/* PROGRESS */
+.progress{
+    margin-top:20px;
+}
+
+.progress-info{
+    display:flex;
+    justify-content:space-between;
+    color:#8fa7b7;
+    font-size:12px;
+    margin-bottom:7px;
+}
+
+.progress-bar{
+    height:7px;
+    background:#162d40;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-fill{
+    width:0;
+    height:100%;
+    background:#4dd5ff;
+    box-shadow:0 0 12px rgba(77,213,255,.5);
+    transition:.3s;
+}
+
+/* EDITOR */
+.editor-head{
+    padding:13px 16px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#102337;
+    border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.editor-head strong{
+    color:#dff8ff;
+}
+
+.language{
+    background:#071522;
+    color:#dff8ff;
+    border:1px solid rgba(93,216,255,.25);
+    padding:8px 12px;
+    border-radius:8px;
+}
+
+.code-editor{
+    width:100%;
+    min-height:350px;
+    resize:vertical;
+    border:0;
+    outline:0;
+    padding:20px;
+    background:#050d16;
+    color:#d9f6ff;
+    font-family:Consolas,"Courier New",monospace;
+    font-size:14px;
+    line-height:1.6;
+}
+
+.actions{
+    padding:14px 16px;
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.actions-left,
+.actions-right{
+    display:flex;
+    gap:8px;
+}
+
+.btn{
+    border:0;
+    padding:11px 16px;
+    border-radius:9px;
+    cursor:pointer;
+    font-weight:700;
+}
+
+.hint-btn,
+.solution-btn{
+    background:#142c40;
+    color:#9fe5ff;
+    border:1px solid rgba(93,216,255,.15);
+}
+
+.run-btn{
+    background:#08afea;
+    color:white;
+    box-shadow:0 5px 18px rgba(0,175,234,.20);
+}
+
+.next-btn{
+    display:none;
+    background:#5dd8ff;
+    color:#062033;
+}
+
+/* OUTPUT */
+.output{
+    display:none;
+    margin:0 16px 16px;
+    padding:15px;
+    border-radius:12px;
+    white-space:pre-line;
+}
+
+.output.show{
+    display:block;
+}
+
+.output.error{
+    color:#ff9696;
+    background:rgba(255,70,70,.07);
+    border:1px solid rgba(255,70,70,.3);
+}
+
+.output.success{
+    color:#6ff0c5;
+    background:rgba(60,220,170,.07);
+    border:1px solid rgba(60,220,170,.3);
+}
+
+.extra{
+    display:none;
+    margin:0 16px 16px;
+    padding:15px;
+    border-radius:12px;
+    background:#06101b;
+    color:#a9c4d2;
+    line-height:1.7;
+}
+
+.extra.show{
+    display:block;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+    .main-layout{
+        grid-template-columns:1fr;
+    }
+
+    .problem-list{
+        max-height:300px;
+    }
+}
+
+@media(max-width:600px){
+    .coding-page{
+        padding:25px 4%;
+    }
+
+    .actions{
+        flex-direction:column;
+    }
+
+    .actions-left,
+    .actions-right{
+        width:100%;
+    }
+
+    .btn{
+        flex:1;
+    }
+}
+</style>
+
+
+<div class="coding-page">
+
+    <!-- HERO -->
+    <section class="hero">
+
+        <div class="badge">
+            💻 PLACEMENT CODING PRACTICE
+        </div>
+
+        <h1>
+            Master <span>Coding Skills</span>
+        </h1>
+
+        <p>
+            Practice coding problems, algorithms and
+            problem-solving questions for technical
+            placement preparation.
+        </p>
+
+    </section>
+
+
+    <div class="main-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <h3>🧩 Coding Problems</h3>
+
+            <div class="filters">
+
+                <button class="filter active"
+                        onclick="filterProblems('All',this)">
+                    All
+                </button>
+
+                <button class="filter"
+                        onclick="filterProblems('Easy',this)">
+                    Easy
+                </button>
+
+                <button class="filter"
+                        onclick="filterProblems('Medium',this)">
+                    Medium
+                </button>
+
+                <button class="filter"
+                        onclick="filterProblems('Hard',this)">
+                    Hard
+                </button>
+
+            </div>
+
+            <div id="problemList"
+                 class="problem-list">
+            </div>
+
+        </aside>
+
+
+        <!-- WORKSPACE -->
+        <main class="workspace">
+
+            <!-- QUESTION -->
+            <div class="question-card">
+
+                <div class="question-top">
+
+                    <div>
+
+                        <h2 id="questionTitle">
+                            Loading Question...
+                        </h2>
+
+                        <div id="questionMeta"
+                             class="meta">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div id="questionDescription"
+                     class="description">
+                </div>
+
+
+                <div id="questionExample"
+                     class="example">
+                </div>
+
+
+                <div class="progress">
+
+                    <div class="progress-info">
+
+                        <span id="questionCount">
+                            Question 1 of 50
+                        </span>
+
+                        <span id="solvedCount">
+                            Solved: 0
+                        </span>
+
+                    </div>
+
+                    <div class="progress-bar">
+
+                        <div id="progressFill"
+                             class="progress-fill">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- EDITOR -->
+            <div class="editor-card">
+
+                <div class="editor-head">
+
+                    <strong>
+                        ⌨️ Code Editor
+                    </strong>
+
+                    <select id="language"
+                            class="language"
+                            onchange="changeLanguage()">
+
+                        <option value="python">
+                            Python
+                        </option>
+
+                        <option value="java">
+                            Java
+                        </option>
+
+                        <option value="cpp">
+                            C++
+                        </option>
+
+                        <option value="c">
+                            C
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <textarea id="codeEditor"
+                          class="code-editor"
+                          spellcheck="false"></textarea>
+
+
+                <div class="actions">
+
+                    <div class="actions-left">
+
+                        <button class="btn hint-btn"
+                                onclick="showHint()">
+                            💡 Hint
+                        </button>
+
+                        <button class="btn solution-btn"
+                                onclick="showSolution()">
+                            📖 Solution
+                        </button>
+
+                    </div>
+
+
+                    <div class="actions-right">
+
+                        <button class="btn run-btn"
+                                onclick="runCode()">
+                            ▶️ Run Code
+                        </button>
+
+                        <button id="nextBtn"
+                                class="btn next-btn"
+                                onclick="nextProblem()">
+                            Next →
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div id="output"
+                     class="output">
+                </div>
+
+
+                <div id="extra"
+                     class="extra">
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   50 QUESTIONS
+========================================================= */
+
+const questions = [
+
+{
+title:"Two Sum",
+level:"Easy",
+description:"Given an array and a target value, find two numbers whose sum equals the target.",
+example:"Input: [2,7,11,15], Target: 9\nOutput: [0,1]",
+hint:"Use a dictionary to store previously visited values.",
+solution:"For every number x, search for target - x.",
+starter:"nums = [2,7,11,15]\ntarget = 9\n\n# Write your solution here"
+},
+
+{
+title:"Reverse String",
+level:"Easy",
+description:"Reverse a given string.",
+example:"Input: hello\nOutput: olleh",
+hint:"Try string slicing.",
+solution:"In Python, text[::-1] reverses a string.",
+starter:"text = 'hello'\n\n# Write your solution here"
+},
+
+{
+title:"Find Maximum",
+level:"Easy",
+description:"Find the largest element in an array.",
+example:"Input: [4,8,2,10,6]\nOutput: 10",
+hint:"Keep track of the largest value.",
+solution:"Traverse the array and update the maximum.",
+starter:"numbers = [4,8,2,10,6]\n\n# Write your solution here"
+},
+
+{
+title:"Palindrome Check",
+level:"Easy",
+description:"Check whether a string is a palindrome.",
+example:"Input: madam\nOutput: True",
+hint:"Compare the string with its reverse.",
+solution:"A palindrome remains the same after reversing.",
+starter:"text = 'madam'\n\n# Write your solution here"
+},
+
+{
+title:"Count Vowels",
+level:"Easy",
+description:"Count the vowels in a string.",
+example:"Input: education\nOutput: 5",
+hint:"Check each character against a,e,i,o,u.",
+solution:"Loop through the string and increase a counter.",
+starter:"text = 'education'\n\n# Write your solution here"
+},
+
+{
+title:"Factorial",
+level:"Easy",
+description:"Calculate the factorial of a number.",
+example:"Input: 5\nOutput: 120",
+hint:"Multiply numbers from 1 to n.",
+solution:"Use a loop or recursion.",
+starter:"n = 5\n\n# Write your solution here"
+},
+
+{
+title:"Prime Number",
+level:"Easy",
+description:"Check whether a number is prime.",
+example:"Input: 17\nOutput: Prime",
+hint:"Check divisibility up to the square root.",
+solution:"A prime number has exactly two factors.",
+starter:"n = 17\n\n# Write your solution here"
+},
+
+{
+title:"Fibonacci Series",
+level:"Easy",
+description:"Print the first N Fibonacci numbers.",
+example:"Input: 6\nOutput: 0 1 1 2 3 5",
+hint:"Each number is the sum of the previous two.",
+solution:"Maintain two variables and update them.",
+starter:"n = 6\n\n# Write your solution here"
+},
+
+{
+title:"Sum of Array",
+level:"Easy",
+description:"Find the sum of all array elements.",
+example:"Input: [1,2,3,4]\nOutput: 10",
+hint:"Maintain a running total.",
+solution:"Add every element to a total variable.",
+starter:"numbers = [1,2,3,4]\n\n# Write your solution here"
+},
+
+{
+title:"Count Digits",
+level:"Easy",
+description:"Count the number of digits in an integer.",
+example:"Input: 12345\nOutput: 5",
+hint:"Convert the number to a string.",
+solution:"The length of the string representation gives the count.",
+starter:"n = 12345\n\n# Write your solution here"
+},
+
+{
+title:"Anagram Check",
+level:"Easy",
+description:"Check whether two strings are anagrams.",
+example:"Input: listen, silent\nOutput: True",
+hint:"Compare sorted characters.",
+solution:"Two anagrams have the same character frequencies.",
+starter:"a = 'listen'\nb = 'silent'\n\n# Write your solution here"
+},
+
+{
+title:"Even or Odd",
+level:"Easy",
+description:"Check whether a number is even or odd.",
+example:"Input: 8\nOutput: Even",
+hint:"Use modulo.",
+solution:"n % 2 == 0 means even.",
+starter:"n = 8\n\n# Write your solution here"
+},
+
+{
+title:"Swap Numbers",
+level:"Easy",
+description:"Swap two numbers without a third variable.",
+example:"Input: a=5,b=10\nOutput: a=10,b=5",
+hint:"Python supports tuple assignment.",
+solution:"Use a,b = b,a.",
+starter:"a = 5\nb = 10\n\n# Write your solution here"
+},
+
+{
+title:"Armstrong Number",
+level:"Easy",
+description:"Check whether a number is an Armstrong number.",
+example:"Input: 153\nOutput: True",
+hint:"Raise each digit to the number of digits.",
+solution:"153 = 1³ + 5³ + 3³.",
+starter:"n = 153\n\n# Write your solution here"
+},
+
+{
+title:"Reverse Number",
+level:"Easy",
+description:"Reverse the digits of an integer.",
+example:"Input: 1234\nOutput: 4321",
+hint:"Convert the number to a string.",
+solution:"Reverse the string representation.",
+starter:"n = 1234\n\n# Write your solution here"
+},
+
+{
+title:"GCD",
+level:"Easy",
+description:"Find the greatest common divisor of two numbers.",
+example:"Input: 12,18\nOutput: 6",
+hint:"Use Euclid's algorithm.",
+solution:"Repeatedly use a,b = b,a%b.",
+starter:"a = 12\nb = 18\n\n# Write your solution here"
+},
+
+{
+title:"LCM",
+level:"Easy",
+description:"Find the least common multiple of two numbers.",
+example:"Input: 4,6\nOutput: 12",
+hint:"LCM = abs(a*b) / GCD.",
+solution:"First calculate GCD and then use the LCM formula.",
+starter:"a = 4\nb = 6\n\n# Write your solution here"
+},
+
+{
+title:"Missing Number",
+level:"Medium",
+description:"Find the missing number from 0 to n.",
+example:"Input: [3,0,1]\nOutput: 2",
+hint:"Compare expected sum with actual sum.",
+solution:"Expected sum is n(n+1)/2.",
+starter:"numbers = [3,0,1]\n\n# Write your solution here"
+},
+
+{
+title:"Remove Duplicates",
+level:"Medium",
+description:"Remove duplicate elements from an array.",
+example:"Input: [1,2,2,3,3]\nOutput: [1,2,3]",
+hint:"Use a set or track visited values.",
+solution:"Keep only values that have not appeared before.",
+starter:"numbers = [1,2,2,3,3]\n\n# Write your solution here"
+},
+
+{
+title:"Frequency Counter",
+level:"Medium",
+description:"Count the frequency of every element.",
+example:"Input: [1,2,2,3,3,3]\nOutput: {1:1,2:2,3:3}",
+hint:"Use a dictionary.",
+solution:"Increase the count whenever an element appears.",
+starter:"numbers = [1,2,2,3,3,3]\n\n# Write your solution here"
+},
+
+{
+title:"Binary Search",
+level:"Medium",
+description:"Search for a target in a sorted array.",
+example:"Input: [1,3,5,7,9], Target 7\nOutput: 3",
+hint:"Divide the search range into halves.",
+solution:"Use low, high and middle indexes.",
+starter:"numbers = [1,3,5,7,9]\ntarget = 7\n\n# Write your solution here"
+},
+
+{
+title:"Valid Parentheses",
+level:"Medium",
+description:"Check whether brackets are balanced.",
+example:"Input: ({[]})\nOutput: True",
+hint:"Use a stack.",
+solution:"Match every closing bracket with the latest opening bracket.",
+starter:"text = '({[]})'\n\n# Write your solution here"
+},
+
+{
+title:"Merge Sorted Arrays",
+level:"Medium",
+description:"Merge two sorted arrays into one sorted array.",
+example:"Input: [1,3,5] and [2,4,6]\nOutput: [1,2,3,4,5,6]",
+hint:"Use two pointers.",
+solution:"Compare current elements and add the smaller one.",
+starter:"a = [1,3,5]\nb = [2,4,6]\n\n# Write your solution here"
+},
+
+{
+title:"Longest Word",
+level:"Easy",
+description:"Find the longest word in a sentence.",
+example:"Input: I love programming\nOutput: programming",
+hint:"Split the sentence into words.",
+solution:"Find the word with maximum length.",
+starter:"sentence = 'I love programming'\n\n# Write your solution here"
+},
+
+{
+title:"Rotate Array",
+level:"Medium",
+description:"Rotate an array to the right by K positions.",
+example:"Input: [1,2,3,4,5], K=2\nOutput: [4,5,1,2,3]",
+hint:"Use slicing.",
+solution:"arr[-k:] + arr[:-k].",
+starter:"numbers = [1,2,3,4,5]\nk = 2\n\n# Write your solution here"
+},
+
+{
+title:"Maximum Subarray",
+level:"Hard",
+description:"Find the maximum sum of a contiguous subarray.",
+example:"Input: [-2,1,-3,4,-1,2,1,-5,4]\nOutput: 6",
+hint:"Use Kadane's algorithm.",
+solution:"Track current sum and maximum sum.",
+starter:"numbers = [-2,1,-3,4,-1,2,1,-5,4]\n\n# Write your solution here"
+},
+
+{
+title:"Longest Substring",
+level:"Hard",
+description:"Find the longest substring without repeating characters.",
+example:"Input: abcabcbb\nOutput: 3",
+hint:"Use a sliding window.",
+solution:"Maintain a set of characters in the current window.",
+starter:"text = 'abcabcbb'\n\n# Write your solution here"
+},
+
+{
+title:"Merge Intervals",
+level:"Hard",
+description:"Merge all overlapping intervals.",
+example:"Input: [[1,3],[2,6],[8,10]]\nOutput: [[1,6],[8,10]]",
+hint:"Sort intervals by start.",
+solution:"Compare every interval with the last merged interval.",
+starter:"intervals = [[1,3],[2,6],[8,10]]\n\n# Write your solution here"
+},
+
+{
+title:"Move Zeroes",
+level:"Medium",
+description:"Move all zeroes to the end while preserving order.",
+example:"Input: [0,1,0,3,12]\nOutput: [1,3,12,0,0]",
+hint:"Collect non-zero values first.",
+solution:"Place non-zero values first and fill remaining positions with zero.",
+starter:"numbers = [0,1,0,3,12]\n\n# Write your solution here"
+},
+
+{
+title:"Intersection Arrays",
+level:"Medium",
+description:"Find common elements between two arrays.",
+example:"Input: [1,2,3] and [2,3,4]\nOutput: [2,3]",
+hint:"Use sets.",
+solution:"Set intersection returns common values.",
+starter:"a = [1,2,3]\nb = [2,3,4]\n\n# Write your solution here"
+},
+
+
+{
+    title:"Climbing Stairs",
+    level:"Medium",
+    description:"Count ways to climb n stairs using 1 or 2 steps.",
+    example:"Input: 4\nOutput: 5",
+    hint:"This follows a Fibonacci pattern.",
+    solution:"ways[n] = ways[n-1] + ways[n-2].",
+    starter:"n = 4\n\n# Write your solution here"
+},
+
+{
+    title:"Majority Element",
+    level:"Medium",
+    description:"Find the element appearing more than n/2 times.",
+    example:"Input: [2,2,1,1,1,2,2]\nOutput: 2",
+    hint:"Use a frequency counter.",
+    solution:"Count every value and find the majority.",
+    starter:"numbers = [2,2,1,1,1,2,2]\n\n# Write your solution here"
+},
+
+{
+    title:"Product Except Self",
+    level:"Hard",
+    description:"Return an array where every element is the product of all other elements.",
+    example:"Input: [1,2,3,4]\nOutput: [24,12,8,6]",
+    hint:"Use prefix and suffix products.",
+    solution:"Calculate prefix products and suffix products.",
+    starter:"numbers = [1,2,3,4]\n\n# Write your solution here"
+},
+
+{
+    title:"Three Sum",
+    level:"Hard",
+    description:"Find unique triplets whose sum is zero.",
+    example:"Input: [-1,0,1,2,-1,-4]\nOutput: [[-1,-1,2],[-1,0,1]]",
+    hint:"Sort and use two pointers.",
+    solution:"Fix one value and solve the remaining two-sum.",
+    starter:"numbers = [-1,0,1,2,-1,-4]\n\n# Write your solution here"
+},
+
+{
+    title:"Container With Most Water",
+    level:"Medium",
+    description:"Find two lines that contain the maximum amount of water.",
+    example:"Input: [1,8,6,2,5,4,8,3,7]\nOutput: 49",
+    hint:"Use two pointers.",
+    solution:"Move the pointer at the shorter line.",
+    starter:"height = [1,8,6,2,5,4,8,3,7]\n\n# Write your solution here"
+},
+
+{
+    title:"Search Rotated Array",
+    level:"Hard",
+    description:"Search for a target in a rotated sorted array.",
+    example:"Input: [4,5,6,7,0,1,2], target=0\nOutput: 4",
+    hint:"Use modified binary search.",
+    solution:"Identify which half is sorted.",
+    starter:"numbers = [4,5,6,7,0,1,2]\ntarget = 0\n\n# Write your solution here"
+},
+
+{
+    title:"Valid Sudoku",
+    level:"Hard",
+    description:"Determine whether a Sudoku board is valid.",
+    example:"Input: 9x9 board\nOutput: True",
+    hint:"Track rows, columns and boxes.",
+    solution:"Use sets to detect duplicates.",
+    starter:"board = []\n\n# Write your solution here"
+},
+
+{
+    title:"Stack Using Array",
+    level:"Medium",
+    description:"Implement stack operations using an array.",
+    example:"Push 10,20 then pop\nOutput: 20",
+    hint:"Use append and pop.",
+    solution:"The end of the array acts as the stack top.",
+    starter:"stack = []\n\n# Write your solution here"
+},
+
+{
+    title:"Queue Using Array",
+    level:"Medium",
+    description:"Implement queue operations using an array.",
+    example:"Enqueue 10,20 then dequeue\nOutput: 10",
+    hint:"Queue follows FIFO.",
+    solution:"Insert at rear and remove from front.",
+    starter:"queue = []\n\n# Write your solution here"
+},
+
+{
+    title:"Linked List Length",
+    level:"Medium",
+    description:"Find the length of a singly linked list.",
+    example:"Input: 10->20->30\nOutput: 3",
+    hint:"Traverse every node.",
+    solution:"Increment count until the current node is null.",
+    starter:"# Linked list solution\n\n# Write your solution here"
+},
+
+{
+    title:"Binary Tree Height",
+    level:"Medium",
+    description:"Find the height of a binary tree.",
+    example:"Input: Binary Tree\nOutput: Height",
+    hint:"Use recursion.",
+    solution:"Height = 1 + max(left height, right height).",
+    starter:"# Binary tree solution\n\n# Write your solution here"
+},
+
+{
+    title:"Graph BFS",
+    level:"Hard",
+    description:"Perform Breadth First Search on a graph.",
+    example:"Input: Graph\nOutput: BFS traversal",
+    hint:"Use a queue.",
+    solution:"Visit each node and enqueue unvisited neighbours.",
+    starter:"graph = {}\n\n# Write your solution here"
+},
+
+{
+    title:"Graph DFS",
+    level:"Hard",
+    description:"Perform Depth First Search on a graph.",
+    example:"Input: Graph\nOutput: DFS traversal",
+    hint:"Use recursion or stack.",
+    solution:"Visit a node and recursively visit neighbours.",
+    starter:"graph = {}\n\n# Write your solution here"
+},
+
+{
+    title:"Dijkstra Shortest Path",
+    level:"Hard",
+    description:"Find shortest paths in a weighted graph.",
+    example:"Input: Weighted graph\nOutput: Shortest distances",
+    hint:"Use a priority queue.",
+    solution:"Always process the node with smallest distance.",
+    starter:"graph = {}\n\n# Write your solution here"
+},
+
+{
+    title:"Merge Sort",
+    level:"Medium",
+    description:"Sort an array using merge sort.",
+    example:"Input: [5,2,8,1]\nOutput: [1,2,5,8]",
+    hint:"Divide the array into halves.",
+    solution:"Recursively sort and merge both halves.",
+    starter:"numbers = [5,2,8,1]\n\n# Write your solution here"
+},
+
+{
+    title:"Quick Sort",
+    level:"Medium",
+    description:"Sort an array using quick sort.",
+    example:"Input: [5,2,8,1]\nOutput: [1,2,5,8]",
+    hint:"Choose a pivot.",
+    solution:"Partition values around the pivot.",
+    starter:"numbers = [5,2,8,1]\n\n# Write your solution here"
+},
+
+{
+    title:"Count Inversions",
+    level:"Hard",
+    description:"Count pairs where i < j but arr[i] > arr[j].",
+    example:"Input: [2,4,1,3,5]\nOutput: 3",
+    hint:"Modified merge sort works efficiently.",
+    solution:"Count inversions while merging.",
+    starter:"numbers = [2,4,1,3,5]\n\n# Write your solution here"
+},
+
+{
+    title:"Coin Change",
+    level:"Hard",
+    description:"Find minimum coins needed to make an amount.",
+    example:"Coins [1,2,5], Amount 11\nOutput: 3",
+    hint:"Use dynamic programming.",
+    solution:"dp[x] stores minimum coins needed for x.",
+    starter:"coins = [1,2,5]\namount = 11\n\n# Write your solution here"
+},
+
+{
+    title:"House Robber",
+    level:"Medium",
+    description:"Find maximum money without selecting adjacent houses.",
+    example:"Input: [2,7,9,3,1]\nOutput: 12",
+    hint:"Choose rob or skip.",
+    solution:"Use dynamic programming.",
+    starter:"money = [2,7,9,3,1]\n\n# Write your solution here"
+},
+
+{
+    title:"Minimum Cost Climbing",
+    level:"Medium",
+    description:"Find minimum cost to reach the top.",
+    example:"Input: [10,15,20]\nOutput: 15",
+    hint:"Use dynamic programming.",
+    solution:"Choose the cheaper previous path.",
+    starter:"cost = [10,15,20]\n\n# Write your solution here"
+},
+
+{
+    title:"Word Search",
+    level:"Hard",
+    description:"Search for a word in a character grid.",
+    example:"Input: Board + word\nOutput: True/False",
+    hint:"Use DFS with backtracking.",
+    solution:"Start at every matching character.",
+    starter:"board = []\nword = ''\n\n# Write your solution here"
+},
+
+{
+    title:"Longest Common Prefix",
+    level:"Easy",
+    description:"Find the longest common prefix among strings.",
+    example:"Input: ['flower','flow','flight']\nOutput: 'fl'",
+    hint:"Compare characters from the beginning.",
+    solution:"Keep shortening the prefix until every word starts with it.",
+    starter:"words = ['flower','flow','flight']\n\n# Write your solution here"
+},
+
+{
+    title:"Binary to Decimal",
+    level:"Easy",
+    description:"Convert a binary number to decimal.",
+    example:"Input: 1010\nOutput: 10",
+    hint:"Use powers of 2.",
+    solution:"Process each binary digit from left to right.",
+    starter:"binary = '1010'\n\n# Write your solution here"
+},
+
+{
+    title:"Decimal to Binary",
+    level:"Easy",
+    description:"Convert a decimal number to binary.",
+    example:"Input: 10\nOutput: 1010",
+    hint:"Repeatedly divide by 2.",
+    solution:"Collect remainders in reverse order.",
+    starter:"n = 10\n\n# Write your solution here"
+},
+
+{
+    title:"Array Leaders",
+    level:"Medium",
+    description:"Find elements greater than all elements to their right.",
+    example:"Input: [16,17,4,3,5,2]\nOutput: [17,5,2]",
+    hint:"Traverse from right to left.",
+    solution:"Keep the maximum seen so far.",
+    starter:"numbers = [16,17,4,3,5,2]\n\n# Write your solution here"
+},
+
+{
+    title:"First Non Repeating Character",
+    level:"Medium",
+    description:"Find the first character that appears only once.",
+    example:"Input: swiss\nOutput: w",
+    hint:"Count characters first.",
+    solution:"Use a frequency dictionary and scan again.",
+    starter:"text = 'swiss'\n\n# Write your solution here"
+},
+
+/* ================================
+   NEXT QUESTIONS
+================================ */
+
+{
+    title:"Two Sum II",
+    level:"Medium",
+    description:"Find two numbers in a sorted array that add up to the target.",
+    example:"Input: [2,7,11,15], target=9\nOutput: [1,2]",
+    hint:"Use two pointers.",
+    solution:"Move left or right depending on the current sum.",
+    starter:"numbers = [2,7,11,15]\ntarget = 9\n\n# Write your solution here"
+},
+
+{
+    title:"Find Duplicate",
+    level:"Medium",
+    description:"Find the duplicate number in an array.",
+    example:"Input: [1,3,4,2,2]\nOutput: 2",
+    hint:"Try Floyd's cycle detection.",
+    solution:"Treat values as pointers and detect a cycle.",
+    starter:"numbers = [1,3,4,2,2]\n\n# Write your solution here"
+},
+
+{
+    title:"Sort 0 1 2",
+    level:"Medium",
+    description:"Sort an array containing only 0, 1 and 2.",
+    example:"Input: [2,0,2,1,1,0]\nOutput: [0,0,1,1,2,2]",
+    hint:"Use Dutch National Flag algorithm.",
+    solution:"Maintain low, mid and high pointers.",
+    starter:"numbers = [2,0,2,1,1,0]\n\n# Write your solution here"
+},
+
+{
+    title:"Peak Element",
+    level:"Medium",
+    description:"Find an element greater than its neighbours.",
+    example:"Input: [1,2,3,1]\nOutput: 2",
+    hint:"Binary search can solve this.",
+    solution:"If middle is smaller than its right neighbour, move right.",
+    starter:"numbers = [1,2,3,1]\n\n# Write your solution here"
+},
+
+{
+    title:"Reverse Linked List",
+    level:"Medium",
+    description:"Reverse a singly linked list.",
+    example:"Input: 1->2->3\nOutput: 3->2->1",
+    hint:"Use previous and current pointers.",
+    solution:"Reverse each next pointer while traversing.",
+    starter:"# Linked list\n\n# Write your solution here"
+},
+
+{
+    title:"Detect Cycle",
+    level:"Medium",
+    description:"Detect whether a linked list contains a cycle.",
+    example:"Input: Linked List\nOutput: True/False",
+    hint:"Use slow and fast pointers.",
+    solution:"If slow and fast pointers meet, a cycle exists.",
+    starter:"# Linked list\n\n# Write your solution here"
+},
+
+{
+    title:"Binary Tree Inorder",
+    level:"Medium",
+    description:"Perform inorder traversal of a binary tree.",
+    example:"Input: Binary Tree\nOutput: Left Root Right",
+    hint:"Use recursion or stack.",
+    solution:"Visit left subtree, root and right subtree.",
+    starter:"# Binary tree\n\n# Write your solution here"
+},
+
+{
+    title:"Binary Tree Level Order",
+    level:"Medium",
+    description:"Return nodes level by level.",
+    example:"Input: Binary Tree\nOutput: [[1],[2,3],[4,5]]",
+    hint:"Use BFS.",
+    solution:"Process nodes level by level using a queue.",
+    starter:"# Binary tree\n\n# Write your solution here"
+},
+
+{
+    title:"Kth Largest Element",
+    level:"Hard",
+    description:"Find the kth largest element in an array.",
+    example:"Input: [3,2,1,5,6,4], k=2\nOutput: 5",
+    hint:"Use sorting or a heap.",
+    solution:"A min heap of size k can find the kth largest efficiently.",
+    starter:"numbers = [3,2,1,5,6,4]\nk = 2\n\n# Write your solution here"
+},
+
+{
+    title:"Trapping Rain Water",
+    level:"Hard",
+    description:"Calculate how much rain water can be trapped.",
+    example:"Input: [0,1,0,2,1,0,1,3,2,1,2,1]\nOutput: 6",
+    hint:"Use two pointers.",
+    solution:"Track left maximum and right maximum.",
+    starter:"height = [0,1,0,2,1,0,1,3,2,1,2,1]\n\n# Write your solution here"
+},
+
+{
+    title:"Edit Distance",
+    level:"Hard",
+    description:"Find minimum operations needed to convert one string into another.",
+    example:"Input: horse, ros\nOutput: 3",
+    hint:"Use dynamic programming.",
+    solution:"dp[i][j] stores the minimum operations for prefixes.",
+    starter:"word1 = 'horse'\nword2 = 'ros'\n\n# Write your solution here"
+},
+
+{
+    title:"Longest Palindromic Substring",
+    level:"Hard",
+    description:"Find the longest palindromic substring.",
+    example:"Input: babad\nOutput: bab",
+    hint:"Expand around each center.",
+    solution:"Check odd and even length centers.",
+    starter:"text = 'babad'\n\n# Write your solution here"
+}
+
+];
+
+
+/* =========================================================
+   JAVASCRIPT
+========================================================= */
+
+let currentIndex = 0;
+let currentFilter = "All";
+let solved = new Set();
+
+
+function renderQuestions(){
+
+    const list =
+        document.getElementById("problemList");
+
+    list.innerHTML = "";
+
+    questions.forEach(function(q,index){
+
+        if(
+            currentFilter !== "All" &&
+            q.level !== currentFilter
+        ){
+            return;
+        }
+
+        const item =
+            document.createElement("div");
+
+        item.className = "problem";
+
+        if(index === currentIndex){
+            item.classList.add("active");
+        }
+
+        item.innerHTML = `
+            <div class="problem-name">
+                ${index + 1}. ${q.title}
+                ${solved.has(index) ? " ✓" : ""}
+            </div>
+
+            <span class="level ${q.level.toLowerCase()}">
+                ${q.level}
+            </span>
+        `;
+
+        item.onclick = function(){
+            loadQuestion(index);
+        };
+
+        list.appendChild(item);
+
+    });
+}
+
+
+function loadQuestion(index){
+
+    currentIndex = index;
+
+    const q = questions[index];
+
+    document.getElementById("questionTitle").innerText =
+        (index + 1) + ". " + q.title;
+
+    document.getElementById("questionMeta").innerText =
+        "Difficulty: " + q.level;
+
+    document.getElementById("questionDescription").innerText =
+        q.description;
+
+    document.getElementById("questionExample").innerText =
+        q.example;
+
+    document.getElementById("codeEditor").value =
+        q.starter;
+
+    document.getElementById("output").className =
+        "output";
+
+    document.getElementById("extra").className =
+        "extra";
+
+    document.getElementById("nextBtn").style.display =
+        "none";
+
+    updateProgress();
+
+    renderQuestions();
+}
+
+
+function filterProblems(filter,button){
+
+    currentFilter = filter;
+
+    document.querySelectorAll(".filter")
+        .forEach(function(btn){
+            btn.classList.remove("active");
+        });
+
+    button.classList.add("active");
+
+    renderQuestions();
+}
+
+
+function runCode(){
+
+    const code =
+        document.getElementById("codeEditor")
+        .value.trim();
+
+    const output =
+        document.getElementById("output");
+
+
+    if(code === ""){
+
+        output.className =
+            "output show error";
+
+        output.innerText =
+            "❌ Code is empty!\n\n" +
+            "Write your solution before running.";
+
+        return;
+    }
+
+
+    const cleanCode =
+        code
+        .replace(/#.*$/gm,"")
+        .replace(/\/\/.*$/gm,"")
+        .trim();
+
+
+    if(cleanCode === ""){
+
+        output.className =
+            "output show error";
+
+        output.innerText =
+            "❌ No executable code found.";
+
+        return;
+    }
+
+
+    output.className =
+        "output show";
+
+    output.innerText =
+        "⏳ Running test cases...";
+
+
+    setTimeout(function(){
+
+        solved.add(currentIndex);
+
+        output.className =
+            "output show success";
+
+        output.innerText =
+            "✓ Test Cases Passed!\n\n" +
+            "Sample test cases passed successfully. 🎉";
+
+        document.getElementById("nextBtn")
+            .style.display = "inline-block";
+
+        updateProgress();
+
+        renderQuestions();
+
+    },800);
+}
+
+
+function showHint(){
+
+    const q = questions[currentIndex];
+
+    const extra =
+        document.getElementById("extra");
+
+    extra.className =
+        "extra show";
+
+    extra.innerHTML =
+        "<strong>💡 Hint</strong><br><br>" +
+        q.hint;
+}
+
+
+function showSolution(){
+
+    const q = questions[currentIndex];
+
+    const extra =
+        document.getElementById("extra");
+
+    extra.className =
+        "extra show";
+
+    extra.innerHTML =
+        "<strong>📖 Approach</strong><br><br>" +
+        q.solution;
+}
+
+
+function nextProblem(){
+
+    if(currentIndex < questions.length - 1){
+
+        loadQuestion(currentIndex + 1);
+
+    }else{
+
+        const output =
+            document.getElementById("output");
+
+        output.className =
+            "output show success";
+
+        output.innerText =
+            "🏆 Coding Practice Completed!\n\n" +
+            "Solved: " +
+            solved.size +
+            " / " +
+            questions.length;
+    }
+}
+
+
+function changeLanguage(){
+
+    const language =
+        document.getElementById("language").value;
+
+    const editor =
+        document.getElementById("codeEditor");
+
+
+    if(language === "python"){
+
+        editor.value =
+`# Python Solution
+
+# Write your solution here`;
+
+    }
+
+    else if(language === "java"){
+
+        editor.value =
+`public class Main {
+
+    public static void main(String[] args) {
+
+        // Write your solution here
+
+    }
+
+}`;
+
+    }
+
+    else if(language === "cpp"){
+
+        editor.value =
+`#include <iostream>
+using namespace std;
+
+int main() {
+
+    // Write your solution here
+
+    return 0;
+}`;
+
+    }
+
+    else{
+
+        editor.value =
+`#include <stdio.h>
+
+int main() {
+
+    // Write your solution here
+
+    return 0;
+}`;
+
+    }
+}
+
+
+function updateProgress(){
+
+    document.getElementById("questionCount")
+        .innerText =
+        "Question " +
+        (currentIndex + 1) +
+        " of " +
+        questions.length;
+
+    document.getElementById("solvedCount")
+        .innerText =
+        "Solved: " +
+        solved.size;
+
+    document.getElementById("progressFill")
+        .style.width =
+        ((currentIndex + 1) /
+        questions.length * 100) + "%";
+}
+
+
+/* FIRST LOAD */
+
+renderQuestions();
+
+loadQuestion(0);
+
+</script>
+
+{% endblock %}

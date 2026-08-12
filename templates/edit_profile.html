@@ -1,0 +1,560 @@
+{% extends "base.html" %}
+
+{% block title %}
+CareerAI | Edit Profile
+{% endblock %}
+
+{% block content %}
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+.edit-page {
+    min-height: 100vh;
+    padding: 45px 20px 70px;
+    font-family: Arial, Helvetica, sans-serif;
+    background:
+        linear-gradient(rgba(235,248,255,.90), rgba(247,252,255,.95)),
+        url("/static/images/profile-bg.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.edit-container {
+    width: 100%;
+    max-width: 1050px;
+    margin: auto;
+}
+
+.edit-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 18px;
+    background: #fff;
+    border: 1px solid #c9e9f7;
+    border-radius: 13px;
+    color: #087bbd;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.page-label {
+    color: #4c8aa7;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+.edit-card {
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #d4edf7;
+    border-radius: 30px;
+    box-shadow: 0 30px 80px rgba(18,100,145,.16);
+}
+
+.edit-header {
+    padding: 34px 35px;
+    color: white;
+    background: linear-gradient(135deg,#0577bd,#149bd5,#67d2f2);
+}
+
+.edit-header h1 {
+    margin: 0 0 7px;
+    font-size: 29px;
+    font-weight: 900;
+}
+
+.edit-header p {
+    margin: 0;
+    color: rgba(255,255,255,.88);
+    font-size: 14px;
+}
+
+.edit-body {
+    padding: 38px;
+}
+
+.form-section {
+    margin-bottom: 35px;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin-bottom: 18px;
+}
+
+.section-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: #e4f7ff;
+    color: #087cbd;
+    font-size: 18px;
+}
+
+.section-title h2 {
+    margin: 0;
+    color: #174b67;
+    font-size: 19px;
+    font-weight: 900;
+}
+
+.section-line {
+    height: 1px;
+    flex: 1;
+    background: #dceff7;
+}
+
+.photo-area {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg,#f5fcff,#eaf8ff);
+    border: 1px solid #d8eef7;
+    border-radius: 18px;
+}
+
+.current-photo {
+    width: 115px;
+    height: 115px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 5px solid white;
+    box-shadow: 0 8px 25px rgba(10,100,145,.20);
+}
+
+.photo-info h3 {
+    margin: 0 0 7px;
+    color: #174b67;
+    font-size: 16px;
+}
+
+.photo-info p {
+    margin: 0 0 13px;
+    color: #7795a5;
+    font-size: 12px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+    color: #31566a;
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    border: 1px solid #d6eaf3;
+    border-radius: 12px;
+    background: #fbfeff;
+    color: #23485d;
+    outline: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group select {
+    height: 50px;
+    padding: 0 14px;
+}
+
+.form-group textarea {
+    min-height: 105px;
+    padding: 13px 14px;
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #159bd5;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(21,155,213,.10);
+}
+
+.file-note {
+    margin-top: 7px;
+    color: #6c8b9a;
+    font-size: 11px;
+}
+
+.current-file {
+    margin-top: 8px;
+    color: #087cbd;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 35px;
+    padding-top: 25px;
+    border-top: 1px solid #e2f0f6;
+}
+
+.cancel-button,
+.save-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 145px;
+    height: 50px;
+    padding: 0 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 900;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.cancel-button {
+    background: #f3f8fb;
+    border: 1px solid #d6e8ef;
+    color: #55788a;
+}
+
+.save-button {
+    border: 0;
+    color: #fff;
+    background: linear-gradient(90deg,#087cc1,#159ed8);
+    box-shadow: 0 10px 25px rgba(8,124,193,.20);
+}
+
+@media(max-width:700px) {
+
+    .edit-page {
+        padding: 25px 12px 50px;
+    }
+
+    .page-label {
+        display: none;
+    }
+
+    .edit-header {
+        padding: 28px 20px;
+    }
+
+    .edit-body {
+        padding: 27px 17px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.full {
+        grid-column: auto;
+    }
+
+    .photo-area {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .cancel-button,
+    .save-button {
+        width: 100%;
+    }
+}
+</style><div class="edit-page"><div class="edit-container"><div class="edit-topbar"><a href="{{ url_for('my_profile') }}" class="back-button">
+← My Profile
+</a><div class="page-label">
+CAREERAI / EDIT PROFILE
+</div></div><div class="edit-card"><div class="edit-header"><h1>Edit Your Profile</h1><p>
+Update your personal, education and career information.
+</p></div><div class="edit-body"><form
+    method="POST"
+    action="{{ url_for('edit_profile') }}"
+    enctype="multipart/form-data"
+><!-- PROFILE PHOTO --><div class="form-section"><div class="section-title"><div class="section-icon">📷</div><h2>Profile Photo</h2><div class="section-line"></div></div><div class="photo-area">{% if user["photo"] and user["photo"] != "default.png" %}
+
+<img
+src="{{ url_for(
+'static',
+filename='uploads/profile/' + user['photo']
+) }}"
+class="current-photo"
+alt="Profile Photo"
+
+«»
+
+{% else %}
+
+<div
+class="current-photo"
+style="
+display:flex;
+align-items:center;
+justify-content:center;
+background:#e5f7ff;
+color:#087fc1;
+font-size:42px;
+font-weight:900;
+"
+>{{ user["name"][0]|upper }}
+
+</div>{% endif %}
+
+<div class="photo-info"><h3>Change Profile Photo</h3><p>JPG, JPEG, PNG or WEBP image allowed.</p><input
+type="file"
+name="photo"
+accept=".jpg,.jpeg,.png,.webp"
+
+«»
+
+</div></div></div><!-- PERSONAL --><div class="form-section"><div class="section-title"><div class="section-icon">👤</div><h2>Personal Information</h2><div class="section-line"></div></div><div class="form-grid"><div class="form-group"><label>Full Name</label>
+
+<input
+type="text"
+name="name"
+value="{{ user['name'] or '' }}"
+required
+
+«»
+
+</div><div class="form-group"><label>Age</label>
+
+<input
+type="number"
+name="age"
+value="{{ user['age'] or '' }}"
+min="1"
+max="100"
+
+«»
+
+</div><div class="form-group"><label>Gender</label>
+
+<select name="gender"><option value="">Select Gender</option><option value="Male"
+{% if user["gender"] == "Male" %}selected{% endif %}>
+Male
+</option><option value="Female"
+{% if user["gender"] == "Female" %}selected{% endif %}>
+Female
+</option><option value="Other"
+{% if user["gender"] == "Other" %}selected{% endif %}>
+Other
+</option></select></div><div class="form-group"><label>City</label>
+
+<input
+type="text"
+name="city"
+value="{{ user['city'] or '' }}"
+
+«»
+
+</div><div class="form-group"><label>Email</label>
+
+<input
+type="email"
+value="{{ user['email'] }}"
+disabled
+
+«»
+
+</div><div class="form-group"><label>Username</label>
+
+<input
+type="text"
+value="{{ user['username'] }}"
+disabled
+
+«»
+
+</div><div class="form-group full"><label>Phone Number</label>
+
+<input
+type="text"
+name="phone"
+value="{{ profile['phone'] or '' }}"
+
+«»
+
+</div></div></div><!-- EDUCATION --><div class="form-section"><div class="section-title"><div class="section-icon">🎓</div><h2>Education Details</h2><div class="section-line"></div></div><div class="form-grid"><div class="form-group"><label>Education</label>
+
+<input
+type="text"
+name="education"
+value="{{ profile['education'] or '' }}"
+
+«»
+
+</div><div class="form-group"><label>College</label>
+
+<input
+type="text"
+name="college"
+value="{{ profile['college'] or '' }}"
+
+«»
+
+</div><div class="form-group"><label>Branch</label>
+
+<input
+type="text"
+name="branch"
+value="{{ profile['branch'] or '' }}"
+
+«»
+
+</div><div class="form-group"><label>Passing Year</label>
+
+<input
+type="text"
+name="passing_year"
+value="{{ profile['passing_year'] or '' }}"
+
+«»
+
+</div><div class="form-group"><label>Percentage</label>
+
+<input
+type="number"
+step="0.01"
+name="percentage"
+value="{{ profile['percentage'] or '' }}"
+
+«»
+
+</div><div class="form-group"><label>CGPA</label>
+
+<input
+type="number"
+step="0.01"
+name="cgpa"
+value="{{ profile['cgpa'] or '' }}"
+
+«»
+
+</div></div></div><!-- CAREER --><div class="form-section"><div class="section-title"><div class="section-icon">💼</div><h2>Career Information</h2><div class="section-line"></div></div><div class="form-grid"><div class="form-group full"><label>Career Goal</label>
+
+<textarea
+name="career_goal"
+placeholder="Example: I want to become a Software Developer."
+>{{ profile['career_goal'] or '' }}</textarea></div><div class="form-group full"><label>Skills</label>
+
+<textarea
+name="skills"
+placeholder="Example: Python, Java, HTML, CSS, SQL"
+>{{ profile['skills'] or '' }}</textarea></div><div class="form-group full"><label>Interests</label>
+
+<textarea
+name="interests"
+placeholder="Example: AI, Web Development, Data Science"
+>{{ profile['interests'] or '' }}</textarea></div><div class="form-group full"><label>Certifications</label>
+
+<textarea
+name="certifications"
+placeholder="Enter your real certifications"
+>{{ profile['certifications'] or '' }}</textarea></div><div class="form-group full"><label>Projects</label>
+
+<textarea
+name="projects"
+placeholder="Enter your real projects"
+>{{ profile['projects'] or '' }}</textarea></div><!-- INTERNSHIP --><div class="form-group full"><label>Internship Details</label>
+
+<textarea
+name="internships"
+placeholder="Company, role, duration and work done"
+>{{ profile['internships'] or '' }}</textarea></div><div class="form-group full"><label>Internship Certificate / Proof PDF</label>
+
+<input
+type="file"
+name="internship_proof"
+accept=".pdf"
+
+«»
+
+<div class="file-note">
+Upload your real internship certificate or proof PDF.
+</div>{% if profile['internship_proof'] %}
+
+<div class="current-file">
+✓ Internship proof already uploaded
+</div>
+{% endif %}</div><!-- ACHIEVEMENT --><div class="form-group full"><label>Achievements</label>
+
+<textarea
+name="achievements"
+placeholder="Competition, hackathon, award or other real achievement"
+>{{ profile['achievements'] or '' }}</textarea></div><div class="form-group full"><label>Achievement Certificate / Proof PDF</label>
+
+<input
+type="file"
+name="achievement_proof"
+accept=".pdf"
+
+«»
+
+<div class="file-note">
+Upload your real achievement certificate or proof PDF.
+</div>{% if profile['achievement_proof'] %}
+
+<div class="current-file">
+✓ Achievement proof already uploaded
+</div>
+{% endif %}</div></div></div><!-- BUTTONS --><div class="form-actions"><a
+href="{{ url_for('my_profile') }}"
+class="cancel-button"
+
+«»
+
+Cancel
+</a>
+
+<button
+type="submit"
+class="save-button"
+
+«»
+
+💾 Save Profile
+</button>
+
+</div></form></div></div></div></div>{% endblock %}

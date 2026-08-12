@@ -1,0 +1,656 @@
+{% extends "base.html" %}
+
+{% block title %}
+Company Jobs | CareerLens.ai
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+.jobs-page{
+    min-height:100vh;
+    padding:40px 5%;
+    background:
+        radial-gradient(circle at 10% 10%,rgba(85,216,255,.14),transparent 30%),
+        radial-gradient(circle at 90% 20%,rgba(120,90,255,.12),transparent 30%),
+        #071321;
+    color:#f4fbff;
+}
+
+.jobs-hero{
+    max-width:900px;
+    margin:0 auto 35px;
+    text-align:center;
+}
+
+.jobs-badge{
+    display:inline-block;
+    padding:8px 17px;
+    border-radius:30px;
+    color:#65dcff;
+    background:rgba(80,210,255,.08);
+    border:1px solid rgba(80,210,255,.30);
+    font-size:12px;
+    font-weight:700;
+}
+
+.jobs-hero h1{
+    font-size:clamp(35px,5vw,58px);
+    margin:16px 0 10px;
+}
+
+.jobs-hero h1 span{
+    color:#55d8ff;
+}
+
+.jobs-hero p{
+    max-width:700px;
+    margin:auto;
+    color:#9db3c1;
+    line-height:1.7;
+}
+
+.jobs-search{
+    max-width:650px;
+    margin:0 auto 35px;
+}
+
+.jobs-search input{
+    width:100%;
+    padding:16px 20px;
+    border-radius:15px;
+    border:1px solid rgba(85,216,255,.20);
+    outline:none;
+    background:#0c2031;
+    color:white;
+    font-size:15px;
+}
+
+.jobs-search input:focus{
+    border-color:#55d8ff;
+    box-shadow:0 0 0 3px rgba(85,216,255,.07);
+}
+
+.company-grid{
+    max-width:1100px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:
+        repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.company-card{
+    padding:24px;
+    background:#0b1d2d;
+    border:1px solid rgba(85,216,255,.15);
+    border-radius:20px;
+    transition:.3s;
+}
+
+.company-card:hover{
+    transform:translateY(-7px);
+    border-color:rgba(85,216,255,.55);
+    box-shadow:0 18px 40px rgba(0,0,0,.3);
+}
+
+.company-logo{
+    width:62px;
+    height:62px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:16px;
+    background:#12344b;
+    border:1px solid rgba(85,216,255,.25);
+    font-size:28px;
+    margin-bottom:17px;
+}
+
+.company-card h2{
+    margin:0 0 8px;
+    font-size:22px;
+}
+
+.company-card p{
+    color:#94aeba;
+    line-height:1.6;
+    font-size:13px;
+    min-height:65px;
+}
+
+.tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+    margin:16px 0;
+}
+
+.tag{
+    padding:6px 10px;
+    border-radius:8px;
+    background:#102d42;
+    color:#9fe8ff;
+    font-size:11px;
+}
+
+.jobs-btn{
+    display:block;
+    width:100%;
+    padding:12px;
+    border-radius:11px;
+    background:linear-gradient(135deg,#55d8ff,#159bd6);
+    color:white;
+    text-align:center;
+    text-decoration:none;
+    font-weight:700;
+    font-size:14px;
+    transition:.3s;
+}
+
+.jobs-btn:hover{
+    transform:scale(1.02);
+}
+
+.empty{
+    display:none;
+    text-align:center;
+    color:#91aab8;
+    padding:35px;
+}
+
+.official-note{
+    max-width:900px;
+    margin:35px auto 0;
+    padding:18px;
+    border-radius:14px;
+    background:#0b1d2d;
+    border:1px solid rgba(85,216,255,.12);
+    text-align:center;
+    color:#91aab8;
+    font-size:12px;
+    line-height:1.7;
+}
+
+.official-note strong{
+    color:#55d8ff;
+}
+
+@media(max-width:600px){
+
+    .jobs-page{
+        padding:25px 4%;
+    }
+
+}
+
+</style>
+
+
+<div class="jobs-page">
+
+
+    <!-- HERO -->
+
+    <section class="jobs-hero">
+
+        <div class="jobs-badge">
+            💼 OFFICIAL COMPANY JOBS
+        </div>
+
+        <h1>
+            Find Your <span>Career</span>
+        </h1>
+
+        <p>
+            Explore companies and visit their
+            official careers websites to check
+            currently available opportunities.
+        </p>
+
+    </section>
+
+
+    <!-- SEARCH -->
+
+    <div class="jobs-search">
+
+        <input
+            id="companySearch"
+            type="text"
+            placeholder="🔎 Search company..."
+            onkeyup="searchCompanies()">
+
+    </div>
+
+
+    <!-- COMPANY GRID -->
+
+    <div
+        class="company-grid"
+        id="companyGrid">
+
+
+        <!-- TCS -->
+
+        <div
+            class="company-card"
+            data-company="tcs tata consultancy services">
+
+            <div class="company-logo">
+                🏢
+            </div>
+
+            <h2>TCS</h2>
+
+            <p>
+                Explore careers and opportunities
+                directly through the official
+                TCS careers website.
+            </p>
+
+            <div class="tags">
+
+                <span class="tag">Graduate</span>
+
+                <span class="tag">Entry Level</span>
+
+                <span class="tag">IT</span>
+
+            </div>
+
+            <a
+                href="https://www.tcs.com/careers"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="jobs-btn">
+
+                View Official Jobs →
+
+            </a>
+
+        </div>
+
+
+        <!-- INFOSYS -->
+
+        <div
+            class="company-card"
+            data-company="infosys">
+
+            <div class="company-logo">
+                💻
+            </div>
+
+            <h2>Infosys</h2>
+
+            <p>
+                Check student, graduate and other
+                opportunities through the official
+                Infosys careers portal.
+            </p>
+
+            <div class="tags">
+
+                <span class="tag">Students</span>
+
+                <span class="tag">Graduate</span>
+
+                <span class="tag">IT</span>
+
+            </div>
+
+            <a
+                href="https://careers.infosys.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="jobs-btn">
+
+                View Official Jobs →
+
+            </a>
+
+        </div>
+
+
+        <!-- ACCENTURE -->
+
+        <div
+            class="company-card"
+            data-company="accenture">
+
+            <div class="company-logo">
+                🚀
+            </div>
+
+            <h2>Accenture</h2>
+
+            <p>
+                Explore student and early-career
+                opportunities on Accenture's
+                official careers website.
+            </p>
+
+            <div class="tags">
+
+                <span class="tag">Students</span>
+
+                <span class="tag">Early Career</span>
+
+                <span class="tag">Technology</span>
+
+            </div>
+
+            <a
+                href="https://www.accenture.com/in-en/careers"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="jobs-btn">
+
+                View Official Jobs →
+
+            </a>
+
+        </div>
+
+
+        <!-- WIPRO -->
+
+        <div
+            class="company-card"
+            data-company="wipro">
+
+            <div class="company-logo">
+                🌐
+            </div>
+
+            <h2>Wipro</h2>
+
+            <p>
+                Search current opportunities and
+                early-career roles on the official
+                Wipro careers portal.
+            </p>
+
+            <div class="tags">
+
+                <span class="tag">Early Career</span>
+
+                <span class="tag">IT</span>
+
+                <span class="tag">Graduate</span>
+
+            </div>
+
+            <a
+                href="https://careers.wipro.com/main/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="jobs-btn">
+
+                View Official Jobs →
+
+            </a>
+
+        </div>
+
+
+        <!-- CAPGEMINI -->
+
+        <div
+            class="company-card"
+            data-company="capgemini">
+
+            <div class="company-logo">
+                ⚡
+            </div>
+
+            <h2>Capgemini</h2>
+
+            <p>
+                Find technology and graduate
+                opportunities through the official
+                Capgemini careers website.
+            </p>
+
+            <div class="tags">
+
+                <span class="tag">Graduate</span>
+
+                <span class="tag">Technology</span>
+
+                <span class="tag">IT</span>
+
+            </div>
+
+            <a
+                href="https://www.capgemini.com/careers/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="jobs-btn">
+
+                View Official Jobs →
+
+            </a>
+
+        </div>
+
+
+        <!-- COGNIZANT -->
+
+        <div
+            class="company-card"
+            data-company="cognizant">
+
+            <div class="company-logo">
+                🔷
+            </div>
+
+            <h2>Cognizant</h2>
+
+            <p>
+                Explore technology and
+                early-career opportunities through
+                Cognizant's official careers site.
+            </p>
+
+            <div class="tags">
+
+                <span class="tag">Graduate</span>
+
+                <span class="tag">Technology</span>
+
+                <span class="tag">Entry Level</span>
+
+            </div>
+
+            <a
+                href="https://careers.cognizant.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="jobs-btn">
+
+                View Official Jobs →
+
+            </a>
+
+        </div>
+
+         <!-- GOOGLE -->
+         <!-- GOOGLE -->
+
+        <div
+            class="company-card"
+            data-company="google">
+
+            <div class="company-logo">
+                🔍
+            </div>
+
+            <h2>Google</h2>
+
+            <p>
+                Explore software, AI, cloud, design
+                and other opportunities directly
+                through Google's official careers website.
+            </p>
+
+            <div class="tags">
+
+                <span class="tag">
+                    Software
+                </span>
+
+                <span class="tag">
+                    AI
+                </span>
+
+                <span class="tag">
+                    Cloud
+                </span>
+
+            </div>
+
+            <a
+                href="https://www.google.com/about/careers/applications/jobs/results?hl=en-IN"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="jobs-btn">
+
+                View Official Jobs →
+
+            </a>
+
+        </div>
+
+        <!-- IBM -->
+
+        <div
+            class="company-card"
+            data-company="ibm">
+
+            <div class="company-logo">
+                🧠
+            </div>
+
+            <h2>IBM</h2>
+
+            <p>
+                Search software, AI and technology
+                roles through IBM's official
+                careers website.
+            </p>
+
+            <div class="tags">
+
+                <span class="tag">Software</span>
+
+                <span class="tag">AI</span>
+
+                <span class="tag">Technology</span>
+
+            </div>
+
+            <a
+                href="https://www.ibm.com/careers"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="jobs-btn">
+
+                View Official Jobs →
+
+            </a>
+
+        </div>
+
+
+    </div>
+   
+
+
+    <!-- EMPTY -->
+
+    <div
+        id="empty"
+        class="empty">
+
+        🔎 No company found.
+
+    </div>
+
+
+    <!-- NOTE -->
+
+    <div class="official-note">
+
+        🔒
+        <strong>Official Source Only:</strong>
+
+        CareerLens.ai does not create or invent
+        job vacancies. Every button takes you
+        directly to the company's official
+        careers website.
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+function searchCompanies(){
+
+    const input =
+        document
+        .getElementById("companySearch")
+        .value
+        .toLowerCase()
+        .trim();
+
+    const cards =
+        document.querySelectorAll(
+            ".company-card"
+        );
+
+    const empty =
+        document.getElementById("empty");
+
+    let found = 0;
+
+
+    cards.forEach(function(card){
+
+        const company =
+            card
+            .getAttribute("data-company")
+            .toLowerCase();
+
+
+        if(company.includes(input)){
+
+            card.style.display = "";
+
+            found++;
+
+        }else{
+
+            card.style.display = "none";
+
+        }
+
+    });
+
+
+    empty.style.display =
+        found === 0
+        ? "block"
+        : "none";
+
+}
+
+</script>
+
+
+{% endblock %}

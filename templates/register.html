@@ -1,0 +1,1263 @@
+{% extends "base.html" %}
+
+{% block title %}
+CareerAI | Create Account
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* =========================================================
+   CAREERAI REGISTER
+   LIGHT • BLUE • VIOLET • PINK
+========================================================= */
+
+.register-page{
+    min-height:100vh;
+    padding:70px 25px;
+    font-family:Arial, Helvetica, sans-serif;
+
+    background:
+        radial-gradient(circle at 10% 10%, #e8f7ff 0%, transparent 30%),
+        radial-gradient(circle at 90% 20%, #f5eaff 0%, transparent 30%),
+        radial-gradient(circle at 50% 100%, #ffeaf6 0%, transparent 32%),
+        #f8faff;
+
+    color:#20243a;
+}
+
+
+/* =========================================================
+   MAIN CONTAINER
+========================================================= */
+
+.register-container{
+    width:100%;
+    max-width:1050px;
+    margin:auto;
+
+    background:#ffffff;
+
+    border-radius:30px;
+
+    border:1px solid #e7eaf5;
+
+    box-shadow:
+        0 25px 70px rgba(55,65,120,.12);
+
+    overflow:hidden;
+}
+
+
+/* =========================================================
+   TOP BRAND AREA
+========================================================= */
+
+.register-top{
+    padding:55px 55px 45px;
+
+    text-align:center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #eef8ff,
+            #f5efff,
+            #fff1f8
+        );
+
+    border-bottom:1px solid #eceaf5;
+}
+
+
+.brand-name{
+    margin:0;
+
+    font-size:58px;
+
+    line-height:1;
+
+    font-weight:900;
+
+    letter-spacing:-3px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #147de5,
+            #7257e8,
+            #e14d9b
+        );
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+
+.brand-line{
+    margin:18px auto 0;
+
+    max-width:650px;
+
+    font-size:16px;
+
+    line-height:1.7;
+
+    color:#646b82;
+}
+
+
+.brand-badge{
+    display:inline-block;
+
+    margin-bottom:18px;
+
+    padding:8px 17px;
+
+    border-radius:30px;
+
+    background:#ffffff;
+
+    color:#6355d9;
+
+    border:1px solid #ddd9ff;
+
+    font-size:12px;
+
+    font-weight:800;
+
+    letter-spacing:1px;
+
+    text-transform:uppercase;
+}
+
+
+/* =========================================================
+   FORM AREA
+========================================================= */
+
+.register-form-area{
+    padding:50px 60px 60px;
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.form-section{
+    margin-bottom:42px;
+}
+
+
+.section-heading{
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    margin-bottom:23px;
+}
+
+
+.section-icon{
+    width:42px;
+    height:42px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #e7f5ff,
+            #f1eaff
+        );
+
+    color:#6556d9;
+
+    font-size:20px;
+}
+
+
+.section-heading h2{
+    margin:0;
+
+    font-size:22px;
+
+    font-weight:850;
+
+    color:#292d45;
+}
+
+
+.section-heading p{
+    margin:4px 0 0;
+
+    font-size:13px;
+
+    color:#858ba0;
+}
+
+
+/* =========================================================
+   FORM GRID
+========================================================= */
+
+.form-grid{
+    display:grid;
+
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:22px;
+}
+
+
+.form-group{
+    display:flex;
+
+    flex-direction:column;
+}
+
+
+.form-group.full{
+    grid-column:1 / -1;
+}
+
+
+/* =========================================================
+   LABEL
+========================================================= */
+
+.form-group label{
+    margin-bottom:9px;
+
+    font-size:14px;
+
+    font-weight:750;
+
+    color:#41465e;
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+.form-group input,
+.form-group select{
+
+    width:100%;
+
+    height:54px;
+
+    padding:
+        0 17px;
+
+    border-radius:12px;
+
+    border:
+        1px solid #dfe3ee;
+
+    background:#fbfcff;
+
+    color:#292d45;
+
+    outline:none;
+
+    font-size:15px;
+
+    transition:.25s;
+}
+
+
+.form-group input::placeholder{
+    color:#a0a6b7;
+}
+
+
+.form-group input:hover,
+.form-group select:hover{
+    border-color:#bfc5dc;
+}
+
+
+.form-group input:focus,
+.form-group select:focus{
+
+    background:#ffffff;
+
+    border-color:#7668e9;
+
+    box-shadow:
+        0 0 0 4px
+        rgba(118,104,233,.10);
+}
+
+
+.form-group select{
+    cursor:pointer;
+}
+
+
+/* =========================================================
+   PASSWORD NOTE
+========================================================= */
+
+.password-note{
+
+    margin-top:8px;
+
+    font-size:12px;
+
+    color:#8a90a2;
+}
+
+
+/* =========================================================
+   TERMS
+========================================================= */
+
+.terms-box{
+
+    margin-top:5px;
+
+    padding:18px;
+
+    border-radius:13px;
+
+    background:#f8f7ff;
+
+    border:1px solid #e7e3ff;
+
+    display:flex;
+
+    gap:12px;
+
+    align-items:flex-start;
+
+    color:#656b80;
+
+    font-size:13px;
+
+    line-height:1.6;
+}
+
+
+.terms-box input{
+
+    width:17px;
+    height:17px;
+
+    margin-top:2px;
+
+    accent-color:#695be0;
+}
+
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.create-account-btn{
+
+    width:100%;
+
+    height:58px;
+
+    margin-top:28px;
+
+    border:0;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:850;
+
+    letter-spacing:.3px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #237edc,
+            #6858df,
+            #d9509b
+        );
+
+    box-shadow:
+        0 13px 30px
+        rgba(91,88,220,.22);
+
+    transition:.3s;
+}
+
+
+.create-account-btn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+        0 18px 38px
+        rgba(91,88,220,.28);
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+.login-area{
+
+    margin-top:25px;
+
+    text-align:center;
+
+    color:#777d91;
+
+    font-size:14px;
+}
+
+
+.login-area a{
+
+    color:#5c55d9;
+
+    text-decoration:none;
+
+    font-weight:800;
+}
+
+
+.login-area a:hover{
+    text-decoration:underline;
+}
+
+
+/* =========================================================
+   FOOTNOTE
+========================================================= */
+
+.form-footnote{
+
+    margin-top:28px;
+
+    text-align:center;
+
+    color:#a0a5b5;
+
+    font-size:12px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:700px){
+
+    .register-page{
+        padding:25px 12px;
+    }
+
+
+    .register-top{
+        padding:40px 20px 35px;
+    }
+
+
+    .brand-name{
+        font-size:44px;
+        letter-spacing:-2px;
+    }
+
+
+    .brand-line{
+        font-size:14px;
+    }
+
+
+    .register-form-area{
+        padding:35px 20px 40px;
+    }
+
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+
+    .form-group.full{
+        grid-column:auto;
+    }
+
+
+    .section-heading h2{
+        font-size:19px;
+    }
+
+}
+/* =========================================================
+   PROFILE PHOTO UPLOAD
+========================================================= */
+
+.photo-upload-box{
+
+    width:100%;
+
+    min-height:125px;
+
+    padding:20px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+    border:2px dashed #d9dcec;
+
+    border-radius:16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fafcff,
+            #f8f5ff
+        );
+
+    transition:.25s;
+}
+
+
+.photo-upload-box:hover{
+
+    border-color:#7568e8;
+
+    background:#faf9ff;
+}
+
+
+.photo-preview{
+
+    width:82px;
+    height:82px;
+
+    flex-shrink:0;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    overflow:hidden;
+
+    border-radius:50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #e4f5ff,
+            #eee7ff
+        );
+
+    border:
+        3px solid #ffffff;
+
+    box-shadow:
+        0 5px 18px
+        rgba(70,70,120,.12);
+
+    color:#7168d9;
+
+    font-size:30px;
+}
+
+
+.photo-preview img{
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+}
+
+
+.photo-upload-content{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+    gap:6px;
+}
+
+
+.photo-upload-content strong{
+
+    color:#34384e;
+
+    font-size:16px;
+
+    font-weight:800;
+}
+
+
+.photo-upload-content span{
+
+    color:#9298a9;
+
+    font-size:12px;
+}
+
+
+.upload-button{
+
+    margin-top:7px;
+
+    padding:9px 17px;
+
+    border-radius:9px;
+
+    cursor:pointer;
+
+    color:#ffffff;
+
+    background:
+        linear-gradient(
+            90deg,
+            #287fe0,
+            #7059df
+        );
+
+    font-size:12px;
+
+    font-weight:800;
+
+    transition:.25s;
+}
+
+
+.upload-button:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(90,85,220,.20);
+}
+
+
+@media(max-width:600px){
+
+    .photo-upload-box{
+
+        flex-direction:column;
+
+        text-align:center;
+    }
+
+
+    .photo-upload-content{
+
+        align-items:center;
+    }
+
+}
+
+
+</style>
+
+
+<div class="register-page">
+
+    <div class="register-container">
+
+
+        <!-- =================================================
+             BRAND HEADER
+        ================================================== -->
+
+        <div class="register-top">
+
+            <div class="brand-badge">
+                AI Career & Placement Intelligence
+            </div>
+
+            <h1 class="brand-name">
+                CAREERAI
+            </h1>
+
+            <p class="brand-line">
+
+                Create your account and start building
+                a smarter, clearer and more personalized
+                career path.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- =================================================
+             FORM
+        ================================================== -->
+
+        <div class="register-form-area">
+
+
+           <form
+                method="POST"
+                action="{{ url_for('register') }}"
+                enctype="multipart/form-data"
+            >
+
+
+                <!-- =========================================
+                     PERSONAL INFORMATION
+                ========================================== -->
+
+                <div class="form-section">
+
+                    <div class="section-heading">
+
+                        <div class="section-icon">
+                            👤
+                        </div>
+
+                        <div>
+
+                            <h2>
+                                Personal Information
+                            </h2>
+
+                            <p>
+                                Tell us a little about yourself
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-grid">
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Full Name *
+                            </label>
+
+                            <input
+                                type="text"
+                                name="name"
+                                placeholder="Enter your full name"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Age *
+                            </label>
+
+                            <input
+                                type="number"
+                                name="age"
+                                placeholder="Enter your age"
+                                min="13"
+                                max="100"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Email Address *
+                            </label>
+
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="you@example.com"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Mobile Number
+                            </label>
+
+                            <input
+                                type="tel"
+                                name="phone"
+                                placeholder="Enter your mobile number"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Gender
+                            </label>
+
+                            <select name="gender">
+
+                                <option value="">
+                                    Select gender
+                                </option>
+
+                                <option value="Female">
+                                    Female
+                                </option>
+
+                                <option value="Male">
+                                    Male
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                                <option value="Prefer not to say">
+                                    Prefer not to say
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                City / Location
+                            </label>
+
+                            <input
+                                type="text"
+                                name="city"
+                                placeholder="Enter your city"
+                            >
+
+                        </div>
+                        
+                <!-- =========================================
+                    PROFILE PHOTO
+                ========================================== -->
+
+                <div class="form-group full">
+
+                    <label>
+                        Profile Photo
+                    </label>
+
+                    <div class="photo-upload-box">
+
+                        <div class="photo-preview" id="photoPreview">
+                            👤
+                        </div>
+
+                        <div class="photo-upload-content">
+
+                            <strong>
+                                Upload your profile photo
+                            </strong>
+
+                            <span>
+                                JPG, JPEG or PNG • Max 5MB
+                            </span>
+
+                            <label for="photo" class="upload-button">
+                                Choose Photo
+                            </label>
+
+                            <input
+                                type="file"
+                                id="photo"
+                                name="photo"
+                                accept="image/png,image/jpeg,image/jpg"
+                                hidden
+                                onchange="previewPhoto(event)"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                </div>
+
+                </div>
+
+
+
+                <!-- =========================================
+                     EDUCATION
+                ========================================== -->
+
+                <div class="form-section">
+
+                    <div class="section-heading">
+
+                        <div class="section-icon">
+                            🎓
+                        </div>
+
+                        <div>
+
+                            <h2>
+                                Education & Career
+                            </h2>
+
+                            <p>
+                                Help CareerAI understand your goals
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-grid">
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Education Level *
+                            </label>
+
+                            <select
+                                name="education"
+                                required
+                            >
+
+                                <option value="">
+                                    Select education
+                                </option>
+
+                                <option value="Diploma">
+                                    Diploma
+                                </option>
+
+                                <option value="B.Tech">
+                                    B.Tech / B.E.
+                                </option>
+
+                                <option value="BCA">
+                                    BCA
+                                </option>
+
+                                <option value="B.Sc">
+                                    B.Sc.
+                                </option>
+
+                                <option value="MCA">
+                                    MCA
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Branch / Stream
+                            </label>
+
+                            <input
+                                type="text"
+                                name="branch"
+                                placeholder="e.g. Computer Engineering"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group full">
+
+                            <label>
+                                College / Institute
+                            </label>
+
+                            <input
+                                type="text"
+                                name="college"
+                                placeholder="Enter your college or institute"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group full">
+
+                            <label>
+                                Career Goal
+                            </label>
+
+                            <select name="career_goal">
+
+                                <option value="">
+                                    What career are you interested in?
+                                </option>
+
+                                <option value="Software Developer">
+                                    Software Developer
+                                </option>
+
+                                <option value="Web Developer">
+                                    Web Developer
+                                </option>
+
+                                <option value="Data Analyst">
+                                    Data Analyst
+                                </option>
+
+                                <option value="Data Scientist">
+                                    Data Scientist
+                                </option>
+
+                                <option value="AI/ML Engineer">
+                                    AI / ML Engineer
+                                </option>
+
+                                <option value="Cyber Security">
+                                    Cyber Security
+                                </option>
+
+                                <option value="Cloud Engineer">
+                                    Cloud Engineer
+                                </option>
+
+                                <option value="Not Sure">
+                                    I'm not sure yet
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     ACCOUNT
+                ========================================== -->
+
+                <div class="form-section">
+
+                    <div class="section-heading">
+
+                        <div class="section-icon">
+                            🔐
+                        </div>
+
+                        <div>
+
+                            <h2>
+                                Account Details
+                            </h2>
+
+                            <p>
+                                Create your secure CareerAI account
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-grid">
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Username *
+                            </label>
+
+                            <input
+                                type="text"
+                                name="username"
+                                placeholder="Create your username"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Password *
+                            </label>
+
+                            <input
+                                type="password"
+                                name="password"
+                                placeholder="Create your password"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group full">
+
+                            <label>
+                                Confirm Password *
+                            </label>
+
+                            <input
+                                type="password"
+                                name="confirm_password"
+                                placeholder="Re-enter your password"
+                                required
+                            >
+
+                            <div class="password-note">
+                                Use a password that you can remember easily.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+<!--    =======================================
+                     TERMS
+                ========================================== ---> 
+
+                <label class="terms-box">
+
+                    <input
+                        type="checkbox"
+                        name="terms"
+                        required
+                    >
+
+                    <span>
+                        I agree to the CareerAI terms and confirm
+                        that the information provided by me is accurate.
+                    </span>
+
+                </label>
+
+
+
+                <!-- =========================================
+                     CREATE ACCOUNT
+                ========================================== -->
+
+                <button
+                    type="submit"
+                    class="create-account-btn"
+                >
+
+                    Create My CareerAI Account →
+
+                </button>
+
+
+            </form>
+
+
+
+            <!-- LOGIN -->
+
+            <div class="login-area">
+
+                Already have an account?
+
+                <a href="{{ url_for('login') }}">
+                    Login here
+                </a>
+
+            </div>
+
+
+            <div class="form-footnote">
+
+                Your career journey starts with one simple step.
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function previewPhoto(event){
+
+    const file = event.target.files[0];
+
+    if(!file){
+        return;
+    }
+
+    const preview =
+        document.getElementById("photoPreview");
+
+    const reader = new FileReader();
+
+    reader.onload = function(e){
+
+        preview.innerHTML =
+            <img src="${e.target.result}" alt="Profile Photo">;
+
+    };
+
+    reader.readAsDataURL(file);
+}
+
+<script>       
+
+
+
+    
+{% endblock %}

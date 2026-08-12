@@ -1,0 +1,544 @@
+{% extends "base.html" %}
+
+{% block title %}
+CareerLens.ai | AI Career Assistant
+{% endblock %}
+
+{% block content %}
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    .assistant-page {
+        min-height: calc(100vh - 70px);
+        padding: 35px 20px;
+        background:
+            radial-gradient(circle at 10% 10%, rgba(124, 58, 237, .18), transparent 30%),
+            radial-gradient(circle at 90% 90%, rgba(37, 99, 235, .18), transparent 30%),
+            linear-gradient(135deg, #f8f7ff, #eef4ff);
+    }
+
+    .assistant-wrapper {
+        max-width: 1100px;
+        margin: auto;
+    }
+
+    .hero {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .ai-icon {
+        width: 70px;
+        height: 70px;
+        margin: auto;
+        border-radius: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 34px;
+        color: white;
+        background: linear-gradient(135deg, #6d28d9, #2563eb);
+        box-shadow: 0 15px 35px rgba(37, 99, 235, .25);
+    }
+
+    .hero h1 {
+        margin: 15px 0 8px;
+        font-size: 34px;
+        color: #17153a;
+    }
+
+    .hero p {
+        color: #66677b;
+        margin: 0;
+    }
+
+    .chat-card {
+        background: rgba(255,255,255,.92);
+        border: 1px solid rgba(120,120,180,.15);
+        border-radius: 25px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(45, 48, 100, .12);
+    }
+
+    .chat-header {
+        padding: 18px 22px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #eeeeF5;
+    }
+
+    .assistant-status {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        color: #28264b;
+    }
+
+    .online-dot {
+        width: 11px;
+        height: 11px;
+        background: #22c55e;
+        border-radius: 50%;
+        box-shadow: 0 0 12px rgba(34,197,94,.6);
+    }
+
+    .clear-btn {
+        border: none;
+        background: #f2f1fa;
+        color: #55536d;
+        padding: 9px 14px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .clear-btn:hover {
+        background: #e9e7f5;
+    }
+
+    .chat-box {
+        height: 500px;
+        padding: 25px;
+        overflow-y: auto;
+        background: linear-gradient(180deg, #fbfbff, #f7f9ff);
+    }
+
+    .message-row {
+        display: flex;
+        margin-bottom: 18px;
+    }
+
+    .message-row.user {
+        justify-content: flex-end;
+    }
+
+    .message {
+        max-width: 78%;
+        padding: 14px 17px;
+        border-radius: 17px;
+        line-height: 1.6;
+        font-size: 15px;
+        white-space: pre-wrap;
+    }
+
+    .message.ai {
+        background: white;
+        color: #292744;
+        border: 1px solid #ececf5;
+        border-top-left-radius: 5px;
+    }
+
+    .message.user {
+        background: linear-gradient(135deg, #6d28d9, #2563eb);
+        color: white;
+        border-top-right-radius: 5px;
+    }
+
+    .suggestions {
+        padding: 0 22px 18px;
+        background: #f7f9ff;
+    }
+
+    .suggestions-title {
+        font-size: 13px;
+        color: #77758c;
+        margin-bottom: 9px;
+    }
+
+    .suggestion-list {
+        display: flex;
+        gap: 9px;
+        flex-wrap: wrap;
+    }
+
+    .suggestion {
+        border: 1px solid #dddaf0;
+        background: white;
+        color: #4a4770;
+        border-radius: 20px;
+        padding: 9px 13px;
+        cursor: pointer;
+        transition: .2s;
+    }
+
+    .suggestion:hover {
+        transform: translateY(-2px);
+        border-color: #7657d9;
+        color: #5b21b6;
+    }
+
+    .input-area {
+        display: flex;
+        gap: 12px;
+        padding: 18px;
+        background: white;
+        border-top: 1px solid #eeeeF5;
+    }
+
+    #userInput {
+        flex: 1;
+        border: 1px solid #deddeb;
+        border-radius: 15px;
+        padding: 14px 16px;
+        font-size: 15px;
+        outline: none;
+        resize: none;
+        min-height: 50px;
+        max-height: 120px;
+        font-family: inherit;
+    }
+
+    #userInput:focus {
+        border-color: #6d28d9;
+        box-shadow: 0 0 0 3px rgba(109,40,217,.08);
+    }
+
+    #sendBtn {
+        width: 55px;
+        height: 50px;
+        border: none;
+        border-radius: 15px;
+        color: white;
+        background: linear-gradient(135deg, #6d28d9, #2563eb);
+        cursor: pointer;
+        font-size: 20px;
+    }
+
+    #sendBtn:disabled {
+        opacity: .6;
+        cursor: not-allowed;
+    }
+
+    .typing {
+        display: inline-flex;
+        gap: 5px;
+        padding: 6px 2px;
+    }
+
+    .typing span {
+        width: 7px;
+        height: 7px;
+        background: #777;
+        border-radius: 50%;
+        animation: blink 1.2s infinite;
+    }
+
+    .typing span:nth-child(2) {
+        animation-delay: .2s;
+    }
+
+    .typing span:nth-child(3) {
+        animation-delay: .4s;
+    }
+
+    @keyframes blink {
+        0%, 80%, 100% {
+            opacity: .25;
+            transform: translateY(0);
+        }
+        40% {
+            opacity: 1;
+            transform: translateY(-3px);
+        }
+    }
+
+    @media(max-width: 700px) {
+        .hero h1 {
+            font-size: 27px;
+        }
+
+        .chat-box {
+            height: 55vh;
+        }
+
+        .message {
+            max-width: 90%;
+        }
+
+        .input-area {
+            padding: 12px;
+        }
+    }
+</style>
+
+<div class="assistant-page">
+
+    <div class="assistant-wrapper">
+
+        <div class="hero">
+
+            <div class="ai-icon">
+                🤖
+            </div>
+
+            <h1>CareerLens AI Assistant</h1>
+
+            <p>
+                Your intelligent career guide for skills, placement,
+                interviews and career planning.
+            </p>
+
+        </div>
+
+        <div class="chat-card">
+
+            <div class="chat-header">
+
+                <div class="assistant-status">
+                    <span class="online-dot"></span>
+                    CareerLens AI
+                </div>
+
+                <button class="clear-btn" onclick="clearChat()">
+                    🗑️ Clear
+                </button>
+
+            </div>
+
+            <div id="chatBox" class="chat-box">
+
+                <div class="message-row">
+                    <div class="message ai">
+                        👋 Hi! I'm <b>CareerLens AI Assistant</b>.
+
+                        I can help you with:
+
+                        🎯 Career planning
+                        💼 Placement preparation
+                        🎤 Interview preparation
+                        📄 Resume guidance
+                        💻 Technical skills
+                        🗺️ Career roadmap
+
+                        Ask me anything about your career!
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="suggestions">
+
+                <div class="suggestions-title">
+                    Try asking:
+                </div>
+
+                <div class="suggestion-list">
+
+                    <button class="suggestion"
+                        onclick="useSuggestion(this)">
+                        How should I prepare for placement?
+                    </button>
+
+                    <button class="suggestion"
+                        onclick="useSuggestion(this)">
+                        Which skills should I learn?
+                    </button>
+
+                    <button class="suggestion"
+                        onclick="useSuggestion(this)">
+                        Help me prepare for interview
+                    </button>
+
+                    <button class="suggestion"
+                        onclick="useSuggestion(this)">
+                        How can I improve my resume?
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="input-area">
+
+                <textarea
+                    id="userInput"
+                    placeholder="Ask CareerLens AI anything..."
+                    onkeydown="handleEnter(event)"
+                ></textarea>
+
+                <button id="sendBtn" onclick="sendMessage()">
+                    ➤
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const chatBox = document.getElementById("chatBox");
+const userInput = document.getElementById("userInput");
+const sendBtn = document.getElementById("sendBtn");
+
+function addMessage(text, type) {
+
+    const row = document.createElement("div");
+
+    row.className = "message-row " + type;
+
+    const message = document.createElement("div");
+
+    message.className = "message " + type;
+
+    message.innerHTML = formatText(text);
+
+    row.appendChild(message);
+
+    chatBox.appendChild(row);
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function formatText(text) {
+
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\\(.?)\\*/g, "<b>$1</b>")
+        .replace(/\n/g, "<br>");
+}
+
+function showTyping() {
+
+    const row = document.createElement("div");
+
+    row.id = "typingRow";
+    row.className = "message-row";
+
+    row.innerHTML = `
+        <div class="message ai">
+            <div class="typing">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    `;
+
+    chatBox.appendChild(row);
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function removeTyping() {
+
+    const typing = document.getElementById("typingRow");
+
+    if (typing) {
+        typing.remove();
+    }
+}
+
+async function sendMessage() {
+
+    const message = userInput.value.trim();
+
+    if (!message) return;
+
+    addMessage(message, "user");
+
+    userInput.value = "";
+
+    sendBtn.disabled = true;
+
+    showTyping();
+
+    try {
+
+        const response = await fetch("/ai_assistant/chat", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                message: message
+            })
+
+        });
+
+        const data = await response.json();
+
+        removeTyping();
+
+        if (data.success) {
+
+            addMessage(data.reply, "ai");
+
+        } else {
+
+            addMessage(
+                "Sorry, something went wrong. Please try again.",
+                "ai"
+            );
+
+        }
+
+    } catch (error) {
+
+        removeTyping();
+
+        addMessage(
+            "Unable to connect with CareerLens AI. Please check your server.",
+            "ai"
+        );
+
+        console.error(error);
+
+    }
+
+    sendBtn.disabled = false;
+
+    userInput.focus();
+}
+
+function useSuggestion(button) {
+
+    userInput.value = button.innerText;
+
+    userInput.focus();
+
+}
+
+function handleEnter(event) {
+
+    if (event.key === "Enter" && !event.shiftKey) {
+
+        event.preventDefault();
+
+        sendMessage();
+
+    }
+
+}
+
+function clearChat() {
+
+    chatBox.innerHTML = `
+        <div class="message-row">
+            <div class="message ai">
+                👋 Hi! I'm <b>CareerLens AI Assistant</b>.
+
+                Ask me anything about career,
+                placement, interviews, resume or skills.
+            </div>
+        </div>
+    `;
+
+}
+
+</script>
+
+{% endblock %}

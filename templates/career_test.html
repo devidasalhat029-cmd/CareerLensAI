@@ -1,0 +1,392 @@
+{% extends "base.html" %}
+
+{% block title %}CareerAI | Career Assessment{% endblock %}
+
+{% block content %}
+
+<style>
+.test-page {
+    min-height: 100vh;
+    padding: 45px 20px;
+    background:
+        radial-gradient(circle at 10% 10%, #e7f6ff, transparent 30%),
+        radial-gradient(circle at 90% 15%, #f0eaff, transparent 30%),
+        radial-gradient(circle at 50% 100%, #ffeaf4, transparent 35%),
+        #f8faff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.test-container {
+    max-width: 850px;
+    margin: auto;
+}
+
+.test-header {
+    background: white;
+    padding: 30px;
+    border-radius: 24px;
+    margin-bottom: 22px;
+    border: 1px solid #e5e7f0;
+    box-shadow: 0 15px 40px rgba(50,60,120,.08);
+}
+
+.test-badge {
+    display: inline-block;
+    padding: 7px 14px;
+    border-radius: 20px;
+    background: #eeecff;
+    color: #5c53d7;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.test-header h1 {
+    margin: 15px 0 8px;
+    color: #2d334d;
+}
+
+.test-header p {
+    margin: 0;
+    color: #7b8297;
+}
+
+.question-card {
+    background: white;
+    padding: 25px;
+    margin-bottom: 18px;
+    border-radius: 18px;
+    border: 1px solid #e5e7f0;
+    box-shadow: 0 10px 28px rgba(50,60,120,.06);
+}
+
+.question-card h3 {
+    margin-top: 0;
+    color: #30364e;
+    font-size: 17px;
+}
+
+.option {
+    display: block;
+    padding: 13px;
+    margin-top: 10px;
+    border: 1px solid #e1e4ee;
+    border-radius: 11px;
+    background: #fafbff;
+    cursor: pointer;
+    color: #41465d;
+}
+
+.option:hover {
+    border-color: #6b5fe0;
+    background: #f5f3ff;
+}
+
+.option input {
+    margin-right: 10px;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 16px;
+    border: 0;
+    border-radius: 13px;
+    color: white;
+    background: linear-gradient(90deg, #247edc, #6858df, #d4519b);
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.back-btn {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #5d55d5;
+    text-decoration: none;
+    font-weight: 700;
+}
+</style><div class="test-page"><div class="test-container">
+
+    <div class="test-header">
+
+        <span class="test-badge">
+            CAREER ASSESSMENT
+        </span>
+
+        <h1>
+            🧠 Discover Your Career Strengths
+        </h1>
+
+        <p>
+            Answer all questions honestly to get your career recommendation.
+        </p>
+
+    </div>
+
+
+    <form method="POST"
+          action="{{ url_for('career_test') }}">
+
+
+        <!-- QUESTION 1 -->
+
+        <div class="question-card">
+
+            <h3>
+                1. Which activity do you enjoy most?
+            </h3>
+
+            <label class="option">
+                <input
+                    type="radio"
+                    name="q1"
+                    value="technology"
+                    required
+                >
+                💻 Coding and solving technical problems
+            </label>
+
+            <label class="option">
+                <input
+                    type="radio"
+                    name="q1"
+                    value="business"
+                >
+                📈 Business and management
+            </label>
+
+            <label class="option">
+                <input
+                    type="radio"
+                    name="q1"
+                    value="creative"
+                >
+                🎨 Designing and creative activities
+            </label>
+
+            <label class="option">
+                <input
+                    type="radio"
+                    name="q1"
+                    value="communication"
+                >
+                🗣️ Communication and helping people
+            </label>
+
+        </div>
+
+
+        <!-- QUESTION 2 -->
+
+        <div class="question-card">
+
+            <h3>
+                2. Which subject interests you most?
+            </h3>
+
+            <label class="option">
+                <input
+                    type="radio"
+                    name="q2"
+                    value="technology"
+                    required
+                >
+                💻 Computer Science
+            </label>
+
+            <label class="option">
+                <input
+                    type="radio"
+                    name="q2"
+                    value="business"
+                >
+                📊 Economics / Business
+            </label>
+
+            <label class="option">
+                <input
+                    type="radio"
+                    name="q2"
+                    value="creative"
+                >
+                🎨 Art / Design
+            </label>
+
+            <label class="option">
+                <input
+                    type="radio"
+                    name="q2"
+                    value="communication"
+                >
+                📚 Languages / Communication
+            </label>
+
+        </div>
+
+
+        <!-- QUESTION 3 -->
+
+        <div class="question-card">
+
+            <h3>
+                3. What type of work do you prefer?
+            </h3>
+
+            <label class="option">
+                <input
+                    type="radio"
+                    name="q3"
+                    value="technology"
+                    required
+                >
+                💻 Building software and technology
+            </label>
+
+            <label class="option">
+                <input
+                    type="radio"
+                    name="q3"
+                    value="business"
+                >
+                👔 Leading teams and projects
+            </label>
+
+            <label class="option">
+                <input
+                    type="radio"
+                    name="q3"
+                    value="creative"
+                >
+                🎨 Creating visual content
+            </label>
+
+            <label class="option">
+                <input
+                    type="radio"
+                    name="q3"
+                    value="communication"
+                >
+                🤝 Working directly with people
+            </label>
+
+        </div>
+
+
+        <!-- QUESTION 4 -->
+
+        <div class="question-card">
+
+            <h3>
+                4. Which skill describes you best?
+            </h3>
+
+            <label class="option">
+                <input
+                    type="radio"
+                    name="q4"
+                    value="technology"
+                    required
+                >
+                🧠 Logical thinking
+            </label>
+
+            <label class="option">
+                <input
+                    type="radio"
+                    name="q4"
+                    value="business"
+                >
+                👑 Leadership
+            </label>
+
+            <label class="option">
+                <input
+                    type="radio"
+                    name="q4"
+                    value="creative"
+                >
+                🎨 Creativity
+            </label>
+
+            <label class="option">
+                <input
+                    type="radio"
+                    name="q4"
+                    value="communication"
+                >
+                🗣️ Communication
+            </label>
+
+        </div>
+
+
+        <!-- QUESTION 5 -->
+
+        <div class="question-card">
+
+            <h3>
+                5. What kind of problems do you enjoy solving?
+            </h3>
+
+            <label class="option">
+                <input
+                    type="radio"
+                    name="q5"
+                    value="technology"
+                    required
+                >
+                💻 Technical problems
+            </label>
+
+            <label class="option">
+                <input
+                    type="radio"
+                    name="q5"
+                    value="business"
+                >
+                📈 Business problems
+            </label>
+
+            <label class="option">
+                <input
+                    type="radio"
+                    name="q5"
+                    value="creative"
+                >
+                🎨 Design problems
+            </label>
+
+            <label class="option">
+                <input
+                    type="radio"
+                    name="q5"
+                    value="communication"
+                >
+                🤝 People-related problems
+            </label>
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="submit-btn"
+        >
+            🚀 Submit Assessment
+        </button>
+
+    </form>
+
+
+    <a
+        href="{{ url_for('student_dashboard') }}"
+        class="back-btn"
+    >
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+</div>{% endblock %}

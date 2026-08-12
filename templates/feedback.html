@@ -1,0 +1,762 @@
+{% extends "base.html" %}
+
+{% block title %}
+Feedback | CareerLens.ai
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+.feedback-page {
+    min-height: 100vh;
+    padding: 70px 20px 90px;
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(113, 97, 255, .20),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 15%,
+            rgba(50, 217, 255, .16),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 50% 90%,
+            rgba(255, 95, 200, .10),
+            transparent 30%
+        ),
+        #070a13;
+}
+
+
+/* ================= FLOATING GLOW ================= */
+
+.feedback-page::before {
+    content: "";
+    position: absolute;
+    width: 330px;
+    height: 330px;
+    border-radius: 50%;
+    background: rgba(91, 80, 255, .10);
+    filter: blur(60px);
+    top: 120px;
+    left: -120px;
+    pointer-events: none;
+}
+
+.feedback-page::after {
+    content: "";
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: rgba(0, 212, 255, .08);
+    filter: blur(60px);
+    right: -100px;
+    bottom: 100px;
+    pointer-events: none;
+}
+
+
+/* ================= CONTAINER ================= */
+
+.feedback-container {
+    max-width: 1050px;
+    margin: auto;
+    position: relative;
+    z-index: 2;
+}
+
+
+/* ================= HERO ================= */
+
+.feedback-hero {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.feedback-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 9px 18px;
+    border-radius: 50px;
+
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+
+    color: #9edfff;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.feedback-hero h1 {
+    margin: 0;
+    font-size: clamp(40px, 6vw, 65px);
+    font-weight: 850;
+    letter-spacing: -2px;
+}
+
+.gradient-text {
+    background: linear-gradient(
+        90deg,
+        #8b7cff,
+        #4ddcff,
+        #ff72c8
+    );
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.feedback-hero p {
+    max-width: 650px;
+    margin: 20px auto 0;
+
+    color: #9da8bc;
+    line-height: 1.8;
+    font-size: 16px;
+}
+
+
+/* ================= MAIN GRID ================= */
+
+.feedback-grid {
+    display: grid;
+    grid-template-columns: .75fr 1.25fr;
+    gap: 25px;
+}
+
+
+/* ================= LEFT CARD ================= */
+
+.feedback-info {
+    padding: 35px;
+    border-radius: 28px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(112, 96, 255, .18),
+            rgba(255,255,255,.035)
+        );
+
+    border: 1px solid rgba(255,255,255,.10);
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.25);
+
+    backdrop-filter: blur(15px);
+}
+
+.info-icon {
+    width: 65px;
+    height: 65px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 20px;
+
+    font-size: 30px;
+
+    background: rgba(255,255,255,.07);
+
+    margin-bottom: 22px;
+}
+
+.feedback-info h2 {
+    font-size: 28px;
+    margin: 0 0 15px;
+}
+
+.feedback-info p {
+    color: #9da8bb;
+    line-height: 1.8;
+    font-size: 14px;
+}
+
+
+/* ================= MINI POINTS ================= */
+
+.info-points {
+    margin-top: 30px;
+}
+
+.info-point {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    margin-bottom: 18px;
+
+    color: #c5ccda;
+    font-size: 14px;
+}
+
+.point-icon {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: rgba(255,255,255,.06);
+}
+
+
+/* ================= FORM CARD ================= */
+
+.feedback-card {
+    padding: 38px;
+    border-radius: 28px;
+
+    background: rgba(255,255,255,.055);
+
+    border: 1px solid rgba(255,255,255,.10);
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.30);
+
+    backdrop-filter: blur(18px);
+}
+
+.feedback-card h2 {
+    margin: 0 0 7px;
+    font-size: 25px;
+}
+
+.form-subtitle {
+    margin: 0 0 28px;
+    color: #8792a7;
+    font-size: 13px;
+}
+
+
+/* ================= INPUT ================= */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+
+    color: #dce2ed;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.form-control {
+    width: 100%;
+
+    padding: 14px 16px;
+
+    border-radius: 13px;
+
+    border: 1px solid rgba(255,255,255,.10);
+
+    background: rgba(0,0,0,.20);
+
+    color: #fff;
+
+    outline: none;
+
+    font-size: 14px;
+
+    transition: .25s;
+}
+
+.form-control::placeholder {
+    color: #687388;
+}
+
+.form-control:focus {
+    border-color: rgba(74,215,255,.55);
+
+    box-shadow:
+        0 0 0 3px rgba(74,215,255,.08);
+}
+
+textarea.form-control {
+    min-height: 135px;
+    resize: vertical;
+}
+
+
+/* ================= RATING ================= */
+
+.rating-box {
+    margin-bottom: 25px;
+}
+
+.rating-title {
+    color: #dce2ed;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.stars {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 7px;
+}
+
+.stars input {
+    display: none;
+}
+
+.stars label {
+    cursor: pointer;
+
+    font-size: 32px;
+
+    color: #3e4658;
+
+    transition: .2s;
+}
+
+.stars label:hover,
+.stars label:hover ~ label,
+.stars input:checked ~ label {
+    color: #ffd45c;
+
+    text-shadow:
+        0 0 18px rgba(255,212,92,.35);
+}
+
+
+/* ================= SUBMIT ================= */
+
+.submit-btn {
+    width: 100%;
+
+    border: none;
+
+    padding: 15px 20px;
+
+    border-radius: 14px;
+
+    color: #fff;
+
+    font-size: 15px;
+
+    font-weight: 750;
+
+    cursor: pointer;
+
+    background:
+        linear-gradient(
+            90deg,
+            #7161ff,
+            #32d9ff
+        );
+
+    box-shadow:
+        0 10px 30px rgba(70,150,255,.18);
+
+    transition: .3s;
+}
+
+.submit-btn:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 15px 40px rgba(70,150,255,.28);
+}
+
+
+/* ================= THANK YOU ================= */
+
+.thank-you {
+    margin-top: 25px;
+
+    text-align: center;
+
+    padding: 25px;
+
+    border-radius: 20px;
+
+    background: rgba(255,255,255,.035);
+
+    border: 1px solid rgba(255,255,255,.07);
+}
+
+.thank-you span {
+    font-size: 25px;
+}
+
+.thank-you p {
+    margin: 8px 0 0;
+
+    color: #8994a8;
+
+    font-size: 13px;
+}
+
+
+/* ================= FOOTER ================= */
+
+.feedback-footer {
+    text-align: center;
+
+    margin-top: 45px;
+
+    color: #687388;
+
+    font-size: 12px;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 850px) {
+
+    .feedback-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 500px) {
+
+    .feedback-page {
+        padding: 45px 15px 70px;
+    }
+
+    .feedback-card,
+    .feedback-info {
+        padding: 25px;
+    }
+
+    .feedback-hero h1 {
+        font-size: 43px;
+    }
+
+    .stars label {
+        font-size: 28px;
+    }
+
+}
+
+</style>
+
+
+<div class="feedback-page">
+
+    <div class="feedback-container">
+
+
+        <!-- ================= HERO ================= -->
+
+        <div class="feedback-hero">
+
+            <div class="feedback-badge">
+                ✦ Your Voice Matters
+            </div>
+
+            <h1>
+                Share Your
+                <span class="gradient-text">
+                    Feedback
+                </span>
+            </h1>
+
+            <p>
+                Your feedback helps us improve CareerLens.ai and
+                create a better career preparation experience for
+                every student.
+            </p>
+
+        </div>
+
+
+        <!-- ================= MAIN ================= -->
+
+        <div class="feedback-grid">
+
+
+            <!-- LEFT -->
+
+            <div class="feedback-info">
+
+                <div class="info-icon">
+                    💬
+                </div>
+
+                <h2>
+                    Tell us what you think
+                </h2>
+
+                <p>
+                    Tried CareerLens.ai? We would love to know about
+                    your experience. Tell us what you liked, what can
+                    be improved and what features you would like to
+                    see in the future.
+                </p>
+
+
+                <div class="info-points">
+
+                    <div class="info-point">
+
+                        <div class="point-icon">
+                            ⭐
+                        </div>
+
+                        <span>
+                            Rate your experience
+                        </span>
+
+                    </div>
+
+
+                    <div class="info-point">
+
+                        <div class="point-icon">
+                            💡
+                        </div>
+
+                        <span>
+                            Share your ideas
+                        </span>
+
+                    </div>
+
+
+                    <div class="info-point">
+
+                        <div class="point-icon">
+                            🚀
+                        </div>
+
+                        <span>
+                            Help us improve CareerLens
+                        </span>
+
+                    </div>
+
+
+                    <div class="info-point">
+
+                        <div class="point-icon">
+                            ❤️
+                        </div>
+
+                        <span>
+                            Make the platform better for students
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT -->
+
+            <div class="feedback-card">
+
+                <h2>
+                    Feedback Form
+                </h2>
+
+                <p class="form-subtitle">
+                    It only takes a minute.
+                </p>
+
+
+                <form
+                    method="POST"
+                    action="{{ url_for('feedback') }}"
+                >
+
+
+                    <!-- NAME -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Your Name
+                        </label>
+
+                        <input
+                            type="text"
+                            name="name"
+                            class="form-control"
+                            placeholder="Enter your name"
+                        >
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            name="email"
+                            class="form-control"
+                            placeholder="Enter your email"
+                        >
+
+                    </div>
+
+
+                    <!-- RATING -->
+
+                    <div class="rating-box">
+
+                        <div class="rating-title">
+                            How would you rate CareerLens.ai?
+                        </div>
+
+                        <div class="stars">
+
+                            <input
+                                type="radio"
+                                id="star5"
+                                name="rating"
+                                value="5"
+                                checked
+                            >
+
+                            <label for="star5">
+                                ★
+                            </label>
+
+
+                            <input
+                                type="radio"
+                                id="star4"
+                                name="rating"
+                                value="4"
+                            >
+
+                            <label for="star4">
+                                ★
+                            </label>
+
+
+                            <input
+                                type="radio"
+                                id="star3"
+                                name="rating"
+                                value="3"
+                            >
+
+                            <label for="star3">
+                                ★
+                            </label>
+
+
+                            <input
+                                type="radio"
+                                id="star2"
+                                name="rating"
+                                value="2"
+                            >
+
+                            <label for="star2">
+                                ★
+                            </label>
+
+
+                            <input
+                                type="radio"
+                                id="star1"
+                                name="rating"
+                                value="1"
+                            >
+
+                            <label for="star1">
+                                ★
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- MESSAGE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Your Feedback
+                        </label>
+
+                        <textarea
+                            name="message"
+                            class="form-control"
+                            placeholder="Tell us about your experience..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- BUTTON -->
+
+                    <button
+                        type="submit"
+                        class="submit-btn"
+                    >
+                        Submit Feedback ✨
+                    </button>
+
+                </form>
+
+
+                <div class="thank-you">
+
+                    <span>
+                        🙌
+                    </span>
+
+                    <p>
+                        Thank you for helping us make CareerLens.ai better.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="feedback-footer">
+
+            CareerLens.ai • AI Career & Placement Guidance Platform
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

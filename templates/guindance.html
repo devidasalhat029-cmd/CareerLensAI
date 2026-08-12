@@ -1,0 +1,948 @@
+{% extends "base.html" %}
+
+{% block title %}Career Guidance | CareerLens.ai{% endblock %}
+
+{% block content %}
+
+<style>
+/* ================= CAREER GUIDANCE ================= */
+
+.cg-page,
+.cg-page * {
+    box-sizing: border-box;
+}
+
+.cg-page {
+    min-height: calc(100vh - 80px);
+    padding: 40px 5%;
+    background: #0b1020;
+    color: #ffffff;
+}
+
+.cg-container {
+    max-width: 1100px;
+    margin: auto;
+}
+
+/* HERO */
+
+.cg-hero {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.cg-badge {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 30px;
+    background: #18234a;
+    color: #9eafff;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.cg-hero h1 {
+    margin: 15px 0 10px;
+    font-size: 45px;
+    color: #ffffff;
+}
+
+.cg-hero p {
+    max-width: 750px;
+    margin: auto;
+    color: #c9cee1;
+    line-height: 1.7;
+}
+
+/* CARD */
+
+.cg-card {
+    background: #151b31;
+    border: 1px solid #303858;
+    border-radius: 22px;
+    padding: 30px;
+    box-shadow: 0 15px 40px rgba(0,0,0,.25);
+}
+
+/* FORM */
+
+.cg-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.cg-full {
+    grid-column: 1 / -1;
+}
+
+.cg-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.cg-input,
+.cg-select,
+.cg-textarea {
+    width: 100%;
+    padding: 14px;
+    border-radius: 11px;
+    border: 1px solid #3c4668;
+    background: #0e1427;
+    color: #ffffff;
+    outline: none;
+    font-size: 15px;
+}
+
+.cg-select option {
+    background: #10162a;
+    color: white;
+}
+
+.cg-input:focus,
+.cg-select:focus,
+.cg-textarea:focus {
+    border-color: #7c8cff;
+}
+
+.cg-textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* SKILLS */
+
+.cg-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+.cg-skill {
+    padding: 9px 14px;
+    border-radius: 20px;
+    border: 1px solid #3c4668;
+    background: #10162a;
+    color: #dfe3f2;
+    cursor: pointer;
+}
+
+.cg-skill.active {
+    background: #5669df;
+    border-color: #8a98ff;
+    color: #ffffff;
+}
+
+/* BUTTON */
+
+.cg-btn {
+    width: 100%;
+    margin-top: 25px;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg,#596fe9,#8b50c7);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.cg-btn:hover {
+    opacity: .9;
+}
+
+.cg-btn:disabled {
+    opacity: .6;
+    cursor: wait;
+}
+
+.cg-status {
+    display: none;
+    text-align: center;
+    margin-top: 15px;
+    color: #cbd1e5;
+}
+
+.cg-error {
+    display: none;
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 10px;
+    background: #401c25;
+    color: #ffb9c2;
+}
+
+/* RESULT */
+
+.cg-result {
+    display: none;
+    margin-top: 30px;
+}
+
+.cg-main-result {
+    padding: 28px;
+    border-radius: 20px;
+    background: #182044;
+    border: 1px solid #34416e;
+    margin-bottom: 20px;
+}
+
+.cg-main-result h2 {
+    margin: 0 0 10px;
+    color: white;
+}
+
+.cg-main-result p {
+    color: #d0d5e7;
+    line-height: 1.7;
+}
+
+.cg-result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.cg-result-box {
+    background: #151b31;
+    border: 1px solid #303858;
+    border-radius: 18px;
+    padding: 22px;
+}
+
+.cg-result-box h3 {
+    color: white;
+    margin-top: 0;
+}
+
+.cg-result-box p,
+.cg-result-box li {
+    color: #d0d5e7;
+    line-height: 1.7;
+}
+
+.cg-result-box ul {
+    padding-left: 20px;
+}
+
+.cg-roadmap {
+    margin-top: 20px;
+}
+
+.cg-step {
+    display: flex;
+    gap: 14px;
+    margin: 16px 0;
+}
+
+.cg-number {
+    min-width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #596fe9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+/* MOBILE */
+
+@media(max-width: 750px) {
+
+    .cg-page {
+        padding: 25px 15px;
+    }
+
+    .cg-hero h1 {
+        font-size: 32px;
+    }
+
+    .cg-grid,
+    .cg-result-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cg-full {
+        grid-column: auto;
+    }
+
+    .cg-card {
+        padding: 20px;
+    }
+}
+</style>
+
+
+<div class="cg-page">
+
+<div class="cg-container">
+
+    <!-- HERO -->
+
+    <div class="cg-hero">
+
+        <span class="cg-badge">
+            🤖 CAREERLENS AI
+        </span>
+
+        <h1>
+            AI Career Guidance
+        </h1>
+
+        <p>
+            Discover the right career direction based on your
+            education, interests, skills and career goals.
+        </p>
+
+    </div>
+
+
+    <!-- FORM CARD -->
+
+    <div class="cg-card">
+
+        <div class="cg-grid">
+
+            <!-- EDUCATION -->
+
+            <div class="cg-group">
+
+                <label>
+                    Education
+                </label>
+
+                <select id="cgEducation"
+                        class="cg-select">
+
+                    <option value="">
+                        Select Education
+                    </option>
+
+                    <option>Diploma</option>
+                    <option>B.E / B.Tech</option>
+                    <option>BCA</option>
+                    <option>B.Sc Computer Science</option>
+                    <option>MCA</option>
+                    <option>Other</option>
+
+                </select>
+
+            </div>
+
+
+            <!-- YEAR -->
+
+            <div class="cg-group">
+
+                <label>
+                    Current Year
+                </label>
+
+                <select id="cgYear"
+                        class="cg-select">
+
+                    <option value="">
+                        Select Year
+                    </option>
+
+                    <option>1st Year</option>
+                    <option>2nd Year</option>
+                    <option>3rd Year</option>
+                    <option>Final Year</option>
+                    <option>Graduate</option>
+
+                </select>
+
+            </div>
+
+
+            <!-- INTEREST -->
+
+            <div class="cg-group">
+
+                <label>
+                    Career Interest
+                </label>
+
+                <select id="cgInterest"
+                        class="cg-select">
+
+                    <option value="">
+                        Select Career Interest
+                    </option>
+
+                    <option>
+                        Software Development
+                    </option>
+
+                    <option>
+                        Web Development
+                    </option>
+
+                    <option>
+                        Artificial Intelligence
+                    </option>
+
+                    <option>
+                        Data Science
+                    </option>
+
+                    <option>
+                        Cyber Security
+                    </option>
+
+                    <option>
+                        Cloud Computing
+                    </option>
+
+                    <option>
+                        Mobile App Development
+                    </option>
+
+                    <option>
+                        Networking
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- EXPERIENCE -->
+
+            <div class="cg-group">
+
+                <label>
+                    Experience Level
+                </label>
+
+                <select id="cgExperience"
+                        class="cg-select">
+
+                    <option>
+                        Beginner
+                    </option>
+
+                    <option>
+                        Intermediate
+                    </option>
+
+                    <option>
+                        Advanced
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- SKILLS -->
+
+            <div class="cg-group cg-full">
+
+                <label>
+                    Select Your Skills
+                </label>
+
+                <div class="cg-skills">
+
+                    <button type="button"
+                            class="cg-skill"
+                            onclick="selectSkill(this)">
+                        Python
+                    </button>
+
+                    <button type="button"
+                            class="cg-skill"
+                            onclick="selectSkill(this)">
+                        Java
+                    </button>
+
+                    <button type="button"
+                            class="cg-skill"
+                            onclick="selectSkill(this)">
+                        JavaScript
+                    </button>
+
+                    <button type="button"
+                            class="cg-skill"
+                            onclick="selectSkill(this)">
+                        HTML/CSS
+                    </button>
+
+                    <button type="button"
+                            class="cg-skill"
+                            onclick="selectSkill(this)">
+                        SQL
+                    </button>
+
+                    <button type="button"
+                            class="cg-skill"
+                            onclick="selectSkill(this)">
+                        C/C++
+                    </button>
+
+                    <button type="button"
+                            class="cg-skill"
+                            onclick="selectSkill(this)">
+                        Machine Learning
+                    </button>
+
+                    <button type="button"
+                            class="cg-skill"
+                            onclick="selectSkill(this)">
+                        Data Science
+                    </button>
+
+                    <button type="button"
+                            class="cg-skill"
+                            onclick="selectSkill(this)">
+                        Git/GitHub
+                    </button>
+
+                    <button type="button"
+                            class="cg-skill"
+                            onclick="selectSkill(this)">
+                        React
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- GOAL -->
+
+            <div class="cg-group cg-full">
+
+                <label>
+                    What is your career goal?
+                </label>
+
+                <textarea
+                    id="cgGoal"
+                    class="cg-textarea"
+                    placeholder="Example: I want to become a software developer and prepare for placements..."></textarea>
+
+            </div>
+
+        </div>
+
+
+        <button id="cgBtn"
+                class="cg-btn"
+                onclick="generateCareerGuidance()">
+
+            ✨ Generate My AI Career Guidance
+
+        </button>
+
+
+        <div id="cgStatus"
+             class="cg-status">
+
+            🤖 CareerLens AI is analyzing your profile...
+
+        </div>
+
+
+        <div id="cgError"
+             class="cg-error">
+        </div>
+
+    </div>
+
+
+    <!-- RESULT -->
+
+    <div id="cgResult"
+         class="cg-result">
+
+
+        <div class="cg-main-result">
+
+            <h2 id="cgCareerTitle">
+                Recommended Career
+            </h2>
+
+            <p id="cgDescription">
+            </p>
+
+        </div>
+
+
+        <div class="cg-result-grid">
+
+
+            <div class="cg-result-box">
+
+                <h3>
+                    💡 Why This Career?
+                </h3>
+
+                <p id="cgWhy">
+                </p>
+
+            </div>
+
+
+            <div class="cg-result-box">
+
+                <h3>
+                    🛠️ Skills To Learn
+                </h3>
+
+                <ul id="cgSkills">
+                </ul>
+
+            </div>
+
+
+            <div class="cg-result-box">
+
+                <h3>
+                    📚 Learning Plan
+                </h3>
+
+                <ul id="cgLearning">
+                </ul>
+
+            </div>
+
+
+            <div class="cg-result-box">
+
+                <h3>
+                    💼 Placement Focus
+                </h3>
+
+                <p id="cgPlacement">
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ROADMAP -->
+
+        <div class="cg-result-box cg-roadmap">
+
+            <h3>
+                🗺️ Your Career Roadmap
+            </h3>
+
+            <div id="cgRoadmap">
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<script>
+
+function selectSkill(button) {
+
+    button.classList.toggle("active");
+
+}
+
+
+async function generateCareerGuidance() {
+
+    const education =
+        document.getElementById("cgEducation").value;
+
+    const year =
+        document.getElementById("cgYear").value;
+
+    const interest =
+        document.getElementById("cgInterest").value;
+
+    const experience =
+        document.getElementById("cgExperience").value;
+
+    const goal =
+        document.getElementById("cgGoal").value.trim();
+
+
+    const skills = [];
+
+    document
+        .querySelectorAll(".cg-skill.active")
+        .forEach(function(skill) {
+
+            skills.push(
+                skill.innerText.trim()
+            );
+
+        });
+
+
+    const error =
+        document.getElementById("cgError");
+
+    const status =
+        document.getElementById("cgStatus");
+
+    const button =
+        document.getElementById("cgBtn");
+
+
+    error.style.display = "none";
+
+
+    if (!education || !interest || !goal) {
+
+        error.innerText =
+            "Please select Education, Career Interest and enter your Career Goal.";
+
+        error.style.display = "block";
+
+        return;
+
+    }
+
+
+    button.disabled = true;
+
+    status.style.display = "block";
+
+
+    try {
+
+        const response = await fetch(
+            "/api/career-guidance",
+            {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                    "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    education: education,
+
+                    year: year,
+
+                    interest: interest,
+
+                    experience: experience,
+
+                    skills: skills,
+
+                    goal: goal
+
+                })
+
+            }
+        );
+
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+
+            throw new Error(
+                data.message ||
+                "AI guidance failed."
+            );
+
+        }
+
+
+        const result =
+            data.result;
+
+
+        document.getElementById(
+            "cgCareerTitle"
+        ).innerText =
+            result.career_title || "Career Recommendation";
+
+
+        document.getElementById(
+            "cgDescription"
+        ).innerText =
+            result.description || "";
+
+
+        document.getElementById(
+            "cgWhy"
+        ).innerText =
+            result.why || "";
+
+
+        document.getElementById(
+            "cgPlacement"
+        ).innerText =
+            result.placement_focus || "";
+
+
+        createList(
+            "cgSkills",
+            result.skills
+        );
+
+
+        createList(
+            "cgLearning",
+            result.learning
+        );
+
+
+        createRoadmap(
+            result.roadmap
+        );
+
+
+        const resultBox =
+            document.getElementById(
+                "cgResult"
+            );
+
+        resultBox.style.display =
+            "block";
+
+
+        resultBox.scrollIntoView({
+            behavior: "smooth"
+        });
+
+
+    }
+
+    catch(errorObject) {
+
+        console.error(
+            errorObject
+        );
+
+        error.innerText =
+            errorObject.message ||
+            "Unable to connect with AI.";
+
+        error.style.display =
+            "block";
+
+    }
+
+    finally {
+
+        button.disabled =
+            false;
+
+        status.style.display =
+            "none";
+
+    }
+
+}
+
+
+function createList(id, items) {
+
+    const list =
+        document.getElementById(id);
+
+    list.innerHTML = "";
+
+
+    if (!Array.isArray(items)) {
+
+        return;
+
+    }
+
+
+    items.forEach(function(item) {
+
+        const li =
+            document.createElement("li");
+
+        li.innerText = item;
+
+        list.appendChild(li);
+
+    });
+
+}
+
+
+function createRoadmap(steps) {
+
+    const container =
+        document.getElementById(
+            "cgRoadmap"
+        );
+
+    container.innerHTML = "";
+
+
+    if (!Array.isArray(steps)) {
+
+        return;
+
+    }
+
+
+    steps.forEach(function(step, index) {
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "cg-step";
+
+
+        const number =
+            document.createElement("div");
+
+        number.className =
+            "cg-number";
+
+        number.innerText =
+            index + 1;
+
+
+        const text =
+            document.createElement("div");
+
+        text.innerText =
+            step;
+
+        text.style.color =
+            "#d0d5e7";
+
+        text.style.lineHeight =
+            "1.7";
+
+
+        row.appendChild(number);
+
+        row.appendChild(text);
+
+        container.appendChild(row);
+
+    });
+
+}
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% block title %} CareerLens.ai | Voice AI Interviewer {% endblock %}
+
+{% block content %}
+<style>
+:root{ --primary:#087cff; --secondary:#813cff; }
+.interview-page{ min-height:100vh; padding:40px 6%; color:#fff; background:linear-gradient(135deg,#070b18,#10172d); text-align:center; }
+.ai-avatar-big{ width:160px; height:160px; margin:30px auto; border-radius:50%; background:linear-gradient(135deg,var(--primary),var(--secondary)); display:flex; align-items:center; justify-content:center; font-size:70px; box-shadow:0 0 60px rgba(129,60,255,.4); animation:pulse 2s infinite; }
+@keyframes pulse{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.05);} }
+.ai-avatar-big.speaking{ animation:glow 0.8s infinite alternate; }
+@keyframes glow{ from{box-shadow:0 0 30px var(--primary);} to{box-shadow:0 0 80px var(--secondary);} }
+
+#statusText{ font-size:20px; color:#aeb9d2; margin:20px 0; }
+#questionText{ font-size:28px; font-weight:700; margin:20px 0; min-height:80px; }
+.btn-big{ padding:18px 40px; border-radius:50px; border:none; font-size:18px; font-weight:800; cursor:pointer; background:linear-gradient(135deg,var(--primary),var(--secondary)); color:white; margin:10px; }
+.btn-big:disabled{ opacity:.5; cursor:not-allowed; }
+.transcript-box{ max-width:800px; margin:20px auto; padding:20px; border-radius:18px; background:rgba(255,255,255,.05); text-align:left; }
+</style>
+
+<div class="interview-page">
+
+    <h1>🤖 CareerLens AI Voice Interviewer</h1>
+    <p style="color:#aeb9d2;">Click Start. The AI will speak and listen to you.</p>
+
+    <div class="ai-avatar-big" id="aiAvatar">🤖</div>
+    <div id="statusText">Click Start Interview to begin</div>
+    <div id="questionText"></div>
+
+    <button class="btn-big" id="startBtn" onclick="startInterview()">🚀 Start Interview</button>
+    <button class="btn-big" id="stopBtn" onclick="stopInterview()" style="display:none; background:#ff3b3b;">⏹️ Stop Interview</button>
+
+    <div class="transcript-box" id="transcriptBox" style="display:none;">
+        <h3>📝 Your Answers:</h3>
+        <div id="transcript"></div>
+    </div>
+</div>
+
+<script>
+let recognition;
+let isRunning = false;
+let questionIndex = 0;
+let transcript = [];
+
+const questions = [
+    "Hi, Welcome to CareerLens AI. Tell me about yourself.",
+    "What are your biggest strengths?",
+    "What is your biggest weakness?",
+    "Why do you want this job?",
+    "Explain a project you are most proud of.",
+    "Where do you see yourself in 5 years?",
+    "Do you have any questions for me?"
+];
+
+// 1. AI BOLEL - Text to Speech
+function speak(text){
+    return new Promise(resolve => {
+        document.getElementById("aiAvatar").classList.add("speaking");
+        document.getElementById("statusText").innerText = "AI is speaking...";
+        document.getElementById("questionText").innerText = text;
+
+        let utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.95;
+        utterance.pitch = 1;
+        utterance.onend = () => {
+            document.getElementById("aiAvatar").classList.remove("speaking");
+            resolve();
+        };
+        window.speechSynthesis.speak(utterance);
+    });
+}
+
+// 2. TU BOLSHIL - Speech to Text
+function listen(){
+    return new Promise(resolve => {
+        document.getElementById("statusText").innerText = "🎤 Listening... Speak now";
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if(!SpeechRecognition){
+            alert("Speech Recognition not supported in this browser. Use Chrome.");
+            resolve("");
+            return;
+        }
+        recognition = new SpeechRecognition();
+        recognition.lang = 'en-US';
+        recognition.onresult = (e) => {
+            let answer = e.results[0][0].transcript;
+            transcript.push({q: questions[questionIndex], a: answer});
+            updateTranscript();
+            resolve(answer);
+        };
+        recognition.onerror = () => resolve("");
+        recognition.start();
+    });
+}
+
+// 3. GROQ AI NE CHECK KAR - BACKEND MADHUN
+async function getFeedback(question, answer){
+    document.getElementById("statusText").innerText = "🤖 AI is thinking...";
+    try {
+        let res = await fetch("/ai_feedback", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({question: question, answer: answer})
+        });
+        let data = await res.json();
+        return data.reply;
+    } catch(err){
+        console.error(err);
+        return "Sorry, I couldn't process that. Let's continue.";
+    }
+}
+
+// 4. MAIN LOOP
+async function startInterview(){
+    isRunning = true;
+    document.getElementById("startBtn").style.display = "none";
+    document.getElementById("stopBtn").style.display = "inline-block";
+    document.getElementById("transcriptBox").style.display = "block";
+
+    await speak("Hello! I am CareerLens AI, your interviewer today. Let's begin.");
+
+    for(questionIndex = 0; questionIndex < questions.length && isRunning; questionIndex++){
+        await speak(questions[questionIndex]);
+        let answer = await listen();
+
+        if(answer){
+            let feedback = await getFeedback(questions[questionIndex], answer);
+            await speak(feedback);
+        } else {
+            await speak("I didn't catch that. Let's move to the next question.");
+        }
+    }
+
+    if(isRunning) await speak("Thank you! That was the end of the interview. You did great. Good luck!");
+    stopInterview();
+}
+
+function stopInterview(){
+    isRunning = false;
+    if(recognition) recognition.stop();
+    window.speechSynthesis.cancel();
+    document.getElementById("startBtn").style.display = "inline-block";
+    document.getElementById("stopBtn").style.display = "none";
+    document.getElementById("statusText").innerText = "Interview Ended";
+}
+
+function updateTranscript(){
+    let html = "";
+    transcript.forEach((t,i) => {
+        html += `<p><b>Q${i+1}:</b> ${t.q}<br><b>A:</b> ${t.a}</p><hr>`;
+    });
+    document.getElementById("transcript").innerHTML = html;
+}
+</script>
+{% endblock %}

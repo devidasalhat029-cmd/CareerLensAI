@@ -1,0 +1,304 @@
+{% extends "base.html" %}
+
+{% block title %}CareerLens.ai | Explore Feature{% endblock %}
+
+{% block content %}
+
+<style>
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#020b18;
+    color:#eaf6ff;
+    overflow-x:hidden;
+}
+.feature-page{
+    min-height:calc(100vh - 100px);
+    padding:55px 20px 80px;
+    background:
+      radial-gradient(circle at 15% 10%,rgba(0,153,255,.18),transparent 27%),
+      radial-gradient(circle at 85% 30%,rgba(0,100,220,.16),transparent 28%),
+      linear-gradient(145deg,#020b18,#062846 55%,#03172d);
+}
+.feature-container{
+    max-width:1180px;
+    margin:auto;
+}
+.back-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:#7ed2ff;
+    font-weight:700;
+    text-decoration:none;
+    margin-bottom:35px;
+    padding:10px 16px;
+    border:1px solid rgba(75,190,255,.3);
+    border-radius:12px;
+    background:rgba(7,43,73,.6);
+    transition:.25s;
+}
+.back-btn:hover{
+    background:#0a5b96;
+    color:#fff;
+    transform:translateX(-4px);
+}
+.feature-hero{
+    text-align:center;
+    padding:35px 20px 50px;
+}
+.feature-icon{
+    width:82px;
+    height:82px;
+    margin:0 auto 22px;
+    display:grid;
+    place-items:center;
+    border-radius:24px;
+    font-size:38px;
+    background:linear-gradient(135deg,#087eea,#0756a0);
+    box-shadow:0 0 40px rgba(0,143,255,.35);
+}
+.feature-hero .tag{
+    display:inline-block;
+    padding:8px 15px;
+    border-radius:30px;
+    background:rgba(25,145,230,.13);
+    border:1px solid rgba(77,192,255,.3);
+    color:#69caff;
+    font-size:13px;
+    font-weight:800;
+    margin-bottom:15px;
+}
+.feature-hero h1{
+    margin:0 0 16px;
+    font-size:clamp(34px,5vw,58px);
+    color:#fff;
+}
+.feature-hero h1 span{color:#4dbdff}
+.feature-hero p{
+    max-width:760px;
+    margin:auto;
+    color:#abc4d9;
+    line-height:1.75;
+    font-size:16px;
+}
+.detail-grid{
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+    gap:25px;
+    margin-top:20px;
+}
+.panel{
+    padding:30px;
+    border-radius:24px;
+    background:linear-gradient(145deg,rgba(9,48,81,.95),rgba(3,25,46,.98));
+    border:1px solid rgba(76,188,255,.2);
+    box-shadow:0 20px 55px rgba(0,0,0,.22);
+}
+.panel h2{
+    margin:0 0 18px;
+    color:#fff;
+    font-size:24px;
+}
+.panel p{
+    color:#a9c2d6;
+    line-height:1.75;
+}
+.feature-list{
+    display:grid;
+    gap:12px;
+    margin-top:20px;
+}
+.feature-item{
+    display:flex;
+    gap:13px;
+    align-items:flex-start;
+    padding:15px;
+    border-radius:15px;
+    background:rgba(7,40,68,.75);
+    border:1px solid rgba(74,184,255,.12);
+}
+.check{
+    width:28px;
+    height:28px;
+    flex:none;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    background:#087eea;
+    color:#fff;
+    font-weight:900;
+}
+.feature-item strong{
+    color:#fff;
+    display:block;
+    margin-bottom:4px;
+}
+.feature-item small{color:#9db8cd;line-height:1.5}
+.action-box{
+    margin-top:25px;
+    text-align:center;
+}
+.action-btn{
+    display:inline-block;
+    padding:14px 25px;
+    border-radius:13px;
+    background:linear-gradient(135deg,#0a8bea,#075db2);
+    color:white;
+    text-decoration:none;
+    font-weight:800;
+    border:1px solid rgba(113,207,255,.4);
+    box-shadow:0 0 25px rgba(0,126,234,.22);
+    transition:.25s;
+}
+.action-btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 0 35px rgba(0,151,255,.4);
+}
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-top:20px;
+}
+.stat{
+    text-align:center;
+    padding:18px 10px;
+    border-radius:16px;
+    background:#061e36;
+    border:1px solid rgba(73,184,255,.14);
+}
+.stat strong{
+    display:block;
+    font-size:25px;
+    color:#55c3ff;
+}
+.stat span{
+    display:block;
+    margin-top:5px;
+    color:#91aec4;
+    font-size:12px;
+}
+@media(max-width:800px){
+    .detail-grid{grid-template-columns:1fr}
+}
+@media(max-width:500px){
+    .feature-page{padding:35px 15px 60px}
+    .panel{padding:22px}
+    .stats{grid-template-columns:1fr}
+}
+</style>
+
+<div class="feature-page">
+    <div class="feature-container">
+
+        <a href="{{ url_for('home') }}" class="back-btn">← Back to Home</a>
+
+        <section class="feature-hero">
+            <div class="feature-icon">🤖</div>
+            <div class="tag">CAREERLENS AI FEATURE</div>
+
+            <h1>AI Career <span>Guidance</span></h1>
+
+            <p>
+                CareerLens.ai helps students understand their career path,
+                improve placement preparation, identify suitable skills and
+                prepare for interviews with AI-powered guidance.
+            </p>
+        </section>
+
+        <div class="detail-grid">
+
+            <div class="panel">
+                <h2>What this feature provides</h2>
+
+                <p>
+                    Explore your career journey step-by-step. CareerLens.ai
+                    brings important career and placement tools together in
+                    one simple platform.
+                </p>
+
+                <div class="feature-list">
+
+                    <div class="feature-item">
+                        <div class="check">✓</div>
+                        <div>
+                            <strong>Career Roadmap</strong>
+                            <small>Create a clear learning and career path based on your goals.</small>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="check">✓</div>
+                        <div>
+                            <strong>Skill Assessment</strong>
+                            <small>Understand which technical and soft skills you should improve.</small>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="check">✓</div>
+                        <div>
+                            <strong>Placement Preparation</strong>
+                            <small>Prepare for aptitude, technical rounds and HR interviews.</small>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="check">✓</div>
+                        <div>
+                            <strong>AI Interview Practice</strong>
+                            <small>Practice interview questions and improve your confidence.</small>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="check">✓</div>
+                        <div>
+                            <strong>Career Recommendations</strong>
+                            <small>Get useful suggestions for learning resources and career directions.</small>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="panel">
+                <h2>CareerLens Dashboard</h2>
+
+                <p>
+                    Your career preparation can be tracked from one place.
+                    Start exploring the tools available inside CareerLens.ai.
+                </p>
+
+                <div class="stats">
+                    <div class="stat">
+                        <strong>AI</strong>
+                        <span>Smart Guidance</span>
+                    </div>
+
+                    <div class="stat">
+                        <strong>24/7</strong>
+                        <span>Learning Support</span>
+                    </div>
+
+                    <div class="stat">
+                        <strong>∞</strong>
+                        <span>Practice</span>
+                    </div>
+                </div>
+
+                <div class="action-box">
+                    <a href="{{ url_for('student_dashboard') }}" class="action-btn">
+                        Open Career Dashboard →
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

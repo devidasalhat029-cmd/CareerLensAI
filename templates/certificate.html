@@ -1,0 +1,873 @@
+{% extends "base.html" %}
+
+{% block title %}
+Certificate | CareerLens.ai
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* =========================================
+   PAGE
+========================================= */
+
+.certificate-page{
+
+    min-height:100vh;
+
+    padding:35px 4%;
+
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(85,216,255,.16),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 20%,
+            rgba(120,90,255,.14),
+            transparent 30%
+        ),
+        #071321;
+
+    color:white;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+}
+
+
+/* =========================================
+   TOP
+========================================= */
+
+.page-heading{
+
+    text-align:center;
+
+    margin-bottom:25px;
+
+}
+
+.page-heading h1{
+
+    margin:0;
+
+    font-size:36px;
+
+}
+
+.page-heading h1 span{
+
+    color:#55d8ff;
+
+}
+
+.page-heading p{
+
+    color:#91aab8;
+
+}
+
+
+/* =========================================
+   CERTIFICATE
+========================================= */
+
+.certificate{
+
+    width:min(100%,1000px);
+
+    min-height:650px;
+
+    padding:55px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    text-align:center;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #102c40,
+            #081827
+        );
+
+    border:
+
+        3px solid
+        #55d8ff;
+
+    box-shadow:
+
+        0 25px 70px
+        rgba(0,0,0,.45);
+
+}
+
+
+/* INNER BORDER */
+
+.certificate::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:14px;
+
+    border:
+
+        1px solid
+        rgba(85,216,255,.45);
+
+    pointer-events:none;
+
+}
+
+
+/* =========================================
+   DECORATIVE CIRCLES
+========================================= */
+
+.circle{
+
+    position:absolute;
+
+    border-radius:50%;
+
+    background:
+        rgba(85,216,255,.07);
+
+}
+
+.circle-one{
+
+    width:180px;
+    height:180px;
+
+    left:-90px;
+    top:-90px;
+
+}
+
+.circle-two{
+
+    width:180px;
+    height:180px;
+
+    right:-90px;
+    bottom:-90px;
+
+}
+
+
+/* =========================================
+   LOGO
+========================================= */
+
+.logo{
+
+    width:70px;
+
+    height:70px;
+
+    margin:auto;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:18px;
+
+    background:#10384f;
+
+    border:
+
+        1px solid
+        rgba(85,216,255,.4);
+
+    font-size:34px;
+
+}
+
+
+/* =========================================
+   CERTIFICATE TITLE
+========================================= */
+
+.certificate h2{
+
+    margin:18px 0 5px;
+
+    color:#55d8ff;
+
+    font-size:15px;
+
+    letter-spacing:5px;
+
+}
+
+.certificate h1{
+
+    margin:8px 0 20px;
+
+    font-size:
+        clamp(30px,5vw,52px);
+
+}
+
+
+/* =========================================
+   PHOTO
+========================================= */
+
+.student-photo-box{
+
+    width:95px;
+
+    height:95px;
+
+    margin:15px auto;
+
+    padding:4px;
+
+    border-radius:50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #55d8ff,
+            #8b6cff
+        );
+
+}
+
+.student-photo{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    border-radius:50%;
+
+    border:3px solid #081827;
+
+}
+
+
+/* =========================================
+   NAME
+========================================= */
+
+.presented{
+
+    color:#91aab8;
+
+    margin-top:15px;
+
+}
+
+.student-name{
+
+    display:inline-block;
+
+    margin:10px 0;
+
+    padding:0 35px 8px;
+
+    font-size:
+        clamp(28px,5vw,46px);
+
+    font-weight:800;
+
+    color:white;
+
+    border-bottom:
+
+        2px solid
+        rgba(85,216,255,.5);
+
+}
+
+
+/* =========================================
+   DESCRIPTION
+========================================= */
+
+.description{
+
+    max-width:700px;
+
+    margin:15px auto;
+
+    color:#b6c8d1;
+
+    font-size:14px;
+
+    line-height:1.8;
+
+}
+
+
+/* =========================================
+   DETAILS
+========================================= */
+
+.details{
+
+    display:flex;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+    gap:12px;
+
+    margin:25px auto;
+
+}
+
+.detail{
+
+    min-width:150px;
+
+    padding:13px 18px;
+
+    border-radius:11px;
+
+    background:#10283a;
+
+    border:
+
+        1px solid
+        rgba(85,216,255,.13);
+
+}
+
+.detail strong{
+
+    display:block;
+
+    color:#55d8ff;
+
+    font-size:10px;
+
+    margin-bottom:5px;
+
+}
+
+.detail span{
+
+    font-size:12px;
+
+    color:#e0edf2;
+
+}
+
+
+/* =========================================
+   MODULES
+========================================= */
+
+.modules{
+
+    max-width:720px;
+
+    margin:20px auto;
+
+}
+
+.modules-title{
+
+    color:#55d8ff;
+
+    font-size:12px;
+
+    margin-bottom:10px;
+
+}
+
+.module-list{
+
+    display:flex;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+    gap:7px;
+
+}
+
+.module{
+
+    padding:7px 10px;
+
+    border-radius:7px;
+
+    background:#12344a;
+
+    color:#a9eaff;
+
+    font-size:10px;
+
+}
+
+
+/* =========================================
+   SIGNATURE
+========================================= */
+
+.signatures{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:40px;
+
+    margin-top:35px;
+
+}
+
+.signature{
+
+    flex:1;
+
+    padding-top:8px;
+
+    border-top:
+
+        1px solid
+        rgba(255,255,255,.35);
+
+    color:#9bb1bc;
+
+    font-size:10px;
+
+}
+
+
+/* =========================================
+   QR
+========================================= */
+
+.qr-section{
+
+    position:absolute;
+
+    right:35px;
+
+    bottom:30px;
+
+    text-align:center;
+
+}
+
+.qr-box{
+
+    width:65px;
+
+    height:65px;
+
+    padding:5px;
+
+    background:white;
+
+    border-radius:6px;
+
+}
+
+.qr-box img{
+
+    width:100%;
+
+    height:100%;
+
+}
+
+.qr-text{
+
+    margin-top:4px;
+
+    font-size:8px;
+
+    color:#91aab8;
+
+}
+
+
+/* =========================================
+   ACTION BUTTONS
+========================================= */
+
+.actions{
+
+    margin-top:25px;
+
+    display:flex;
+
+    gap:12px;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+}
+
+.action-btn{
+
+    padding:13px 22px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #55d8ff,
+            #159bd6
+        );
+
+    color:white;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+}
+
+.action-btn.secondary{
+
+    background:#162e40;
+
+}
+
+
+/* =========================================
+   PRINT
+========================================= */
+
+@media print{
+
+    body *{
+
+        visibility:hidden;
+
+    }
+
+    .certificate,
+    .certificate *{
+
+        visibility:visible;
+
+    }
+
+    .certificate{
+
+        position:absolute;
+
+        left:0;
+
+        top:0;
+
+        width:100%;
+
+        box-shadow:none;
+
+    }
+
+    .page-heading,
+    .actions{
+
+        display:none;
+
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media(max-width:650px){
+
+    .certificate{
+
+        padding:35px 20px;
+
+    }
+
+    .signatures{
+
+        margin-top:25px;
+
+    }
+
+    .qr-section{
+
+        position:static;
+
+        margin:20px auto 0;
+
+        width:max-content;
+
+    }
+
+}
+
+</style>
+
+
+<div class="certificate-page">
+
+
+    <!-- PAGE HEADING -->
+
+    <div class="page-heading">
+
+        <h1>
+            CareerLens<span>.ai</span>
+        </h1>
+
+        <p>
+            Placement Achievement Certificate
+        </p>
+
+    </div>
+
+
+    <!-- =========================================
+         CERTIFICATE
+    ========================================== -->
+
+    <div class="certificate">
+
+
+        <div class="circle circle-one"></div>
+
+        <div class="circle circle-two"></div>
+
+
+        <!-- LOGO -->
+
+        <div class="logo">
+            🏆
+        </div>
+
+
+        <h2>
+            CERTIFICATE OF ACHIEVEMENT
+        </h2>
+
+
+        <h1>
+            Placement Preparation
+        </h1>
+
+
+        <!-- PHOTO -->
+
+        <div class="student-photo-box">
+
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename='uploads/' + photo
+                ) }}"
+                class="student-photo"
+                alt="Student Photo">
+
+        </div>
+
+
+        <div class="presented">
+
+            This certificate is proudly presented to
+
+        </div>
+
+
+        <!-- NAME -->
+
+        <div class="student-name">
+
+            {{ name }}
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+
+        <p class="description">
+
+            For successfully completing the
+            CareerLens.ai Placement Preparation
+            program and demonstrating dedication
+            towards aptitude, technical knowledge,
+            coding and interview preparation.
+
+        </p>
+
+
+        <!-- DETAILS -->
+
+        <div class="details">
+
+
+            <div class="detail">
+
+                <strong>
+                    CERTIFICATE ID
+                </strong>
+
+                <span>
+                    {{ certificate_id }}
+                </span>
+
+            </div>
+
+
+            <div class="detail">
+
+                <strong>
+                    SCORE
+                </strong>
+
+                <span>
+                    {{ score }}%
+                </span>
+
+            </div>
+
+
+            <div class="detail">
+
+                <strong>
+                    COMPLETED
+                </strong>
+
+                <span>
+                    {{ completion_date }}
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- MODULES -->
+
+        <div class="modules">
+
+            <div class="modules-title">
+
+                COMPLETED PREPARATION MODULES
+
+            </div>
+
+
+            <div class="module-list">
+
+                {% for module in modules %}
+
+                    <span class="module">
+
+                        ✓ {{ module }}
+
+                    </span>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <!-- SIGNATURES -->
+
+        <div class="signatures">
+
+            <div class="signature">
+
+                CareerLens.ai
+
+            </div>
+
+
+            <div class="signature">
+
+                Placement Program
+
+            </div>
+
+        </div>
+
+
+        <!-- QR CODE -->
+
+        <div class="qr-section">
+
+            <div class="qr-box">
+
+                <img
+                    src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data={{ request.url }}"
+                    alt="Certificate Verification QR">
+
+            </div>
+
+            <div class="qr-text">
+
+                Scan to verify
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ACTIONS -->
+
+    <div class="actions">
+
+        <button
+            class="action-btn"
+            onclick="window.print()">
+
+            🖨️ Print / Save PDF
+
+        </button>
+
+
+        <button
+            class="action-btn secondary"
+            onclick="history.back()">
+
+            ← Back
+
+        </button>
+
+    </div>
+
+
+</div>
+
+{% endblock %}

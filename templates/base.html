@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>
+    {% block title %}CareerLens AI{% endblock %}
+</title>
+
+
+<style>
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f7f9ff;
+    color: #30364e;
+}
+
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.navbar {
+
+    width: 100%;
+    min-height: 70px;
+
+    padding: 12px 35px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background:
+        linear-gradient(
+            90deg,
+            #176dcc,
+            #6255d7,
+            #b84d9e
+        );
+
+    box-shadow:
+        0 5px 20px rgba(40,50,100,.15);
+
+    position: sticky;
+    top: 0;
+
+    z-index: 1000;
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.brand {
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 23px;
+
+    font-weight: 900;
+
+    letter-spacing: .3px;
+
+    white-space: nowrap;
+}
+
+
+.brand span {
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   NAV LINKS
+========================================================= */
+
+.nav-links {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    gap: 6px;
+
+    flex-wrap: nowrap;
+}
+
+
+.nav-links a {
+
+    color: white;
+
+    text-decoration: none;
+
+    padding: 9px 11px;
+
+    border-radius: 10px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    transition: .2s;
+
+    white-space: nowrap;
+}
+
+
+.nav-links a:hover {
+
+    background:
+        rgba(255,255,255,.18);
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* =========================================================
+   AI SPECIAL LINKS
+========================================================= */
+
+.ai-nav-link {
+
+    background:
+        rgba(255,255,255,.13);
+
+    border:
+        1px solid rgba(255,255,255,.20);
+}
+
+
+.ai-nav-link:hover {
+
+    background:
+        rgba(255,255,255,.25) !important;
+}
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+.nav-profile {
+
+    display: flex !important;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 4px !important;
+
+    background:
+        rgba(255,255,255,.08);
+}
+
+
+.nav-photo {
+
+    width: 34px;
+
+    height: 34px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    border:
+        2px solid white;
+}
+
+
+.nav-avatar {
+
+    width: 34px;
+
+    height: 34px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: white;
+
+    color: #5c53d7;
+
+    font-weight: 900;
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   FLASH MESSAGES
+========================================================= */
+
+.flash-container {
+
+    max-width: 1100px;
+
+    margin:
+        18px auto 0;
+
+    padding:
+        0 20px;
+}
+
+
+.flash {
+
+    padding:
+        13px 17px;
+
+    margin-bottom:
+        10px;
+
+    border-radius:
+        11px;
+
+    font-weight:
+        600;
+
+    border:
+        1px solid transparent;
+}
+
+
+.flash-success {
+
+    background:
+        #e8f8ee;
+
+    color:
+        #176b3a;
+
+    border-color:
+        #bce8ca;
+}
+
+
+.flash-danger {
+
+    background:
+        #fff0f0;
+
+    color:
+        #a52d2d;
+
+    border-color:
+        #f1c3c3;
+}
+
+
+.flash-warning {
+
+    background:
+        #fff8e5;
+
+    color:
+        #87620c;
+
+    border-color:
+        #f0dda2;
+}
+
+
+.flash-info {
+
+    background:
+        #eaf5ff;
+
+    color:
+        #1b5e94;
+
+    border-color:
+        #c3e1f8;
+}
+
+
+/* =========================================================
+   COMMON BUTTON
+========================================================= */
+
+.feature-btn {
+
+    display:
+        inline-block;
+
+    padding:
+        11px 18px;
+
+    border-radius:
+        10px;
+
+    text-decoration:
+        none;
+
+    color:
+        white;
+
+    font-weight:
+        700;
+
+    background:
+        linear-gradient(
+            90deg,
+            #247edc,
+            #6858df
+        );
+
+    transition:
+        .2s;
+}
+
+
+.feature-btn:hover {
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 6px 15px
+        rgba(80,70,180,.2);
+}
+
+
+/* =========================================================
+   PAGE CONTENT
+========================================================= */
+
+.page-content {
+
+    min-height:
+        calc(100vh - 70px);
+}
+
+
+/* =========================================================
+   DESKTOP — SMALLER NAV TEXT
+========================================================= */
+
+@media (max-width: 1250px) {
+
+    .navbar {
+
+        padding:
+            12px 20px;
+    }
+
+
+    .brand {
+
+        font-size:
+            20px;
+    }
+
+
+    .nav-links {
+
+        gap:
+            4px;
+    }
+
+
+    .nav-links a {
+
+        font-size:
+            11px;
+
+        padding:
+            8px 8px;
+    }
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1050px) {
+
+    .navbar {
+
+        align-items:
+            flex-start;
+
+        flex-wrap:
+            wrap;
+
+        gap:
+            10px;
+    }
+
+
+    .brand {
+
+        margin-top:
+            4px;
+    }
+
+
+    .nav-links {
+
+        width:
+            100%;
+
+        justify-content:
+            flex-start;
+
+        overflow-x:
+            auto;
+
+        padding-bottom:
+            6px;
+
+        scrollbar-width:
+            thin;
+    }
+
+
+    .nav-links a {
+
+        font-size:
+            12px;
+
+        padding:
+            9px 10px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .navbar {
+
+        padding:
+            12px 14px;
+    }
+
+
+    .brand {
+
+        font-size:
+            18px;
+    }
+
+
+    .nav-links {
+
+        gap:
+            5px;
+
+        overflow-x:
+            auto;
+    }
+
+
+    .nav-links a {
+
+        font-size:
+            11px;
+
+        padding:
+            8px 9px;
+    }
+
+
+    .nav-photo,
+    .nav-avatar {
+
+        width:
+            31px;
+
+        height:
+            31px;
+    }
+
+
+    .flash-container {
+
+        padding:
+            0 12px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<nav class="navbar">
+
+
+    <!-- =====================================================
+         BRAND
+    ====================================================== -->
+
+    <a
+        href="{{ url_for('home') }}"
+        class="brand"
+    >
+        Career<span>Lens AI</span>
+    </a>
+
+
+
+    <!-- =====================================================
+         NAVIGATION
+    ====================================================== -->
+
+    <div class="nav-links">
+
+
+        {% if session.get("user_id") %}
+
+
+            <!-- =================================================
+                 STUDENT NAVBAR
+            ================================================= -->
+
+            {% if session.get("role") == "student" %}
+
+
+                <!-- DASHBOARD -->
+
+                <a
+                    href="{{ url_for('student_dashboard') }}"
+                >
+                    Dashboard
+                </a>
+
+
+
+                <!-- PLACEMENT PREPARATION -->
+
+                <a
+                    href="{{ url_for('placement') }}"
+                    class="ai-nav-link"
+                >
+                    💼 Placement Preparation
+                </a>
+
+
+
+                <!-- AI INTERVIEWER -->
+
+                <a
+                    href="{{ url_for('ai_voice_interview') }}"
+                    class="ai-nav-link"
+                >
+                    🤖 AI Interviewer
+                </a>
+
+
+
+                <!-- AI ASSISTANT -->
+
+                <a
+                    href="{{ url_for('ai_assistant') }}"
+                    class="ai-nav-link"
+                >
+                    ✨ AI Assistant
+                </a>
+
+
+
+                <!-- JOBS -->
+
+                <a
+                    href="{{ url_for('jobs') }}"
+                >
+                    💼 Jobs
+                </a>
+
+
+
+                <!-- RESUME -->
+
+                <a
+                    href="{{ url_for('resume_builder') }}"
+                >
+                    📄 Resume
+                </a>
+
+
+
+                <!-- LEARNING HUB -->
+
+                <a
+                    href="{{ url_for('learning_hub') }}"
+                >
+                    📚 Learning Hub
+                </a>
+
+
+
+                <!-- NOTIFICATIONS -->
+
+                <a
+                    href="{{ url_for('notifications') }}"
+                >
+                    🔔 Notifications
+                </a>
+
+
+
+                <!-- CAREER GUIDANCE -->
+
+                <a
+                    href="{{ url_for('guidance') }}"
+                    class="ai-nav-link"
+                >
+                    🎯 Career Guidance
+                </a>
+
+
+
+                <!-- CAREER TEST -->
+
+                <a
+                    href="{{ url_for('career_test') }}"
+                >
+                    🧠 Career Test
+                </a>
+
+
+
+                <!-- =================================================
+                     PROFILE
+                ================================================== -->
+
+                {% if session.get("photo")
+                      and session.get("photo") != "default.png" %}
+
+
+                    <a
+                        href="{{ url_for('my_profile') }}"
+                        class="nav-profile"
+                        title="My Profile"
+                    >
+
+                        <img
+                            src="{{ url_for(
+                                'static',
+                                filename='uploads/profile/' +
+                                session.get('photo')
+                            ) }}"
+                            class="nav-photo"
+                            alt="Profile"
+                        >
+
+                    </a>
+
+
+                {% else %}
+
+
+                    <a
+                        href="{{ url_for('my_profile') }}"
+                        class="nav-profile"
+                        title="My Profile"
+                    >
+
+                        <span class="nav-avatar">
+
+                            {{
+                                session.get(
+                                    "name",
+                                    "U"
+                                )[0]|upper
+                            }}
+
+                        </span>
+
+                    </a>
+
+
+                {% endif %}
+
+
+
+                <!-- LOGOUT -->
+
+                <a
+                    href="{{ url_for('logout') }}"
+                >
+                    Logout
+                </a>
+
+
+
+            <!-- =================================================
+                 ADMIN NAVBAR
+            ================================================== -->
+
+            {% elif session.get("role") == "admin" %}
+
+
+                <a
+                    href="{{ url_for('admin_dashboard') }}"
+                >
+                    Admin Dashboard
+                </a>
+
+
+                <a
+                    href="{{ url_for('add_job') }}"
+                >
+                    💼 Add Job
+                </a>
+
+
+                <a
+                    href="{{ url_for('add_notification') }}"
+                >
+                    🔔 Add Notification
+                </a>
+
+
+                <a
+                    href="{{ url_for('logout') }}"
+                >
+                    Logout
+                </a>
+
+
+            {% endif %}
+
+
+
+        <!-- =====================================================
+             NOT LOGGED IN
+        ====================================================== -->
+
+        {% else %}
+
+
+            <!--
+                IMPORTANT:
+                Student login झाल्यावर Home दिसणार नाही.
+                Logged-out user साठी मात्र Home ठेवले आहे.
+            -->
+
+            <a
+                href="{{ url_for('home') }}"
+            >
+                Home
+            </a>
+
+
+            <a
+                href="{{ url_for('login') }}"
+            >
+                Login
+            </a>
+
+
+            <a
+                href="{{ url_for('register') }}"
+            >
+                Register
+            </a>
+
+
+        {% endif %}
+
+
+    </div>
+
+</nav>
+
+
+
+<!-- =========================================================
+     FLASH MESSAGES
+========================================================= -->
+
+<div class="flash-container">
+
+    {% with messages =
+        get_flashed_messages(
+            with_categories=true
+        )
+    %}
+
+
+        {% if messages %}
+
+
+            {% for category, message in messages %}
+
+
+                <div
+                    class="flash flash-{{ category }}"
+                >
+
+                    {{ message }}
+
+                </div>
+
+
+            {% endfor %}
+
+
+        {% endif %}
+
+
+    {% endwith %}
+
+</div>
+
+
+
+<!-- =========================================================
+     PAGE CONTENT
+========================================================= -->
+
+<main class="page-content">
+
+    {% block content %}
+
+    {% endblock %}
+
+</main>
+
+
+</body>
+
+</html>

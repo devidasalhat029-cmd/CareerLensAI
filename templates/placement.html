@@ -1,0 +1,1315 @@
+{% extends "base.html" %}
+
+{% block title %}Placement Preparation | CareerLens.ai{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* =====================================================
+   MAIN PAGE
+===================================================== */
+
+.placement-page{
+    min-height:100vh;
+    padding:35px 5%;
+    color:#f5fbff;
+
+    background:
+        radial-gradient(
+            circle at 8% 8%,
+            rgba(0,210,255,.15),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 92% 18%,
+            rgba(130,90,255,.14),
+            transparent 30%
+        ),
+        #071321;
+}
+
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.placement-hero{
+    max-width:1100px;
+    margin:auto;
+    text-align:center;
+    padding:25px 15px 35px;
+}
+
+.placement-badge{
+    display:inline-block;
+
+    padding:8px 18px;
+
+    border-radius:30px;
+
+    color:#65dcff;
+
+    background:rgba(80,210,255,.08);
+
+    border:1px solid rgba(80,210,255,.30);
+
+    font-size:12px;
+
+    font-weight:700;
+}
+
+.placement-hero h1{
+    margin:18px 0 12px;
+
+    font-size:
+        clamp(36px,6vw,60px);
+
+    line-height:1.05;
+}
+
+.placement-hero h1 span{
+    color:#55d8ff;
+}
+
+.placement-hero p{
+    max-width:760px;
+
+    margin:auto;
+
+    color:#9db3c1;
+
+    font-size:15px;
+
+    line-height:1.8;
+}
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+.search-box{
+    max-width:720px;
+
+    margin:0 auto 35px;
+}
+
+.search-box input{
+    width:100%;
+
+    padding:16px 20px;
+
+    border-radius:15px;
+
+    border:1px solid
+        rgba(85,216,255,.20);
+
+    outline:none;
+
+    background:#0c2031;
+
+    color:white;
+
+    font-size:15px;
+}
+
+.search-box input::placeholder{
+    color:#718b99;
+}
+
+.search-box input:focus{
+    border-color:#55d8ff;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(85,216,255,.07);
+}
+
+
+/* =====================================================
+   STATS
+===================================================== */
+
+.placement-stats{
+    max-width:1100px;
+
+    margin:0 auto 40px;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(auto-fit,minmax(170px,1fr));
+
+    gap:15px;
+}
+
+.stat-card{
+    padding:20px;
+
+    text-align:center;
+
+    border-radius:17px;
+
+    background:#0b1d2d;
+
+    border:
+        1px solid
+        rgba(85,216,255,.13);
+
+    transition:.3s;
+}
+
+.stat-card:hover{
+    transform:translateY(-4px);
+
+    border-color:
+        rgba(85,216,255,.40);
+}
+
+.stat-icon{
+    font-size:25px;
+
+    margin-bottom:8px;
+}
+
+.stat-card strong{
+    display:block;
+
+    color:#55d8ff;
+
+    font-size:25px;
+
+    margin-bottom:5px;
+}
+
+.stat-card span{
+    color:#91aab8;
+
+    font-size:12px;
+}
+
+
+/* =====================================================
+   SECTION HEADER
+===================================================== */
+
+.preparation-section{
+    max-width:1100px;
+
+    margin:0 auto;
+}
+
+.section-header{
+    margin-bottom:20px;
+}
+
+.section-header h2{
+    margin:0;
+
+    font-size:28px;
+}
+
+.section-header p{
+    margin-top:7px;
+
+    color:#91aab8;
+
+    font-size:13px;
+}
+
+
+/* =====================================================
+   MODULE GRID
+===================================================== */
+
+.module-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(auto-fit,minmax(260px,1fr));
+
+    gap:20px;
+}
+
+
+/* =====================================================
+   MODULE CARD
+===================================================== */
+
+.module-card{
+    position:relative;
+
+    overflow:hidden;
+
+    padding:24px;
+
+    border-radius:21px;
+
+    background:#0b1d2d;
+
+    border:
+        1px solid
+        rgba(85,216,255,.14);
+
+    transition:.3s;
+}
+
+.module-card::before{
+    content:"";
+
+    position:absolute;
+
+    width:130px;
+
+    height:130px;
+
+    right:-65px;
+
+    top:-65px;
+
+    border-radius:50%;
+
+    background:
+        rgba(85,216,255,.07);
+
+    pointer-events:none;
+}
+
+.module-card:hover{
+    transform:translateY(-7px);
+
+    border-color:#55d8ff;
+
+    box-shadow:
+        0 18px 40px
+        rgba(0,0,0,.30);
+}
+
+
+/* =====================================================
+   ICON
+===================================================== */
+
+.module-icon{
+    width:58px;
+
+    height:58px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:16px;
+
+    background:#10334a;
+
+    border:
+        1px solid
+        rgba(85,216,255,.20);
+
+    font-size:28px;
+
+    margin-bottom:17px;
+}
+
+
+/* =====================================================
+   CARD TEXT
+===================================================== */
+
+.module-card h3{
+    margin:0 0 9px;
+
+    font-size:20px;
+
+    color:#f4fbff;
+}
+
+.module-card p{
+    color:#91aab8;
+
+    font-size:13px;
+
+    line-height:1.65;
+
+    min-height:65px;
+
+    margin:0;
+}
+
+
+/* =====================================================
+   TAGS
+===================================================== */
+
+.module-tags{
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:7px;
+
+    margin:16px 0;
+}
+
+.module-tag{
+    padding:6px 10px;
+
+    border-radius:8px;
+
+    background:#102d42;
+
+    color:#9fe8ff;
+
+    font-size:10px;
+
+    border:
+        1px solid
+        rgba(85,216,255,.08);
+}
+
+
+/* =====================================================
+   BUTTON
+===================================================== */
+
+.module-btn{
+    display:block;
+
+    width:100%;
+
+    margin-top:15px;
+
+    padding:13px 15px;
+
+    text-align:center;
+
+    text-decoration:none;
+
+    border:none;
+
+    border-radius:11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #55d8ff,
+            #159bd6
+        );
+
+    color:#ffffff !important;
+
+    font-weight:700;
+
+    font-size:13px;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.module-btn:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 8px 22px
+        rgba(21,155,214,.30);
+}
+
+.module-btn:active{
+    transform:scale(.98);
+}
+
+
+/* =====================================================
+   ROADMAP
+===================================================== */
+
+.roadmap{
+    max-width:1100px;
+
+    margin:45px auto 0;
+
+    padding:25px;
+
+    border-radius:21px;
+
+    background:#0b1d2d;
+
+    border:
+        1px solid
+        rgba(85,216,255,.14);
+}
+
+.roadmap h2{
+    margin:0 0 20px;
+
+    font-size:25px;
+}
+
+.roadmap-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(auto-fit,minmax(145px,1fr));
+
+    gap:12px;
+}
+
+.roadmap-item{
+    padding:17px;
+
+    text-align:center;
+
+    border-radius:14px;
+
+    background:#10283a;
+
+    border:
+        1px solid
+        rgba(85,216,255,.10);
+}
+
+.roadmap-number{
+    width:36px;
+
+    height:36px;
+
+    margin:0 auto 9px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:#123c52;
+
+    color:#55d8ff;
+
+    font-weight:800;
+}
+
+.roadmap-item strong{
+    display:block;
+
+    font-size:13px;
+
+    color:#eafaff;
+}
+
+.roadmap-item small{
+    display:block;
+
+    margin-top:5px;
+
+    color:#8fa8b6;
+
+    font-size:10px;
+}
+
+
+/* =====================================================
+   FOOTER CTA
+===================================================== */
+
+.placement-cta{
+    max-width:900px;
+
+    margin:45px auto 10px;
+
+    text-align:center;
+
+    padding:32px 20px;
+
+    border-radius:22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(85,216,255,.10),
+            rgba(120,90,255,.08)
+        );
+
+    border:
+        1px solid
+        rgba(85,216,255,.15);
+}
+
+.placement-cta h2{
+    margin:0 0 10px;
+}
+
+.placement-cta p{
+    margin:0;
+
+    color:#91aab8;
+
+    line-height:1.7;
+}
+
+
+/* =====================================================
+   EMPTY SEARCH
+===================================================== */
+
+.no-result{
+    display:none;
+
+    text-align:center;
+
+    padding:35px;
+
+    color:#91aab8;
+
+    grid-column:1/-1;
+
+    background:#0b1d2d;
+
+    border-radius:18px;
+
+    border:
+        1px solid
+        rgba(85,216,255,.10);
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:600px){
+
+    .placement-page{
+        padding:25px 4%;
+    }
+
+    .placement-hero{
+        padding-top:15px;
+    }
+
+    .placement-hero h1{
+        font-size:38px;
+    }
+
+    .module-card{
+        padding:20px;
+    }
+
+    .roadmap{
+        padding:20px;
+    }
+
+}
+
+</style>
+
+
+<div class="placement-page">
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="placement-hero">
+
+    <div class="placement-badge">
+        🚀 CAREERLENS.AI • PLACEMENT ZONE
+    </div>
+
+    <h1>
+        Placement
+        <span>Preparation</span>
+    </h1>
+
+    <p>
+        Build your placement skills step by step.
+        Practice aptitude, technical MCQs,
+        coding and interviews with
+        CareerLens.ai.
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+     SEARCH
+===================================================== -->
+
+<div class="search-box">
+
+    <input
+        id="moduleSearch"
+        type="text"
+        placeholder="🔎 Search preparation module..."
+        onkeyup="searchModules()">
+
+</div>
+
+
+<!-- =====================================================
+     STATS
+===================================================== -->
+
+<div class="placement-stats">
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            🧠
+        </div>
+
+        <strong>
+            100+
+        </strong>
+
+        <span>
+            Aptitude Questions
+        </span>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            💻
+        </div>
+
+        <strong>
+            50+
+        </strong>
+
+        <span>
+            Technical MCQs
+        </span>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            ⌨️
+        </div>
+
+        <strong>
+            50+
+        </strong>
+
+        <span>
+            Coding Problems
+        </span>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            🤖
+        </div>
+
+        <strong>
+            AI
+        </strong>
+
+        <span>
+            Interview Practice
+        </span>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     PREPARATION MODULES
+===================================================== -->
+
+<section class="preparation-section">
+
+    <div class="section-header">
+
+        <h2>
+            🎯 Start Your Preparation
+        </h2>
+
+        <p>
+            Choose a module below and start practicing.
+        </p>
+
+    </div>
+
+
+    <div class="module-grid">
+
+
+        <!-- =================================================
+             APTITUDE
+        ================================================== -->
+
+        <div
+            class="module-card"
+            data-search="aptitude quantitative reasoning verbal">
+
+            <div class="module-icon">
+                🧠
+            </div>
+
+            <h3>
+                Aptitude
+            </h3>
+
+            <p>
+                Practice quantitative aptitude,
+                logical reasoning and verbal
+                ability questions for placement exams.
+            </p>
+
+            <div class="module-tags">
+
+                <span class="module-tag">
+                    Quantitative
+                </span>
+
+                <span class="module-tag">
+                    Reasoning
+                </span>
+
+                <span class="module-tag">
+                    Verbal
+                </span>
+
+            </div>
+
+            <a
+                href="{{ url_for('aptitude') }}"
+                class="module-btn">
+
+                Start Aptitude →
+
+            </a>
+
+        </div>
+
+
+        <!-- =================================================
+             TECHNICAL MCQ
+        ================================================== -->
+
+        <div
+            class="module-card"
+            data-search="technical mcq programming dbms oop operating system networking">
+
+            <div class="module-icon">
+                💻
+            </div>
+
+            <h3>
+                Technical MCQ
+            </h3>
+
+            <p>
+                Test your knowledge of programming,
+                DBMS, OOP, Operating Systems and
+                Computer Networks.
+            </p>
+
+            <div class="module-tags">
+
+                <span class="module-tag">
+                    Programming
+                </span>
+
+                <span class="module-tag">
+                    DBMS
+                </span>
+
+                <span class="module-tag">
+                    OOP
+                </span>
+
+                <span class="module-tag">
+                    OS
+                </span>
+
+            </div>
+
+            <a
+                href="{{ url_for('technical_mcq') }}"
+                class="module-btn">
+
+                Start Technical MCQ →
+
+            </a>
+
+        </div>
+
+
+        <!-- =================================================
+             CODING
+        ================================================== -->
+
+        <div
+            class="module-card"
+            data-search="coding practice dsa algorithms programming problem solving">
+
+            <div class="module-icon">
+                ⌨️
+            </div>
+
+            <h3>
+                Coding Practice
+            </h3>
+
+            <p>
+                Solve programming problems and
+                improve your DSA, algorithms and
+                problem-solving skills.
+            </p>
+
+            <div class="module-tags">
+
+                <span class="module-tag">
+                    DSA
+                </span>
+
+                <span class="module-tag">
+                    Algorithms
+                </span>
+
+                <span class="module-tag">
+                    Problem Solving
+                </span>
+
+            </div>
+
+            <a
+                href="{{ url_for('coading_practice') }}"
+                class="module-btn">
+
+                Start Coding →
+
+            </a>
+
+        </div>
+
+
+        <!-- =================================================
+             AI INTERVIEWER
+        ================================================== -->
+
+        <div
+            class="module-card"
+            data-search="ai interviewer voice interview hr technical">
+
+            <div class="module-icon">
+                🤖
+            </div>
+
+            <h3>
+                AI Interviewer
+            </h3>
+
+            <p>
+                Practice a real interview with
+                an AI interviewer and improve your
+                confidence, communication and answers.
+            </p>
+
+            <div class="module-tags">
+
+                <span class="module-tag">
+                    AI
+                </span>
+
+                <span class="module-tag">
+                    Voice
+                </span>
+
+                <span class="module-tag">
+                    HR
+                </span>
+
+                <span class="module-tag">
+                    Technical
+                </span>
+
+            </div>
+
+            <a
+                href="{{ url_for('ai_voice_interview') }}"
+                class="module-btn">
+
+                Start AI Interview →
+
+            </a>
+
+        </div>
+
+
+        <!-- =================================================
+             TECHNICAL INTERVIEW
+        ================================================== -->
+
+        <div
+            class="module-card"
+            data-search="technical interview programming projects cs fundamentals">
+
+            <div class="module-icon">
+                👨‍💻
+            </div>
+
+            <h3>
+                Technical Interview
+            </h3>
+
+            <p>
+                Prepare programming, projects,
+                computer science fundamentals
+                and technical interview questions.
+            </p>
+
+            <div class="module-tags">
+
+                <span class="module-tag">
+                    Programming
+                </span>
+
+                <span class="module-tag">
+                    Projects
+                </span>
+
+                <span class="module-tag">
+                    CS Fundamentals
+                </span>
+
+            </div>
+
+            <a
+                href="{{ url_for('hr_interview') }}"
+                class="module-btn">
+
+                Start Technical Interview →
+
+            </a>
+
+        </div>
+
+        <!-- RESUME BUILDER -->
+
+        <div
+            class="module-card"
+            data-search="resume builder cv resume">
+
+            <div class="module-icon">
+                📄
+            </div>
+
+            <h3>
+                Resume Builder
+            </h3>
+
+            <p>
+                Create a professional, placement-ready
+                resume with your skills, education,
+                projects and achievements.
+            </p>
+
+            <div class="module-tags">
+
+                <span class="module-tag">
+                    Resume
+                </span>
+
+                <span class="module-tag">
+                                CV
+                </span>
+
+                <span class="module-tag">
+                                Career
+                </span>
+
+                </div>
+
+                <a
+                            href="{{ url_for('resume_builder') }}"
+                            class="module-btn">
+
+                            Build Resume →
+
+                </a>
+
+        </div>
+        <!-- =================================================
+             HR INTERVIEW
+        ================================================== -->
+
+        <div
+            class="module-card"
+            data-search="hr interview communication confidence questions">
+
+            <div class="module-icon">
+                🎤
+            </div>
+
+            <h3>
+                HR Interview
+            </h3>
+
+            <p>
+                Practice common HR questions,
+                communication skills and
+                confident interview answers.
+            </p>
+
+            <div class="module-tags">
+
+                <span class="module-tag">
+                    HR Questions
+                </span>
+
+                <span class="module-tag">
+                    Communication
+                </span>
+
+                <span class="module-tag">
+                    Confidence
+                </span>
+
+            </div>
+
+            <a
+                href="{{ url_for('hr_interview') }}"
+                class="module-btn">
+
+                Start HR Interview →
+
+            </a>
+
+        </div>
+
+
+        <!-- NO RESULT -->
+
+        <div
+            id="noResult"
+            class="no-result">
+
+            🔎 No preparation module found.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ROADMAP
+===================================================== -->
+
+<section class="roadmap">
+
+    <h2>
+        🛣️ Placement Preparation Roadmap
+    </h2>
+
+    <div class="roadmap-grid">
+
+
+        <div class="roadmap-item">
+
+            <div class="roadmap-number">
+                1
+            </div>
+
+            <strong>
+                Aptitude
+            </strong>
+
+            <small>
+                Build speed
+            </small>
+
+        </div>
+
+
+        <div class="roadmap-item">
+
+            <div class="roadmap-number">
+                2
+            </div>
+
+            <strong>
+                Technical MCQ
+            </strong>
+
+            <small>
+                Strengthen concepts
+            </small>
+
+        </div>
+
+
+        <div class="roadmap-item">
+
+            <div class="roadmap-number">
+                3
+            </div>
+
+            <strong>
+                Coding
+            </strong>
+
+            <small>
+                Improve logic
+            </small>
+
+        </div>
+
+
+        <div class="roadmap-item">
+
+            <div class="roadmap-number">
+                4
+            </div>
+
+            <strong>
+                Technical Interview
+            </strong>
+
+            <small>
+                Prepare concepts
+            </small>
+
+        </div>
+
+
+        <div class="roadmap-item">
+
+            <div class="roadmap-number">
+                5
+            </div>
+
+            <strong>
+                AI Interviewer
+            </strong>
+
+            <small>
+                Practice interview
+            </small>
+
+        </div>
+
+
+        <div class="roadmap-item">
+
+            <div class="roadmap-number">
+                6
+            </div>
+
+            <strong>
+                HR Interview
+            </strong>
+
+            <small>
+                Build confidence
+            </small>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     FINAL CTA
+===================================================== -->
+
+<div class="placement-cta">
+
+    <h2>
+        🚀 Ready for Your Placement?
+    </h2>
+
+    <p>
+        Practice every day, strengthen your
+        technical skills and become confident
+        for your placement interviews.
+    </p>
+
+</div>
+
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   SEARCH MODULES
+===================================================== */
+
+function searchModules(){
+
+    const input =
+        document
+        .getElementById("moduleSearch")
+        .value
+        .toLowerCase()
+        .trim();
+
+    const cards =
+        document.querySelectorAll(".module-card");
+
+    const noResult =
+        document.getElementById("noResult");
+
+    let found = 0;
+
+    cards.forEach(function(card){
+
+        const text =
+            card
+            .getAttribute("data-search")
+            .toLowerCase();
+
+        if(text.includes(input)){
+
+            card.style.display = "";
+
+            found++;
+
+        }else{
+
+            card.style.display = "none";
+
+        }
+
+    });
+
+    if(found === 0){
+
+        noResult.style.display = "block";
+
+    }else{
+
+        noResult.style.display = "none";
+
+    }
+
+}
+
+</script>
+
+
+{% endblock %}

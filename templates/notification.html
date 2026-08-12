@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}CareerAI | Notifications{% endblock %}
+
+{% block content %}
+
+<style>
+.notification-page {
+    min-height: 100vh;
+    padding: 45px 20px;
+    background:
+        radial-gradient(circle at 10% 10%, #e5f6ff, transparent 30%),
+        radial-gradient(circle at 90% 10%, #eeeaff, transparent 30%),
+        #f8faff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.notification-container {
+    max-width: 850px;
+    margin: auto;
+}
+
+.notification-header {
+    background: white;
+    padding: 30px;
+    border-radius: 24px;
+    margin-bottom: 20px;
+    border: 1px solid #e5e7f0;
+    box-shadow: 0 15px 40px rgba(50,60,120,.08);
+}
+
+.notification-header h1 {
+    margin: 0 0 8px;
+    color: #2d334d;
+}
+
+.notification-header p {
+    margin: 0;
+    color: #7b8297;
+}
+
+.notification-card {
+    background: white;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 18px;
+    border: 1px solid #e5e7f0;
+    box-shadow: 0 10px 30px rgba(50,60,120,.06);
+}
+
+.notification-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #eeecff;
+    font-size: 22px;
+    margin-right: 12px;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+}
+
+.notification-message {
+    color: #3d4359;
+    font-weight: 600;
+}
+
+.notification-date {
+    margin-top: 5px;
+    color: #8a90a3;
+    font-size: 12px;
+}
+
+.empty {
+    background: white;
+    padding: 50px 20px;
+    text-align: center;
+    border-radius: 20px;
+    color: #777f95;
+}
+
+.back-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 13px 22px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: white;
+    font-weight: 700;
+    background: linear-gradient(90deg, #247edc, #6858df);
+}
+</style><div class="notification-page"><div class="notification-container">
+
+    <div class="notification-header">
+
+        <h1>
+            🔔 Notifications
+        </h1>
+
+        <p>
+            Stay updated with your latest career and placement activities.
+        </p>
+
+    </div>
+
+
+    {% if notifications %}
+
+        {% for notification in notifications %}
+
+            <div class="notification-card">
+
+                <div class="notification-content">
+
+                    <div class="notification-icon">
+                        🔔
+                    </div>
+
+                    <div>
+
+                        <div class="notification-message">
+                            {{ notification["message"] }}
+                        </div>
+
+                        <div class="notification-date">
+                            {{ notification["created_at"] }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+
+            <div style="font-size:50px;">
+                🔔
+            </div>
+
+            <h2>
+                No Notifications Yet
+            </h2>
+
+            <p>
+                New career, test and placement notifications
+                will appear here.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+
+    <a
+        href="{{ url_for('student_dashboard') }}"
+        class="back-btn"
+    >
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+</div>{% endblock %}

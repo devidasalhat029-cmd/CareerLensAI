@@ -1,0 +1,667 @@
+{% extends "base.html" %}
+
+{% block title %}
+Jobs | CareerLens.ai
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+.jobs-page {
+    min-height: 100vh;
+    padding: 55px 5% 80px;
+    color: white;
+
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(108, 92, 255, .18),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 15%,
+            rgba(0, 210, 255, .14),
+            transparent 30%
+        ),
+        #070a13;
+}
+
+.jobs-container {
+    max-width: 1200px;
+    margin: auto;
+}
+
+
+/* HERO */
+
+.jobs-hero {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.live-badge {
+    display: inline-block;
+
+    padding: 8px 16px;
+
+    border-radius: 30px;
+
+    background: rgba(50, 220, 170, .08);
+
+    border: 1px solid rgba(50, 220, 170, .20);
+
+    color: #6ff0c0;
+
+    font-size: 13px;
+
+    margin-bottom: 18px;
+}
+
+.jobs-hero h1 {
+    font-size: clamp(40px, 6vw, 65px);
+
+    margin: 0;
+
+    font-weight: 850;
+}
+
+.gradient {
+    background: linear-gradient(
+        90deg,
+        #7b6cff,
+        #3edcff,
+        #ff71c9
+    );
+
+    -webkit-background-clip: text;
+
+    -webkit-text-fill-color: transparent;
+}
+
+.jobs-hero p {
+    max-width: 680px;
+
+    margin: 18px auto;
+
+    color: #929db1;
+
+    line-height: 1.7;
+}
+
+
+/* SEARCH */
+
+.search-box {
+    display: grid;
+
+    grid-template-columns:
+        1.5fr 1fr auto;
+
+    gap: 12px;
+
+    padding: 15px;
+
+    border-radius: 20px;
+
+    background: rgba(255,255,255,.05);
+
+    border: 1px solid rgba(255,255,255,.10);
+
+    margin-bottom: 35px;
+}
+
+.search-input {
+    width: 100%;
+
+    padding: 14px 16px;
+
+    border-radius: 12px;
+
+    border: 1px solid rgba(255,255,255,.08);
+
+    outline: none;
+
+    color: white;
+
+    background: rgba(0,0,0,.22);
+
+    box-sizing: border-box;
+}
+
+.search-input::placeholder {
+    color: #68748a;
+}
+
+.search-btn {
+    padding: 0 25px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    color: white;
+
+    font-weight: 700;
+
+    background: linear-gradient(
+        90deg,
+        #7162ff,
+        #31d9ff
+    );
+}
+
+
+/* RESULTS HEADER */
+
+.results-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 18px;
+}
+
+.results-header h2 {
+    margin: 0;
+}
+
+.result-count {
+    color: #7f8a9e;
+
+    font-size: 13px;
+}
+
+
+/* JOB GRID */
+
+.jobs-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 20px;
+}
+
+
+/* JOB CARD */
+
+.job-card {
+    padding: 25px;
+
+    border-radius: 22px;
+
+    background: rgba(255,255,255,.045);
+
+    border: 1px solid rgba(255,255,255,.09);
+
+    transition: .3s;
+}
+
+.job-card:hover {
+    transform: translateY(-5px);
+
+    border-color:
+        rgba(80,210,255,.25);
+
+    background:
+        rgba(255,255,255,.065);
+}
+
+.job-top {
+    display: flex;
+
+    gap: 15px;
+
+    align-items: flex-start;
+}
+
+.company-logo {
+    width: 52px;
+
+    height: 52px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 15px;
+
+    font-size: 22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(112,96,255,.22),
+            rgba(49,217,255,.14)
+        );
+}
+
+.job-title {
+    margin: 0 0 6px;
+
+    font-size: 18px;
+}
+
+.company-name {
+    color: #9ba6b9;
+
+    font-size: 13px;
+}
+
+.job-location {
+    margin-top: 18px;
+
+    color: #aeb8c8;
+
+    font-size: 13px;
+}
+
+.job-description {
+    margin-top: 15px;
+
+    color: #858fa3;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+.job-meta {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-top: 18px;
+}
+
+.meta {
+    padding: 7px 10px;
+
+    border-radius: 8px;
+
+    color: #aab5c8;
+
+    background: rgba(255,255,255,.055);
+
+    font-size: 11px;
+}
+
+.apply-btn {
+    display: block;
+
+    text-align: center;
+
+    margin-top: 20px;
+
+    padding: 12px;
+
+    border-radius: 11px;
+
+    text-decoration: none;
+
+    color: white;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    background:
+        linear-gradient(
+            90deg,
+            #7061ff,
+            #31d9ff
+        );
+}
+
+.source {
+    margin-top: 10px;
+
+    text-align: center;
+
+    color: #69758a;
+
+    font-size: 10px;
+}
+
+
+/* EMPTY */
+
+.empty-box {
+    text-align: center;
+
+    padding: 60px 20px;
+
+    border-radius: 20px;
+
+    background: rgba(255,255,255,.035);
+
+    color: #8792a5;
+}
+
+
+/* ERROR */
+
+.error-box {
+    padding: 20px;
+
+    border-radius: 15px;
+
+    background: rgba(255,80,100,.08);
+
+    border: 1px solid rgba(255,80,100,.18);
+
+    color: #ff9ba8;
+
+    text-align: center;
+}
+
+
+/* RESPONSIVE */
+
+@media(max-width: 800px) {
+
+    .jobs-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .search-box {
+        grid-template-columns: 1fr;
+    }
+
+    .search-btn {
+        padding: 14px;
+    }
+
+}
+
+</style>
+
+
+<div class="jobs-page">
+
+<div class="jobs-container">
+
+
+    <!-- HERO -->
+
+    <div class="jobs-hero">
+
+        <div class="live-badge">
+            ● JOB OPPORTUNITIES
+        </div>
+
+        <h1>
+
+            Find Your
+
+            <span class="gradient">
+                Next Opportunity
+            </span>
+
+        </h1>
+
+        <p>
+
+            Explore job opportunities available on
+            CareerLens.ai and find the right role for
+            your skills and career goals.
+
+        </p>
+
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <form
+        class="search-box"
+        method="GET"
+        action="{{ url_for('jobs') }}"
+    >
+
+        <input
+            class="search-input"
+            type="text"
+            name="q"
+            value="{{ query|default('') }}"
+            placeholder="Search job title or skill..."
+        >
+
+
+        <input
+            class="search-input"
+            type="text"
+            name="location"
+            value="{{ location|default('') }}"
+            placeholder="Location..."
+        >
+
+
+        <button
+            class="search-btn"
+            type="submit"
+        >
+
+            🔍 Search Jobs
+
+        </button>
+
+    </form>
+
+
+    {% if error %}
+
+        <div class="error-box">
+
+            ⚠️ {{ error }}
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- HEADER -->
+
+    <div class="results-header">
+
+        <h2>
+            Available Jobs
+        </h2>
+
+        <span class="result-count">
+
+            {{ jobs|length }} jobs found
+
+        </span>
+
+    </div>
+
+
+    {% if jobs %}
+
+    <div class="jobs-grid">
+
+
+        {% for job in jobs %}
+
+
+        <div class="job-card">
+
+
+            <!-- TOP -->
+
+            <div class="job-top">
+
+
+                <div class="company-logo">
+
+                    🏢
+
+                </div>
+
+
+                <div>
+
+                    <h3 class="job-title">
+
+                        {{ job["role"] }}
+
+                    </h3>
+
+
+                    <div class="company-name">
+
+                        {{ job["company"] }}
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- LOCATION -->
+
+            {% if job["location"] %}
+
+            <div class="job-location">
+
+                📍 {{ job["location"] }}
+
+            </div>
+
+            {% endif %}
+
+
+            <!-- DESCRIPTION -->
+
+            {% if job["description"] %}
+
+            <div class="job-description">
+
+                {{ job["description"]|striptags|truncate(190) }}
+
+            </div>
+
+            {% endif %}
+
+
+            <!-- META -->
+
+            <div class="job-meta">
+
+
+                {% if job["skills"] %}
+
+                <span class="meta">
+
+                    🛠️ {{ job["skills"]|truncate(55) }}
+
+                </span>
+
+                {% endif %}
+
+
+                {% if job["eligibility"] %}
+
+                <span class="meta">
+
+                    🎓 {{ job["eligibility"]|truncate(55) }}
+
+                </span>
+
+                {% endif %}
+
+
+                {% if job["package"] %}
+
+                <span class="meta">
+
+                    💰 {{ job["package"] }}
+
+                </span>
+
+                {% endif %}
+
+
+                {% if job["deadline"] %}
+
+                <span class="meta">
+
+                    📅 {{ job["deadline"] }}
+
+                </span>
+
+                {% endif %}
+
+
+            </div>
+
+
+            <!-- APPLY -->
+
+            <a
+                class="apply-btn"
+                href="{{ url_for('jobs') }}"
+            >
+                View Jobs →
+            </a>
+
+
+            <div class="source">
+
+                CareerLens.ai Job Listing
+
+            </div>
+
+
+        </div>
+
+
+        {% endfor %}
+
+
+    </div>
+
+
+    {% else %}
+
+
+    <div class="empty-box">
+
+        <div style="font-size:45px;">
+            🔎
+        </div>
+
+        <h3>
+            No jobs found
+        </h3>
+
+        <p>
+            Try another job title, skill or location.
+        </p>
+
+    </div>
+
+
+    {% endif %}
+
+
+</div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,297 @@
+{% extends "base.html" %}
+
+{% block title %}CareerAI | Add Job{% endblock %}
+
+{% block content %}
+
+<style>
+
+.add-job-page {
+    min-height: 100vh;
+    padding: 45px 20px;
+    background:
+        radial-gradient(circle at 10% 10%, #e6f6ff, transparent 30%),
+        radial-gradient(circle at 90% 15%, #f0eaff, transparent 30%),
+        radial-gradient(circle at 50% 100%, #ffeaf4, transparent 35%),
+        #f8faff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.add-job-card {
+    max-width: 800px;
+    margin: auto;
+    padding: 35px;
+    background: #ffffff;
+    border: 1px solid #e4e7f0;
+    border-radius: 25px;
+    box-shadow: 0 20px 55px rgba(55,65,120,.12);
+}
+
+.add-job-card h1 {
+    margin: 0 0 8px;
+    color: #2d334d;
+    font-size: 32px;
+}
+
+.subtitle {
+    margin-bottom: 30px;
+    color: #7d8498;
+    font-size: 14px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+    color: #41465d;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px;
+    border: 1px solid #dfe3ee;
+    border-radius: 12px;
+    background: #fbfcff;
+    color: #292e43;
+    font-size: 14px;
+    outline: none;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.form-group textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    background: #fff;
+    border-color: #6b5fe0;
+    box-shadow: 0 0 0 4px rgba(107,95,224,.10);
+}
+
+.button-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.submit-btn,
+.back-btn {
+    padding: 14px 22px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.submit-btn {
+    border: 0;
+    color: white;
+    background: linear-gradient(90deg, #247edc, #6858df, #d4519b);
+}
+
+.back-btn {
+    color: #5d55d5;
+    background: #f0efff;
+}
+
+@media(max-width: 650px) {
+    .add-job-card {
+        padding: 25px 20px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.full {
+        grid-column: auto;
+    }
+
+    .button-row {
+        flex-direction: column;
+    }
+}
+
+</style><div class="add-job-page"><div class="add-job-card">
+
+    <h1>
+        💼 Add Placement Opportunity
+    </h1>
+
+    <p class="subtitle">
+        Add a new job opportunity for CareerAI students.
+    </p>
+
+
+    <form method="POST"
+          action="{{ url_for('add_job') }}">
+
+        <div class="form-grid">
+
+
+            <div class="form-group">
+
+                <label>
+                    Company Name
+                </label>
+
+                <input
+                    type="text"
+                    name="company"
+                    placeholder="e.g. TCS"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Job Role
+                </label>
+
+                <input
+                    type="text"
+                    name="role"
+                    placeholder="e.g. Software Developer"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>
+                    Job Description
+                </label>
+
+                <textarea
+                    name="description"
+                    placeholder="Enter job description..."
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Required Skills
+                </label>
+
+                <input
+                    type="text"
+                    name="skills"
+                    placeholder="Python, SQL, Java"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Eligibility
+                </label>
+
+                <input
+                    type="text"
+                    name="eligibility"
+                    placeholder="B.E / B.Tech / BCA"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Location
+                </label>
+
+                <input
+                    type="text"
+                    name="location"
+                    placeholder="Mumbai / Pune / Remote"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Package
+                </label>
+
+                <input
+                    type="text"
+                    name="package"
+                    placeholder="e.g. 6 LPA"
+                >
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>
+                    Application Deadline
+                </label>
+
+                <input
+                    type="date"
+                    name="deadline"
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="button-row">
+
+            <button
+                type="submit"
+                class="submit-btn"
+            >
+                ➕ Add Job
+            </button>
+
+
+            <a
+                href="{{ url_for('admin_dashboard') }}"
+                class="back-btn"
+            >
+                ← Back to Dashboard
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+</div>{% endblock %}

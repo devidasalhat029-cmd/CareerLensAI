@@ -1,0 +1,988 @@
+{% extends "base.html" %}
+
+{% block title %}HR Interview | CareerLens.ai{% endblock %}
+
+{% block content %}
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+.hr-page{
+    min-height:100vh;
+    padding:35px 5%;
+    background:
+        radial-gradient(circle at 10% 10%,rgba(80,210,255,.15),transparent 30%),
+        radial-gradient(circle at 90% 20%,rgba(100,150,255,.12),transparent 30%),
+        #071321;
+    color:#f4fbff;
+}
+
+/* HERO */
+
+.hr-hero{
+    max-width:1050px;
+    margin:auto;
+    text-align:center;
+    padding:10px 10px 35px;
+}
+
+.hr-badge{
+    display:inline-block;
+    padding:8px 18px;
+    border-radius:30px;
+    color:#72ddff;
+    background:rgba(80,210,255,.08);
+    border:1px solid rgba(80,210,255,.30);
+    font-size:13px;
+    font-weight:700;
+}
+
+.hr-hero h1{
+    font-size:clamp(34px,5vw,55px);
+    margin:15px 0 10px;
+}
+
+.hr-hero h1 span{
+    color:#55d8ff;
+}
+
+.hr-hero p{
+    color:#9bb1c0;
+    max-width:700px;
+    margin:auto;
+    line-height:1.7;
+}
+
+/* MAIN */
+
+.hr-container{
+    max-width:1050px;
+    margin:auto;
+}
+
+/* START CARD */
+
+.start-card{
+    background:#0b1d2d;
+    border:1px solid rgba(85,216,255,.17);
+    border-radius:24px;
+    padding:35px;
+    text-align:center;
+    box-shadow:0 15px 45px rgba(0,0,0,.20);
+}
+
+.start-icon{
+    width:80px;
+    height:80px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 18px;
+    border-radius:50%;
+    font-size:38px;
+    background:rgba(85,216,255,.10);
+    border:1px solid rgba(85,216,255,.30);
+}
+
+.start-card h2{
+    margin:0 0 10px;
+}
+
+.start-card p{
+    color:#9db4c3;
+    line-height:1.7;
+}
+
+.start-info{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:12px;
+    margin:25px 0;
+}
+
+.info{
+    padding:10px 16px;
+    background:#102a40;
+    border-radius:10px;
+    color:#a9e9ff;
+    font-size:13px;
+}
+
+.start-btn{
+    border:0;
+    padding:14px 30px;
+    border-radius:12px;
+    background:#10b9ed;
+    color:white;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 8px 25px rgba(16,185,237,.25);
+}
+
+/* INTERVIEW */
+
+.interview{
+    display:none;
+}
+
+.interview-card{
+    background:#0b1d2d;
+    border:1px solid rgba(85,216,255,.17);
+    border-radius:24px;
+    padding:25px;
+    box-shadow:0 15px 45px rgba(0,0,0,.20);
+}
+
+.interview-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.ai-status{
+    color:#64e5c1;
+    font-size:12px;
+    font-weight:700;
+}
+
+.progress-text{
+    color:#91a9b8;
+    font-size:12px;
+}
+
+.progress{
+    height:7px;
+    background:#183044;
+    border-radius:20px;
+    overflow:hidden;
+    margin-bottom:25px;
+}
+
+.progress-fill{
+    width:0;
+    height:100%;
+    background:#55d8ff;
+    transition:.4s;
+}
+
+/* AI */
+
+.ai-box{
+    display:flex;
+    gap:15px;
+    align-items:flex-start;
+    margin-bottom:20px;
+}
+
+.ai-avatar{
+    min-width:50px;
+    height:50px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#12354c;
+    border:1px solid #55d8ff;
+    font-size:24px;
+}
+
+.question-box{
+    flex:1;
+    padding:18px;
+    border-radius:15px;
+    background:#10283b;
+    border:1px solid rgba(85,216,255,.13);
+}
+
+.question-label{
+    color:#5bd9ff;
+    font-size:11px;
+    font-weight:700;
+    margin-bottom:7px;
+}
+
+.question{
+    font-size:20px;
+    line-height:1.5;
+}
+
+/* ANSWER */
+
+.answer-label{
+    color:#a9c1cf;
+    font-size:13px;
+    margin-bottom:8px;
+}
+
+.answer{
+    width:100%;
+    min-height:180px;
+    resize:vertical;
+    padding:16px;
+    border-radius:14px;
+    border:1px solid rgba(85,216,255,.18);
+    outline:none;
+    background:#06121e;
+    color:#e8f9ff;
+    font-size:14px;
+    line-height:1.7;
+}
+
+.answer:focus{
+    border-color:#55d8ff;
+    box-shadow:0 0 0 3px rgba(85,216,255,.08);
+}
+
+/* BUTTONS */
+
+.buttons{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:15px;
+}
+
+.btn{
+    border:0;
+    padding:12px 18px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:700;
+}
+
+.clear-btn{
+    background:#162c3e;
+    color:#a9c4d2;
+}
+
+.evaluate-btn{
+    background:#10b9ed;
+    color:white;
+}
+
+.next-btn{
+    display:none;
+    background:#55d8ff;
+    color:#062033;
+}
+
+/* FEEDBACK */
+
+.feedback{
+    display:none;
+    margin-top:20px;
+    padding:20px;
+    border-radius:15px;
+    background:#061522;
+    border:1px solid rgba(85,216,255,.15);
+}
+
+.feedback.show{
+    display:block;
+}
+
+.score{
+    font-size:35px;
+    color:#60e1ff;
+    font-weight:800;
+}
+
+.feedback-title{
+    color:#bfeeff;
+    font-weight:700;
+    margin:10px 0;
+}
+
+.feedback-text{
+    color:#9fb7c5;
+    line-height:1.7;
+}
+
+/* FINAL */
+
+.final{
+    display:none;
+    background:#0b1d2d;
+    border:1px solid rgba(85,216,255,.17);
+    border-radius:24px;
+    padding:40px;
+    text-align:center;
+}
+
+.final h2{
+    font-size:32px;
+}
+
+.final-score{
+    font-size:65px;
+    font-weight:900;
+    color:#55d8ff;
+    margin:15px;
+}
+
+.final-message{
+    color:#9fb7c5;
+    line-height:1.7;
+}
+
+.restart{
+    margin-top:20px;
+    padding:13px 25px;
+    border:0;
+    border-radius:10px;
+    background:#10b9ed;
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+}
+
+@media(max-width:650px){
+
+    .hr-page{
+        padding:25px 4%;
+    }
+
+    .start-card,
+    .interview-card,
+    .final{
+        padding:20px;
+    }
+
+    .question{
+        font-size:17px;
+    }
+
+    .buttons{
+        flex-direction:column;
+    }
+
+    .btn{
+        width:100%;
+    }
+}
+</style>
+
+
+<div class="hr-page">
+
+    <!-- HERO -->
+
+    <section class="hr-hero">
+
+        <div class="hr-badge">
+            🎤 PLACEMENT PREPARATION
+        </div>
+
+        <h1>
+            AI <span>HR Interview</span>
+        </h1>
+
+        <p>
+            Practice real HR interview questions and
+            improve your communication, confidence and
+            interview readiness.
+        </p>
+
+    </section>
+
+
+    <div class="hr-container">
+
+
+        <!-- START -->
+
+        <div id="startScreen" class="start-card">
+
+            <div class="start-icon">
+                🤖
+            </div>
+
+            <h2>
+                Ready for your HR Interview?
+            </h2>
+
+            <p>
+                The AI interviewer will ask you common
+                placement HR questions one by one.
+                Answer naturally and receive feedback.
+            </p>
+
+
+            <div class="start-info">
+
+                <div class="info">
+                    🎯 10 Questions
+                </div>
+
+                <div class="info">
+                    ⏱️ Self Paced
+                </div>
+
+                <div class="info">
+                    📊 AI Feedback
+                </div>
+
+                <div class="info">
+                    🏆 Final Score
+                </div>
+
+            </div>
+
+
+            <button class="start-btn"
+                    onclick="startInterview()">
+
+                🚀 Start HR Interview
+
+            </button>
+
+        </div>
+
+
+        <!-- INTERVIEW -->
+
+        <div id="interview"
+             class="interview">
+
+            <div class="interview-card">
+
+                <div class="interview-top">
+
+                    <div class="ai-status">
+                        ● AI INTERVIEWER ACTIVE
+                    </div>
+
+                    <div id="progressText"
+                         class="progress-text">
+                        Question 1 / 10
+                    </div>
+
+                </div>
+
+
+                <div class="progress">
+
+                    <div id="progressFill"
+                         class="progress-fill">
+                    </div>
+
+                </div>
+
+
+                <!-- AI QUESTION -->
+
+                <div class="ai-box">
+
+                    <div class="ai-avatar">
+                        🤖
+                    </div>
+
+                    <div class="question-box">
+
+                        <div class="question-label">
+                            AI INTERVIEWER
+                        </div>
+
+                        <div id="question"
+                             class="question">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ANSWER -->
+
+                <div class="answer-label">
+                    Your Answer
+                </div>
+
+                <textarea
+                    id="answer"
+                    class="answer"
+                    placeholder="Type your answer here...">
+                </textarea>
+
+
+                <!-- BUTTONS -->
+
+                <div class="buttons">
+
+                    <button class="btn clear-btn"
+                            onclick="clearAnswer()">
+                        Clear
+                    </button>
+
+                    <button id="evaluateBtn"
+                            class="btn evaluate-btn"
+                            onclick="evaluateAnswer()">
+                        ✨ Evaluate Answer
+                    </button>
+
+                    <button id="nextBtn"
+                            class="btn next-btn"
+                            onclick="nextQuestion()">
+                        Next Question →
+                    </button>
+
+                </div>
+
+
+                <!-- FEEDBACK -->
+
+                <div id="feedback"
+                     class="feedback">
+
+                    <div class="score"
+                         id="score">
+                        0/10
+                    </div>
+
+                    <div class="feedback-title">
+                        AI Feedback
+                    </div>
+
+                    <div id="feedbackText"
+                         class="feedback-text">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FINAL RESULT -->
+
+        <div id="final"
+             class="final">
+
+            <div style="font-size:50px;">
+                🏆
+            </div>
+
+            <h2>
+                HR Interview Completed!
+            </h2>
+
+            <div id="finalScore"
+                 class="final-score">
+                0%
+            </div>
+
+            <p id="finalMessage"
+               class="final-message">
+            </p>
+
+            <button class="restart"
+                    onclick="restartInterview()">
+
+                🔄 Practice Again
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   HR QUESTIONS
+===================================================== */
+
+const hrQuestions = [
+
+"Tell me about yourself.",
+
+"Why should we hire you?",
+
+"What are your strengths?",
+
+"What is your weakness?",
+
+"Why do you want to join our company?",
+
+"Where do you see yourself in five years?",
+
+"Tell me about a challenge you faced and how you handled it.",
+
+"How do you handle pressure and deadlines?",
+
+"Tell me about your academic or personal project.",
+
+"Do you have any questions for us?"
+
+];
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let currentQuestion = 0;
+let totalScore = 0;
+let evaluated = false;
+
+
+/* =====================================================
+   START
+===================================================== */
+
+function startInterview(){
+
+    currentQuestion = 0;
+    totalScore = 0;
+    evaluated = false;
+
+    document.getElementById("startScreen")
+        .style.display = "none";
+
+    document.getElementById("final")
+        .style.display = "none";
+
+    document.getElementById("interview")
+        .style.display = "block";
+
+    loadQuestion();
+
+}
+
+
+/* =====================================================
+   LOAD QUESTION
+===================================================== */
+
+function loadQuestion(){
+
+    const question =
+        hrQuestions[currentQuestion];
+
+    document.getElementById("question")
+        .innerText =
+        question;
+
+    document.getElementById("progressText")
+        .innerText =
+        "Question " +
+        (currentQuestion + 1) +
+        " / " +
+        hrQuestions.length;
+
+    document.getElementById("progressFill")
+        .style.width =
+        ((currentQuestion + 1) /
+        hrQuestions.length * 100) + "%";
+
+    document.getElementById("answer")
+        .value = "";
+
+    document.getElementById("feedback")
+        .className = "feedback";
+
+    document.getElementById("evaluateBtn")
+        .style.display = "inline-block";
+
+    document.getElementById("nextBtn")
+        .style.display = "none";
+
+    evaluated = false;
+
+}
+
+
+/* =====================================================
+   EVALUATE
+===================================================== */
+
+function evaluateAnswer(){
+
+    const answer =
+        document.getElementById("answer")
+        .value.trim();
+
+    const feedback =
+        document.getElementById("feedback");
+
+    const scoreElement =
+        document.getElementById("score");
+
+    const feedbackText =
+        document.getElementById("feedbackText");
+
+
+    if(answer === ""){
+
+        feedback.className =
+            "feedback show";
+
+        scoreElement.innerText =
+            "⚠️";
+
+        feedbackText.innerText =
+            "Please write an answer before evaluating.";
+
+        return;
+    }
+
+
+    if(evaluated){
+        return;
+    }
+
+
+    let score = 0;
+
+
+    /*
+       Basic answer evaluation.
+       More complete answers receive
+       higher scores.
+    */
+
+    const words =
+        answer.split(/\s+/).length;
+
+
+    if(words >= 8){
+        score = 8;
+    }
+
+    else if(words >= 5){
+        score = 7;
+    }
+
+    else if(words >= 3){
+        score = 5;
+    }
+
+    else{
+        score = 3;
+    }
+
+
+    /* Keyword bonus */
+
+    const keywords = [
+        "project",
+        "team",
+        "learn",
+        "experience",
+        "skill",
+        "goal",
+        "company",
+        "problem",
+        "solution",
+        "communication"
+    ];
+
+
+    let keywordCount = 0;
+
+    keywords.forEach(function(word){
+
+        if(answer.toLowerCase()
+            .includes(word)){
+
+            keywordCount++;
+
+        }
+
+    });
+
+
+    score +=
+        Math.min(keywordCount,2);
+
+
+    if(score > 10){
+        score = 10;
+    }
+
+
+    totalScore += score;
+
+    evaluated = true;
+
+
+    scoreElement.innerText =
+        score + "/10";
+
+
+    if(score >= 8){
+
+        feedbackText.innerText =
+            "Excellent answer! Your response is clear, relevant and detailed. Keep maintaining this confidence during the actual interview.";
+
+    }
+
+    else if(score >= 6){
+
+        feedbackText.innerText =
+            "Good answer! Try adding a specific example or experience to make your response stronger and more convincing.";
+
+    }
+
+    else{
+
+        feedbackText.innerText =
+            "Your answer needs more detail. Try using a simple structure: situation → action → result.";
+
+    }
+
+
+    feedback.className =
+        "feedback show";
+
+
+    document.getElementById("evaluateBtn")
+        .style.display = "none";
+
+    document.getElementById("nextBtn")
+        .style.display = "inline-block";
+
+
+    if(currentQuestion === hrQuestions.length - 1){
+
+        document.getElementById("nextBtn")
+            .innerText =
+            "🏆 View Final Result";
+
+    }
+
+}
+
+
+/* =====================================================
+   NEXT QUESTION
+===================================================== */
+
+function nextQuestion(){
+
+    if(!evaluated){
+        return;
+    }
+
+
+    if(currentQuestion <
+       hrQuestions.length - 1){
+
+        currentQuestion++;
+
+        loadQuestion();
+
+    }
+
+    else{
+
+        showFinalResult();
+
+    }
+
+}
+
+
+/* =====================================================
+   FINAL RESULT
+===================================================== */
+
+function showFinalResult(){
+
+    document.getElementById("interview")
+        .style.display = "none";
+
+    document.getElementById("final")
+        .style.display = "block";
+
+
+    const percentage =
+        Math.round(
+            (totalScore /
+            (hrQuestions.length * 10)) * 100
+        );
+
+
+    document.getElementById("finalScore")
+        .innerText =
+        percentage + "%";
+
+
+    let message;
+
+
+    if(percentage >= 80){
+
+        message =
+            "Excellent HR interview performance! 🎉 " +
+            "Your answers show good confidence and preparation. " +
+            "Keep practicing real interview situations.";
+
+    }
+
+    else if(percentage >= 60){
+
+        message =
+            "Good performance! 👍 " +
+            "You have a strong base. Work on giving more specific examples and structured answers.";
+
+    }
+
+    else{
+
+        message =
+            "Keep practicing! 💪 " +
+            "Focus on communication, confidence and using real examples in your answers.";
+
+    }
+
+
+    document.getElementById("finalMessage")
+        .innerText =
+        message;
+
+}
+
+
+/* =====================================================
+   CLEAR
+===================================================== */
+
+function clearAnswer(){
+
+    document.getElementById("answer")
+        .value = "";
+
+}
+
+
+/* =====================================================
+   RESTART
+===================================================== */
+
+function restartInterview(){
+
+    document.getElementById("final")
+        .style.display = "none";
+
+    document.getElementById("interview")
+        .style.display = "none";
+
+    document.getElementById("startScreen")
+        .style.display = "block";
+
+}
+
+</script>
+
+{% endblock %}

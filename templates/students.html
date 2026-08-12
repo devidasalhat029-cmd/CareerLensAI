@@ -1,0 +1,614 @@
+{% extends "base.html" %}
+
+{% block title %}Students | CareerLens.ai{% endblock %}
+
+{% block content %}
+
+<style>
+
+.students-page {
+    padding: 30px;
+}
+
+/* HEADER */
+.students-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.students-title h1 {
+    font-size: 30px;
+    font-weight: 800;
+    margin: 0;
+    color: #172033;
+}
+
+.students-title p {
+    margin-top: 7px;
+    color: #718096;
+}
+
+/* ADD BUTTON */
+.add-student-btn {
+    text-decoration: none;
+    color: white;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    box-shadow: 0 8px 20px rgba(99,102,241,.20);
+    transition: .3s;
+}
+
+.add-student-btn:hover {
+    transform: translateY(-2px);
+    color: white;
+}
+
+/* STAT CARDS */
+.student-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.student-stat {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 6px 25px rgba(15,23,42,.06);
+}
+
+.stat-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eef2ff;
+    color: #6366f1;
+    font-size: 21px;
+}
+
+.student-stat h3 {
+    margin: 0;
+    font-size: 24px;
+    color: #172033;
+}
+
+.student-stat span {
+    font-size: 13px;
+    color: #718096;
+}
+
+/* SEARCH */
+.student-toolbar {
+    background: white;
+    padding: 18px;
+    border-radius: 18px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 20px rgba(15,23,42,.05);
+}
+
+.search-box {
+    position: relative;
+}
+
+.search-box i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+}
+
+#studentSearch {
+    width: 100%;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 13px 15px 13px 45px;
+    outline: none;
+    font-size: 14px;
+}
+
+#studentSearch:focus {
+    border-color: #6366f1;
+}
+
+/* TABLE */
+.students-table-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 6px 25px rgba(15,23,42,.06);
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.students-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1000px;
+}
+
+.students-table th {
+    background: #f8fafc;
+    color: #64748b;
+    font-size: 12px;
+    padding: 16px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.students-table td {
+    padding: 15px 16px;
+    border-top: 1px solid #eef2f7;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.students-table tbody tr:hover {
+    background: #fafbff;
+}
+
+/* STUDENT */
+.student-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.student-photo {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #eef2ff;
+}
+
+.student-name {
+    font-weight: 700;
+    color: #172033;
+}
+
+.student-username {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-top: 3px;
+}
+
+/* BADGES */
+.branch-badge {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: #eef2ff;
+    color: #4f46e5;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.score {
+    color: #16a34a;
+    font-weight: 700;
+}
+
+.not-added {
+    color: #94a3b8;
+}
+
+/* VIEW */
+.view-btn {
+    text-decoration: none;
+    color: #6366f1;
+    background: #eef2ff;
+    padding: 7px 12px;
+    border-radius: 9px;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.view-btn:hover {
+    background: #6366f1;
+    color: white;
+}
+
+/* EMPTY */
+.empty-students {
+    text-align: center;
+    padding: 60px 20px;
+    color: #64748b;
+}
+
+.empty-students i {
+    font-size: 45px;
+    margin-bottom: 15px;
+    color: #a5b4fc;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1000px) {
+
+    .student-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .students-page {
+        padding: 18px;
+    }
+
+    .students-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .student-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .students-title h1 {
+        font-size: 25px;
+    }
+
+}
+
+</style>
+
+
+<div class="students-page">
+
+    <!-- HEADER -->
+    <div class="students-header">
+
+        <div class="students-title">
+
+            <h1>
+                <i class="fa-solid fa-user-graduate"></i>
+                Students
+            </h1>
+
+            <p>
+                Manage and monitor CareerLens.ai students
+            </p>
+
+        </div>
+
+        <a href="#" class="add-student-btn">
+            <i class="fa-solid fa-user-plus"></i>
+            Add Student
+        </a>
+
+    </div>
+
+
+    <!-- STATISTICS -->
+    <div class="student-stats">
+
+        <div class="student-stat">
+
+            <div class="stat-icon">
+                <i class="fa-solid fa-users"></i>
+            </div>
+
+            <div>
+                <h3>{{ students|length }}</h3>
+                <span>Total Students</span>
+            </div>
+
+        </div>
+
+
+        <div class="student-stat">
+
+            <div class="stat-icon">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+
+            <div>
+                <h3>
+                    {{ students|selectattr('education')|list|length }}
+                </h3>
+
+                <span>Profiles Completed</span>
+            </div>
+
+        </div>
+
+
+        <div class="student-stat">
+
+            <div class="stat-icon">
+                <i class="fa-solid fa-bullseye"></i>
+            </div>
+
+            <div>
+                <h3>
+                    {{ students|selectattr('career_goal')|list|length }}
+                </h3>
+
+                <span>Career Goals</span>
+            </div>
+
+        </div>
+
+
+        <div class="student-stat">
+
+            <div class="stat-icon">
+                <i class="fa-solid fa-chart-line"></i>
+            </div>
+
+            <div>
+                <h3>AI</h3>
+                <span>Career Analysis</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- SEARCH -->
+    <div class="student-toolbar">
+
+        <div class="search-box">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input
+                type="text"
+                id="studentSearch"
+                placeholder="Search by name, email, college, branch..."
+            >
+
+        </div>
+
+    </div>
+
+
+    <!-- TABLE -->
+    <div class="students-table-card">
+
+        <div class="table-responsive">
+
+            <table class="students-table" id="studentsTable">
+
+                <thead>
+
+                    <tr>
+
+                        <th>STUDENT</th>
+                        <th>EMAIL</th>
+                        <th>COLLEGE</th>
+                        <th>BRANCH</th>
+                        <th>MARKS</th>
+                        <th>CAREER GOAL</th>
+                        <th>ACTION</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                {% for student in students %}
+
+                    <tr>
+
+                        <!-- STUDENT -->
+                        <td>
+
+                            <div class="student-info">
+
+                                <img
+                                    class="student-photo"
+                                    src="{{ url_for(
+                                        'static',
+                                        filename='uploads/profile/' +
+                                        (student['photo'] or 'default.png')
+                                    ) }}"
+                                    onerror="this.src='{{ url_for(
+                                        'static',
+                                        filename='uploads/profile/default.png'
+                                    ) }}'"
+                                >
+
+                                <div>
+
+                                    <div class="student-name">
+                                        {{ student['name'] }}
+                                    </div>
+
+                                    <div class="student-username">
+                                        @{{ student['username'] }}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- EMAIL -->
+                        <td>
+                            {{ student['email'] }}
+                        </td>
+
+
+                        <!-- COLLEGE -->
+                        <td>
+
+                            {% if student['college'] %}
+
+                                {{ student['college'] }}
+
+                            {% else %}
+
+                                <span class="not-added">
+                                    Not Added
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- BRANCH -->
+                        <td>
+
+                            {% if student['branch'] %}
+
+                                <span class="branch-badge">
+                                    {{ student['branch'] }}
+                                </span>
+
+                            {% else %}
+
+                                <span class="not-added">
+                                    Not Added
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- MARKS -->
+                        <td>
+
+                            {% if student['percentage'] %}
+
+                                <span class="score">
+                                    {{ student['percentage'] }}%
+                                </span>
+
+                            {% elif student['cgpa'] %}
+
+                                <span class="score">
+                                    {{ student['cgpa'] }} CGPA
+                                </span>
+
+                            {% else %}
+
+                                <span class="not-added">—</span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- CAREER -->
+                        <td>
+
+                            {% if student['career_goal'] %}
+
+                                {{ student['career_goal'] }}
+
+                            {% else %}
+
+                                <span class="not-added">
+                                    Not Added
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- ACTION -->
+                        <td>
+
+                            <a
+                                href="#"
+                                class="view-btn"
+                            >
+                                <i class="fa-solid fa-eye"></i>
+                                View
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                {% else %}
+
+                    <tr>
+
+                        <td colspan="7">
+
+                            <div class="empty-students">
+
+                                <i class="fa-solid fa-user-graduate"></i>
+
+                                <h3>No Students Found</h3>
+
+                                <p>
+                                    Registered students will appear here.
+                                </p>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+document
+    .getElementById("studentSearch")
+    .addEventListener("keyup", function () {
+
+        let search =
+            this.value.toLowerCase();
+
+        let rows =
+            document.querySelectorAll(
+                "#studentsTable tbody tr"
+            );
+
+        rows.forEach(function(row) {
+
+            let text =
+                row.innerText.toLowerCase();
+
+            row.style.display =
+                text.includes(search)
+                ? ""
+                : "none";
+
+        });
+
+    });
+
+</script>
+
+{% endblock %}

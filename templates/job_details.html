@@ -1,0 +1,553 @@
+{% extends "base.html" %}
+
+{% block title %}
+Job Details | CareerLens.ai
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+.job-details-page {
+    min-height: 100vh;
+    padding: 55px 5% 80px;
+    color: white;
+
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(108, 92, 255, .20),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 15%,
+            rgba(0, 210, 255, .14),
+            transparent 30%
+        ),
+        #070a13;
+}
+
+.job-details-container {
+    max-width: 950px;
+    margin: auto;
+}
+
+
+/* BACK BUTTON */
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    color: #aab5c8;
+    text-decoration: none;
+
+    margin-bottom: 25px;
+
+    font-size: 14px;
+
+    transition: .2s;
+}
+
+.back-btn:hover {
+    color: white;
+}
+
+
+/* MAIN CARD */
+
+.details-card {
+    padding: 35px;
+
+    border-radius: 28px;
+
+    background: rgba(255,255,255,.045);
+
+    border: 1px solid rgba(255,255,255,.10);
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.30);
+}
+
+
+/* HEADER */
+
+.details-header {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 20px;
+
+    padding-bottom: 30px;
+
+    border-bottom:
+        1px solid rgba(255,255,255,.08);
+}
+
+.company-icon {
+    width: 75px;
+    height: 75px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 20px;
+
+    font-size: 32px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(112,96,255,.25),
+            rgba(49,217,255,.18)
+        );
+}
+
+.job-title {
+    margin: 0 0 10px;
+
+    font-size: clamp(27px, 5vw, 42px);
+
+    line-height: 1.15;
+}
+
+.company {
+    color: #9ca8bb;
+
+    font-size: 16px;
+}
+
+
+/* INFORMATION */
+
+.info-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 15px;
+
+    margin-top: 28px;
+}
+
+.info-box {
+    padding: 18px;
+
+    border-radius: 16px;
+
+    background: rgba(255,255,255,.035);
+
+    border: 1px solid rgba(255,255,255,.07);
+}
+
+.info-label {
+    color: #718097;
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    letter-spacing: .8px;
+
+    margin-bottom: 7px;
+}
+
+.info-value {
+    color: #e9edf5;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+
+/* SECTION */
+
+.details-section {
+    margin-top: 35px;
+}
+
+.details-section h2 {
+    font-size: 20px;
+
+    margin-bottom: 13px;
+}
+
+.details-section p {
+    color: #9aa5b7;
+
+    line-height: 1.8;
+
+    font-size: 14px;
+
+    white-space: pre-line;
+}
+
+
+/* TAGS */
+
+.tags {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 9px;
+
+    margin-top: 12px;
+}
+
+.tag {
+    padding: 8px 12px;
+
+    border-radius: 10px;
+
+    background: rgba(112,96,255,.10);
+
+    border: 1px solid rgba(112,96,255,.18);
+
+    color: #b9b2ff;
+
+    font-size: 12px;
+}
+
+
+/* APPLY */
+
+.apply-area {
+    margin-top: 35px;
+
+    padding-top: 25px;
+
+    border-top:
+        1px solid rgba(255,255,255,.08);
+
+    display: flex;
+
+    gap: 12px;
+}
+
+.apply-btn {
+    flex: 1;
+
+    padding: 15px;
+
+    border-radius: 13px;
+
+    text-align: center;
+
+    text-decoration: none;
+
+    color: white;
+
+    font-weight: 750;
+
+    background:
+        linear-gradient(
+            90deg,
+            #7061ff,
+            #31d9ff
+        );
+
+    transition: .25s;
+}
+
+.apply-btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 30px rgba(49,217,255,.18);
+}
+
+.jobs-btn {
+    padding: 15px 22px;
+
+    border-radius: 13px;
+
+    text-align: center;
+
+    text-decoration: none;
+
+    color: #c7d0df;
+
+    background: rgba(255,255,255,.06);
+
+    border: 1px solid rgba(255,255,255,.08);
+}
+
+
+/* FOOTER */
+
+.job-source {
+    text-align: center;
+
+    margin-top: 20px;
+
+    color: #68748a;
+
+    font-size: 11px;
+}
+
+
+/* RESPONSIVE */
+
+@media(max-width: 650px) {
+
+    .details-card {
+        padding: 23px;
+    }
+
+    .details-header {
+        flex-direction: column;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .apply-area {
+        flex-direction: column;
+    }
+
+    .jobs-btn {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+}
+
+</style>
+
+
+<div class="job-details-page">
+
+<div class="job-details-container">
+
+
+    <!-- BACK -->
+
+    <a
+        href="{{ url_for('jobs') }}"
+        class="back-btn"
+    >
+
+        ← Back to Jobs
+
+    </a>
+
+
+    <!-- CARD -->
+
+    <div class="details-card">
+
+
+        <!-- HEADER -->
+
+        <div class="details-header">
+
+            <div class="company-icon">
+                🏢
+            </div>
+
+
+            <div>
+
+                <h1 class="job-title">
+
+                    {{ job["role"] }}
+
+                </h1>
+
+
+                <div class="company">
+
+                    {{ job["company"] }}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- BASIC INFORMATION -->
+
+        <div class="info-grid">
+
+
+            <div class="info-box">
+
+                <div class="info-label">
+                    Location
+                </div>
+
+                <div class="info-value">
+
+                    📍
+                    {{ job["location"] or "Not specified" }}
+
+                </div>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <div class="info-label">
+                    Package
+                </div>
+
+                <div class="info-value">
+
+                    💰
+                    {{ job["package"] or "Not specified" }}
+
+                </div>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <div class="info-label">
+                    Eligibility
+                </div>
+
+                <div class="info-value">
+
+                    🎓
+                    {{ job["eligibility"] or "Not specified" }}
+
+                </div>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <div class="info-label">
+                    Application Deadline
+                </div>
+
+                <div class="info-value">
+
+                    📅
+                    {{ job["deadline"] or "Not specified" }}
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+
+        {% if job["description"] %}
+
+        <div class="details-section">
+
+            <h2>
+                📋 Job Description
+            </h2>
+
+            <p>
+                {{ job["description"] }}
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- SKILLS -->
+
+        {% if job["skills"] %}
+
+        <div class="details-section">
+
+            <h2>
+                🛠️ Required Skills
+            </h2>
+
+            <div class="tags">
+
+                {% for skill in job["skills"].split(",") %}
+
+                    <span class="tag">
+
+                        {{ skill.strip() }}
+
+                    </span>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- APPLY -->
+
+        <div class="apply-area">
+
+            <a
+                href="#"
+                class="apply-btn"
+                onclick="showApplyMessage(event)"
+            >
+
+                🚀 Apply Now
+
+            </a>
+
+
+            <a
+                class="apply-btn"
+                href="{{ url_for('job_details', job_id=job['id']) }}"
+            >
+                View Job Details →
+            </a>
+        </div>
+
+
+        <div class="job-source">
+
+            CareerLens.ai • Job Opportunity
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+</div>
+
+
+<script>
+
+function showApplyMessage(event) {
+
+    event.preventDefault();
+
+    alert(
+        "Application feature will be connected to the company's official application page."
+    );
+
+}
+
+</script>
+
+{% endblock %}

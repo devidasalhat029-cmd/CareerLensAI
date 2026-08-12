@@ -1,0 +1,1257 @@
+{% extends "base.html" %}
+
+{% block title %}
+CareerLens.ai | Resume Builder
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+/* ===============================
+   MAIN PAGE
+================================ */
+
+.resume-page{
+    width:100%;
+    max-width:900px;
+    margin:0 auto;
+    padding:35px 20px 80px;
+}
+
+.resume-header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.resume-header h1{
+    font-size:38px;
+    color:#55ddff;
+    margin-bottom:8px;
+}
+
+.resume-header p{
+    color:#94a3b8;
+    font-size:15px;
+}
+
+
+/* ===============================
+   FORM CARD
+================================ */
+
+.builder-card{
+    width:100%;
+    background:rgba(13,25,45,.97);
+    border:1px solid rgba(91,214,255,.18);
+    border-radius:20px;
+    padding:30px;
+    box-shadow:0 15px 50px rgba(0,0,0,.25);
+}
+
+
+/* ===============================
+   SECTIONS
+================================ */
+
+.form-section{
+    width:100%;
+    margin-bottom:32px;
+}
+
+.form-section-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    color:#62ddff;
+    font-size:19px;
+    font-weight:bold;
+
+    padding-bottom:12px;
+    margin-bottom:18px;
+
+    border-bottom:1px solid #263a56;
+}
+
+
+/* ===============================
+   FORM GROUP
+================================ */
+
+.form-group{
+    width:100%;
+    margin-bottom:18px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:7px;
+
+    color:#dce7f5;
+    font-size:14px;
+    font-weight:600;
+}
+
+
+/* ===============================
+   INPUTS
+================================ */
+
+.form-group input,
+.form-group textarea{
+
+    width:100%;
+    display:block;
+
+    padding:13px 15px;
+
+    border-radius:10px;
+
+    border:1px solid #30445f;
+
+    background:#0b1729;
+
+    color:white;
+
+    outline:none;
+
+    font-size:14px;
+
+    transition:.2s;
+}
+
+
+.form-group input:focus,
+.form-group textarea:focus{
+
+    border-color:#55ddff;
+
+    box-shadow:
+    0 0 0 2px rgba(85,221,255,.08);
+}
+
+
+.form-group textarea{
+
+    min-height:120px;
+
+    resize:vertical;
+}
+
+
+/* ===============================
+   FILE UPLOAD
+================================ */
+
+.upload-box{
+
+    width:100%;
+
+    border:1px dashed #4c6989;
+
+    background:#0a1729;
+
+    border-radius:12px;
+
+    padding:20px;
+
+    text-align:center;
+
+    transition:.2s;
+}
+
+.upload-box:hover{
+
+    border-color:#55ddff;
+
+    background:#0d1d32;
+}
+
+
+.upload-box input{
+
+    width:100%;
+
+    border:0;
+
+    background:transparent;
+
+    color:white;
+
+    padding:5px;
+}
+
+
+.upload-box small{
+
+    display:block;
+
+    color:#8498b1;
+
+    margin-top:8px;
+
+}
+
+
+/* ===============================
+   CREATE BUTTON
+================================ */
+
+.create-resume{
+
+    width:100%;
+
+    padding:16px;
+
+    margin-top:5px;
+
+    border:0;
+
+    border-radius:12px;
+
+    background:
+    linear-gradient(
+        90deg,
+        #55ddff,
+        #7788ff
+    );
+
+    color:#06111e;
+
+    font-size:17px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+
+.create-resume:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+    0 10px 30px
+    rgba(85,221,255,.25);
+}
+
+
+/* ===============================
+   CREATED RESUME
+================================ */
+
+.result-box{
+
+    width:100%;
+
+    margin-top:35px;
+
+    background:white;
+
+    color:#222;
+
+    border-radius:8px;
+
+    padding:45px;
+
+    box-shadow:
+    0 15px 45px
+    rgba(0,0,0,.3);
+}
+
+
+.result-header{
+
+    border-bottom:
+    2px solid #193754;
+
+    padding-bottom:18px;
+
+    margin-bottom:20px;
+}
+
+
+.result-header h1{
+
+    color:#172d47;
+
+    font-size:32px;
+
+    margin-bottom:7px;
+}
+
+
+.contact{
+
+    color:#64748b;
+
+    font-size:13px;
+
+    line-height:1.7;
+}
+
+
+.result-section{
+
+    margin-top:24px;
+}
+
+
+.result-section h3{
+
+    color:#1d527e;
+
+    font-size:15px;
+
+    text-transform:uppercase;
+
+    border-bottom:
+    1px solid #ccd5df;
+
+    padding-bottom:6px;
+
+    margin-bottom:10px;
+}
+
+
+.result-section p{
+
+    color:#374151;
+
+    font-size:14px;
+
+    line-height:1.7;
+
+    white-space:pre-line;
+}
+
+
+.skill-list{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:7px;
+}
+
+
+.skill{
+
+    background:#e2f4ff;
+
+    color:#155477;
+
+    padding:6px 11px;
+
+    border-radius:15px;
+
+    font-size:12px;
+}
+
+
+/* ===============================
+   UPLOADED FILE NAMES
+================================ */
+
+.file-display{
+
+    background:#f1f5f9;
+
+    border-radius:7px;
+
+    padding:9px 12px;
+
+    color:#475569;
+
+    font-size:13px;
+
+    margin-top:8px;
+}
+
+
+/* ===============================
+   DOWNLOAD BUTTON
+================================ */
+
+.download-btn{
+
+    width:100%;
+
+    margin-top:20px;
+
+    padding:14px;
+
+    border:0;
+
+    border-radius:10px;
+
+    background:#152e4b;
+
+    color:white;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+
+.download-btn:hover{
+
+    background:#1e4168;
+}
+
+
+/* ===============================
+   MOBILE
+================================ */
+
+@media(max-width:600px){
+
+    .resume-page{
+
+        padding:
+        20px
+        12px
+        60px;
+    }
+
+
+    .builder-card{
+
+        padding:20px 15px;
+
+    }
+
+
+    .resume-header h1{
+
+        font-size:30px;
+
+    }
+
+
+    .result-box{
+
+        padding:25px 20px;
+
+    }
+
+
+    .result-header h1{
+
+        font-size:26px;
+
+    }
+
+}
+
+
+/* =================================================
+   IMPORTANT PRINT CSS
+   ONLY CREATED RESUME WILL BE PRINTED
+================================================= */
+
+@media print{
+
+    /*
+       Hide EVERYTHING
+    */
+
+    body *{
+
+        visibility:hidden !important;
+
+    }
+
+
+    /*
+       Show ONLY resume
+    */
+
+    #createdResume,
+    #createdResume *{
+
+        visibility:visible !important;
+
+    }
+
+
+    /*
+       Resume becomes full page
+    */
+
+    #createdResume{
+
+        position:absolute !important;
+
+        left:0 !important;
+
+        top:0 !important;
+
+        width:100% !important;
+
+        min-height:100vh !important;
+
+        margin:0 !important;
+
+        padding:40px !important;
+
+        background:white !important;
+
+        color:#222 !important;
+
+        border-radius:0 !important;
+
+        box-shadow:none !important;
+
+    }
+
+
+    /*
+       Download button should NOT appear
+    */
+
+    #createdResume .download-btn{
+
+        display:none !important;
+
+    }
+
+}
+
+</style>
+
+
+<!-- =================================================
+     MAIN PAGE
+================================================= -->
+
+<div class="resume-page">
+
+
+    <!-- HEADER -->
+
+    <div class="resume-header">
+
+        <h1>
+            📄 Resume Builder
+        </h1>
+
+        <p>
+            Create your professional resume with CareerLens.ai
+        </p>
+
+    </div>
+
+
+
+    <!-- =================================================
+         FORM
+    ================================================= -->
+
+    <div class="builder-card">
+
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
+
+            <!-- ================= PERSONAL ================= -->
+
+            <div class="form-section">
+
+                <div class="form-section-title">
+
+                    👤 Personal Information
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Profile Photo
+                    </label>
+
+
+                    <div class="upload-box">
+
+                        <input
+                            type="file"
+                            name="photo"
+                            accept="image/*"
+                        >
+
+                        <small>
+                            📸 Select your photo from Gallery
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label>
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Enter your full name"
+                        required
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label>
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="example@gmail.com"
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label>
+                        Phone Number
+                    </label>
+
+                    <input
+                        type="text"
+                        name="phone"
+                        placeholder="+91 XXXXX XXXXX"
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label>
+                        Location
+                    </label>
+
+                    <input
+                        type="text"
+                        name="location"
+                        placeholder="City, Maharashtra"
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= OBJECTIVE ================= -->
+
+            <div class="form-section">
+
+                <div class="form-section-title">
+
+                    🎯 Career Objective
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Career Objective
+                    </label>
+
+                    <textarea
+                        name="objective"
+                        placeholder="Write your career objective..."
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= EDUCATION ================= -->
+
+            <div class="form-section">
+
+                <div class="form-section-title">
+
+                    🎓 Education
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Education Details
+                    </label>
+
+                    <textarea
+                        name="education"
+                        placeholder="Diploma in Computer Engineering
+Government Polytechnic
+2024 - 2027
+Percentage / CGPA"
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= SKILLS ================= -->
+
+            <div class="form-section">
+
+                <div class="form-section-title">
+
+                    💻 Technical Skills
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Skills
+                    </label>
+
+                    <textarea
+                        name="skills"
+                        placeholder="Python, Java, HTML, CSS, JavaScript, SQL"
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+
+<!-- ================= PROJECT PDF ================= -->
+
+<div class="form-group">
+
+    <label>Project PDF</label>
+
+    <div class="upload-box">
+
+        <input
+            type="file"
+            name="project_pdf"
+            accept=".pdf"
+        >
+
+        <small>
+            📄 Select Project PDF
+        </small>
+
+    </div>
+
+</div>
+
+
+<!-- ================= COMPANY / INTERNSHIP ================= -->
+
+<div class="form-section">
+
+    <div class="form-section-title">
+        🏢 Company / Internship
+    </div>
+
+    <div class="form-group">
+
+        <label>Company Name</label>
+
+        <input
+            type="text"
+            name="company"
+            placeholder="Enter company name"
+        >
+
+    </div>
+
+    <div class="form-group">
+
+        <label>Job Role</label>
+
+        <input
+            type="text"
+            name="role"
+            placeholder="Intern / Developer / Trainee"
+        >
+
+    </div>
+
+    <div class="form-group">
+
+        <label>Duration</label>
+
+        <input
+            type="text"
+            name="duration"
+            placeholder="3 Months / 6 Months"
+        >
+
+    </div>
+
+    <div class="form-group">
+
+        <label>Responsibilities / Work</label>
+
+        <textarea
+            name="experience"
+            placeholder="Describe your work and responsibilities..."
+        ></textarea>
+
+    </div>
+
+</div>
+
+
+<!-- ================= CERTIFICATIONS ================= -->
+
+<div class="form-section">
+
+    <div class="form-section-title">
+        📜 Certifications
+    </div>
+
+    <div class="form-group">
+
+        <label>Certificate Name</label>
+
+        <input
+            type="text"
+            name="certificates"
+            placeholder="Python Certification"
+        >
+
+    </div>
+
+    <div class="form-group">
+
+        <label>Certificate File</label>
+
+        <div class="upload-box">
+
+            <input
+                type="file"
+                name="certificate_pdf"
+                accept=".pdf,.jpg,.jpeg,.png"
+            >
+
+            <small>
+                📎 Upload Certificate PDF / Image
+            </small>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= ACHIEVEMENTS ================= -->
+
+<div class="form-section">
+
+    <div class="form-section-title">
+        🏆 Achievements
+    </div>
+
+    <div class="form-group">
+
+        <label>Achievements</label>
+
+        <textarea
+            name="achievements"
+            placeholder="Hackathons, awards, academic achievements..."
+        ></textarea>
+
+    </div>
+
+</div>
+
+
+<!-- ================= LANGUAGES ================= -->
+
+<div class="form-section">
+
+    <div class="form-section-title">
+        🌐 Languages
+    </div>
+
+    <div class="form-group">
+
+        <label>Languages Known</label>
+
+        <input
+            type="text"
+            name="languages"
+            placeholder="English, Hindi, Marathi"
+        >
+
+    </div>
+
+</div>
+
+
+<!-- ================= PROFESSIONAL LINKS ================= -->
+
+<div class="form-section">
+
+    <div class="form-section-title">
+        🔗 Professional Links
+    </div>
+
+    <div class="form-group">
+
+        <label>LinkedIn</label>
+
+        <input
+            type="text"
+            name="linkedin"
+            placeholder="https://linkedin.com/in/yourname"
+        >
+
+    </div>
+
+    <div class="form-group">
+
+        <label>GitHub</label>
+
+        <input
+            type="text"
+            name="github"
+            placeholder="https://github.com/yourname"
+        >
+
+    </div>
+
+</div>
+
+
+<!-- ================= CREATE RESUME ================= -->
+
+<button
+    type="submit"
+    class="create-resume">
+
+    ✨ CREATE MY RESUME
+
+</button>
+
+
+</form>
+
+</div>
+
+
+<!-- =====================================================
+     CREATED RESUME
+===================================================== -->
+
+{% if resume %}
+
+<div
+    class="result-box"
+    id="createdResume">
+
+    <div class="result-header">
+
+        <h1>
+            {{ resume.name }}
+        </h1>
+
+        <div class="contact">
+
+            {% if resume.email %}
+                {{ resume.email }}
+            {% endif %}
+
+            {% if resume.phone %}
+                | {{ resume.phone }}
+            {% endif %}
+
+            {% if resume.location %}
+                | {{ resume.location }}
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    {% if resume.objective %}
+
+    <div class="result-section">
+
+        <h3>Career Objective</h3>
+
+        <p>
+            {{ resume.objective }}
+        </p>
+
+    </div>
+
+    {% endif %}
+
+
+    {% if resume.education %}
+
+    <div class="result-section">
+
+        <h3>Education</h3>
+
+        <p>
+            {{ resume.education }}
+        </p>
+
+    </div>
+
+    {% endif %}
+
+
+    {% if resume.skills %}
+
+    <div class="result-section">
+
+        <h3>Technical Skills</h3>
+
+        <div class="skill-list">
+
+            {% for skill in resume.skills.split(',') %}
+
+                {% if skill.strip() %}
+
+                <span class="skill">
+                    {{ skill.strip() }}
+                </span>
+
+                {% endif %}
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+    {% if resume.project_name %}
+
+    <div class="result-section">
+
+        <h3>Projects</h3>
+
+        <p>
+
+            <strong>
+                {{ resume.project_name }}
+            </strong>
+
+            {% if resume.project_tech %}
+
+                <br><br>
+
+                <b>Technologies:</b>
+                {{ resume.project_tech }}
+
+            {% endif %}
+
+            {% if resume.project_description %}
+
+                <br><br>
+
+                {{ resume.project_description }}
+
+            {% endif %}
+
+        </p>
+
+    </div>
+
+    {% endif %}
+
+
+    {% if resume.company %}
+
+    <div class="result-section">
+
+        <h3>Experience / Internship</h3>
+
+        <p>
+
+            <strong>
+                {{ resume.company }}
+            </strong>
+
+            {% if resume.role %}
+                <br>
+                {{ resume.role }}
+            {% endif %}
+
+            {% if resume.duration %}
+                | {{ resume.duration }}
+            {% endif %}
+
+            {% if resume.experience %}
+                <br><br>
+                {{ resume.experience }}
+            {% endif %}
+
+        </p>
+
+    </div>
+
+    {% endif %}
+
+
+    {% if resume.certificates %}
+
+    <div class="result-section">
+
+        <h3>Certifications</h3>
+
+        <p>
+            {{ resume.certificates }}
+        </p>
+
+    </div>
+
+    {% endif %}
+
+
+    {% if resume.achievements %}
+
+    <div class="result-section">
+
+        <h3>Achievements</h3>
+
+        <p>
+            {{ resume.achievements }}
+        </p>
+
+    </div>
+
+    {% endif %}
+
+
+    {% if resume.languages %}
+
+    <div class="result-section">
+
+        <h3>Languages</h3>
+
+        <p>
+            {{ resume.languages }}
+        </p>
+
+    </div>
+
+    {% endif %}
+
+
+    {% if resume.linkedin or resume.github %}
+
+    <div class="result-section">
+
+        <h3>Professional Links</h3>
+
+        <p>
+
+            {% if resume.linkedin %}
+
+                LinkedIn:
+                {{ resume.linkedin }}
+
+                <br>
+
+            {% endif %}
+
+
+            {% if resume.github %}
+
+                GitHub:
+                {{ resume.github }}
+
+            {% endif %}
+
+        </p>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- DOWNLOAD -->
+
+    <button
+        type="button"
+        class="download-btn"
+        onclick="downloadResume()">
+
+        📄 DOWNLOAD RESUME AS PDF
+
+    </button>
+
+</div>
+
+{% endif %}
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+function downloadResume() {
+
+    const resume =
+        document.getElementById("createdResume");
+
+    if (!resume) {
+
+        alert("Please create your resume first!");
+
+        return;
+    }
+
+    window.print();
+
+}
+
+</script>
+
+
+{% endblock %}

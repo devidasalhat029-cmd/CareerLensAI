@@ -1,0 +1,466 @@
+{% extends "base.html" %}
+
+{% block title %}
+CareerAI | Login
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* =========================================================
+   CAREERAI LOGIN — PREMIUM LIGHT DESIGN
+========================================================= */
+
+.login-page{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:50px 20px;
+
+    background:
+        radial-gradient(
+            circle at 10% 15%,
+            #e6f7ff,
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 20%,
+            #f1eaff,
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 50% 100%,
+            #ffeaf5,
+            transparent 35%
+        ),
+        #f8faff;
+
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+
+/* =========================================================
+   LOGIN CARD
+========================================================= */
+
+.login-card{
+    width:100%;
+    max-width:470px;
+    padding:45px;
+
+    box-sizing:border-box;
+
+    background:#ffffff;
+
+    border:1px solid #e6e8f2;
+    border-radius:28px;
+
+    box-shadow:
+        0 25px 70px
+        rgba(55,65,120,.13);
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.login-brand{
+    text-align:center;
+    margin-bottom:35px;
+}
+
+.login-brand .mini-title{
+    display:inline-block;
+
+    padding:7px 14px;
+
+    border-radius:30px;
+
+    background:#f0efff;
+
+    color:#6257d8;
+
+    font-size:11px;
+    font-weight:800;
+
+    letter-spacing:1px;
+}
+
+.login-brand h1{
+    margin:18px 0 8px;
+
+    font-size:42px;
+    font-weight:900;
+
+    letter-spacing:-2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #227ddd,
+            #6958df,
+            #d84f9b
+        );
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.login-brand p{
+    margin:0;
+
+    color:#7d8498;
+
+    font-size:14px;
+    line-height:1.6;
+}
+
+
+/* =========================================================
+   FLASH MESSAGE
+========================================================= */
+
+.flash-message{
+    margin-bottom:20px;
+
+    padding:13px 15px;
+
+    border-radius:10px;
+
+    background:#fff4f4;
+
+    border:1px solid #ffd7d7;
+
+    color:#c44242;
+
+    font-size:13px;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.login-form{
+    width:100%;
+}
+
+
+/* =========================================================
+   FORM GROUP
+========================================================= */
+
+.form-group{
+    margin-bottom:20px;
+}
+
+.form-group label{
+    display:block;
+
+    margin-bottom:9px;
+
+    color:#41465d;
+
+    font-size:14px;
+    font-weight:750;
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.form-group input{
+    width:100%;
+    height:55px;
+
+    box-sizing:border-box;
+
+    padding:0 16px;
+
+    border-radius:12px;
+
+    border:1px solid #dfe3ee;
+
+    background:#fbfcff;
+
+    color:#252a40;
+
+    outline:none;
+
+    font-size:15px;
+
+    transition:.25s;
+}
+
+.form-group input::placeholder{
+    color:#a0a6b6;
+}
+
+.form-group input:focus{
+    background:#ffffff;
+
+    border-color:#7063e3;
+
+    box-shadow:
+        0 0 0 4px
+        rgba(112,99,227,.10);
+}
+
+
+/* =========================================================
+   LOGIN BUTTON
+========================================================= */
+
+.login-button{
+    width:100%;
+
+    height:57px;
+
+    margin-top:5px;
+
+    border:0;
+
+    border-radius:13px;
+
+    cursor:pointer;
+
+    color:#ffffff;
+
+    background:
+        linear-gradient(
+            90deg,
+            #247edc,
+            #6858df,
+            #d4519b
+        );
+
+    font-size:16px;
+    font-weight:850;
+
+    box-shadow:
+        0 12px 28px
+        rgba(95,88,220,.22);
+
+    transition:.3s;
+}
+
+.login-button:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 17px 35px
+        rgba(95,88,220,.28);
+}
+
+.login-button:active{
+    transform:translateY(0);
+}
+
+
+/* =========================================================
+   REGISTER LINK
+========================================================= */
+
+.register-link{
+    margin-top:25px;
+
+    text-align:center;
+
+    color:#7d8396;
+
+    font-size:14px;
+}
+
+.register-link a{
+    color:#6056d8;
+
+    font-weight:800;
+
+    text-decoration:none;
+}
+
+.register-link a:hover{
+    text-decoration:underline;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.login-footer{
+    margin-top:28px;
+
+    text-align:center;
+
+    color:#a0a5b4;
+
+    font-size:11px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:550px){
+
+    .login-page{
+        padding:30px 15px;
+    }
+
+    .login-card{
+        padding:32px 22px;
+        border-radius:22px;
+    }
+
+    .login-brand h1{
+        font-size:36px;
+    }
+
+    .login-brand .mini-title{
+        font-size:9px;
+    }
+}
+
+</style><div class="login-page"><div class="login-card">
+
+
+    <!-- =================================================
+         BRAND
+    ================================================== -->
+
+    <div class="login-brand">
+
+        <div class="mini-title">
+            AI CAREER & PLACEMENT INTELLIGENCE
+        </div>
+
+        <h1>
+            CAREERAI
+        </h1>
+
+        <p>
+            Login to continue your personalized
+            career and placement journey.
+        </p>
+
+    </div>
+
+
+    <!-- =================================================
+         FLASH MESSAGES
+    ================================================== -->
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            {% for category, message in messages %}
+
+                <div class="flash-message">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    <!-- =================================================
+         LOGIN FORM
+    ================================================== -->
+
+    <form
+        method="POST"
+        action="{{ url_for('login') }}"
+        class="login-form"
+    >
+
+        <!-- EMAIL -->
+
+        <div class="form-group">
+
+            <label for="email">
+                Email Address
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your email"
+                autocomplete="email"
+                required
+            >
+
+        </div>
+
+
+        <!-- PASSWORD -->
+
+        <div class="form-group">
+
+            <label for="password">
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+                required
+            >
+
+        </div>
+
+
+        <!-- LOGIN BUTTON -->
+
+        <button
+            type="submit"
+            class="login-button"
+        >
+            Login
+        </button>
+
+    </form>
+
+
+    <!-- =================================================
+         REGISTER
+    ================================================== -->
+
+    <div class="register-link">
+
+        Don't have an account?
+
+        <a href="{{ url_for('register') }}">
+            Create Account
+        </a>
+
+    </div>
+
+
+    <!-- =================================================
+         FOOTER
+    ================================================== -->
+
+    <div class="login-footer">
+
+        Your intelligent career journey starts here.
+
+    </div>
+
+
+</div>
+
+</div>{% endblock %}

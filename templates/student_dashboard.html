@@ -1,0 +1,2375 @@
+{% extends "base.html" %}
+{% block title %}CareerAI | Dashboard{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+*{
+    box-sizing:border-box;
+}
+
+html,
+body{
+    margin:0;
+    padding:0;
+    background:#07111d;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    color:#f4f8ff;
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+.dashboard-page{
+    min-height:100vh;
+
+    background:
+        radial-gradient(
+            circle at 85% 10%,
+            rgba(65,100,255,.13),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 20% 80%,
+            rgba(0,210,255,.08),
+            transparent 25%
+        ),
+        #07111d;
+}
+
+.dashboard-layout{
+    display:flex;
+    min-height:100vh;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar{
+    width:88px;
+
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+
+    z-index:100;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    padding:22px 10px;
+
+    background:rgba(8,20,33,.96);
+
+    backdrop-filter:blur(18px);
+
+    border-right:1px solid rgba(120,180,220,.12);
+}
+
+.sidebar-logo{
+    width:52px;
+    height:52px;
+
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #35d4ff,
+            #6c5ce7
+        );
+
+    color:white;
+
+    font-size:18px;
+    font-weight:900;
+
+    box-shadow:
+        0 0 25px rgba(55,205,255,.25),
+        inset 0 1px 1px rgba(255,255,255,.25);
+
+    margin-bottom:32px;
+}
+
+.side-menu{
+    width:100%;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    gap:12px;
+}
+
+.side-link{
+    width:46px;
+    height:46px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    text-decoration:none;
+
+    color:#71869a;
+
+    background:#0e1d2b;
+
+    border:1px solid rgba(100,190,230,.09);
+
+    font-size:19px;
+
+    position:relative;
+
+    transition:.25s ease;
+}
+
+.side-link:hover{
+    color:white;
+
+    transform:
+        translateY(-3px)
+        scale(1.07);
+
+    background:
+        linear-gradient(
+            135deg,
+            #28c9f5,
+            #655de9
+        );
+
+    box-shadow:
+        0 8px 25px rgba(54,190,255,.3);
+}
+
+.side-link.active{
+    color:white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #32c9f4,
+            #645ee9
+        );
+
+    box-shadow:
+        0 8px 25px rgba(58,196,255,.28),
+        0 0 12px rgba(105,92,240,.2);
+}
+
+
+/* TOOLTIP */
+
+.side-link::after{
+    content:attr(data-tooltip);
+
+    position:absolute;
+
+    left:62px;
+    top:50%;
+
+    transform:
+        translateY(-50%)
+        translateX(-5px);
+
+    padding:7px 11px;
+
+    border-radius:8px;
+
+    background:#13283a;
+
+    border:1px solid rgba(100,200,240,.15);
+
+    color:#d9f6ff;
+
+    font-size:12px;
+    font-weight:600;
+
+    white-space:nowrap;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:.2s;
+}
+
+.side-link:hover::after{
+    opacity:1;
+
+    transform:
+        translateY(-50%)
+        translateX(0);
+}
+
+.side-bottom{
+    margin-top:auto;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.dashboard-main{
+    width:calc(100% - 88px);
+
+    margin-left:88px;
+
+    padding:32px 38px 60px;
+}
+
+.dashboard-inner{
+    width:100%;
+    max-width:1450px;
+
+    margin:auto;
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    margin-bottom:28px;
+}
+
+.welcome h1{
+    margin:0;
+
+    font-size:28px;
+    font-weight:800;
+
+    letter-spacing:-.5px;
+}
+
+.welcome h1 span{
+    background:
+        linear-gradient(
+            90deg,
+            #4edaff,
+            #8c75ff
+        );
+
+    -webkit-background-clip:text;
+    background-clip:text;
+
+    color:transparent;
+}
+
+.welcome p{
+    margin:7px 0 0;
+
+    color:#7890a5;
+
+    font-size:14px;
+}
+
+.notification-btn{
+    width:46px;
+    height:46px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:14px;
+
+    text-decoration:none;
+
+    font-size:19px;
+
+    background:#0d1d2b;
+
+    border:1px solid rgba(100,180,220,.12);
+
+    transition:.2s;
+}
+
+.notification-btn:hover{
+    transform:translateY(-2px);
+
+    background:#142a3d;
+}
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+.profile-card{
+    min-height:170px;
+
+    padding:27px 28px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    gap:20px;
+
+    border-radius:24px;
+
+    background:
+        radial-gradient(
+            circle at 90% 20%,
+            rgba(92,105,255,.18),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #14283b,
+            #0e1d2b
+        );
+
+    border:1px solid rgba(110,190,230,.13);
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.16);
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+.profile-card::after{
+    content:"";
+
+    position:absolute;
+
+    width:180px;
+    height:180px;
+
+    right:-80px;
+    bottom:-100px;
+
+    border-radius:50%;
+
+    background:rgba(45,204,255,.08);
+}
+
+.profile-left{
+    display:flex;
+    align-items:center;
+
+    gap:22px;
+
+    position:relative;
+    z-index:2;
+}
+
+.profile-photo,
+.default-avatar{
+    width:92px;
+    height:92px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:4px solid rgba(80,210,255,.25);
+
+    box-shadow:
+        0 0 0 5px rgba(90,100,255,.08),
+        0 10px 30px rgba(0,0,0,.25);
+}
+
+.default-avatar{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #36d3ff,
+            #705ee9
+        );
+
+    color:white;
+
+    font-size:34px;
+    font-weight:800;
+}
+
+.profile-info h2{
+    margin:0;
+
+    font-size:23px;
+}
+
+.profile-info p{
+    margin:8px 0 0;
+
+    color:#7fdcff;
+
+    font-size:14px;
+}
+
+.profile-action{
+    position:relative;
+    z-index:3;
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:12px 18px;
+
+    border-radius:12px;
+
+    text-decoration:none;
+
+    color:#eafaff;
+
+    font-size:12px;
+    font-weight:700;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(45,205,255,.16),
+            rgba(105,90,240,.18)
+        );
+
+    border:1px solid rgba(80,205,255,.20);
+
+    transition:.25s;
+}
+
+.profile-action:hover{
+    color:white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #27c9f3,
+            #655ce9
+        );
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 8px 25px rgba(60,190,255,.20);
+}
+
+
+/* =========================================================
+   STAT CARDS
+========================================================= */
+
+.stat-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:14px;
+
+    margin-top:18px;
+}
+
+.stat-card{
+    min-height:125px;
+
+    padding:20px;
+
+    border-radius:18px;
+
+    background:#0c1b29;
+
+    border:1px solid rgba(100,180,220,.09);
+
+    transition:.25s;
+}
+
+.stat-card:hover{
+    transform:translateY(-4px);
+
+    border-color:
+        rgba(65,210,255,.25);
+
+    box-shadow:
+        0 12px 30px rgba(0,0,0,.18);
+}
+
+.stat-icon{
+    width:36px;
+    height:36px;
+
+    border-radius:11px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:rgba(67,205,255,.1);
+
+    margin-bottom:13px;
+}
+
+.stat-title{
+    color:#71899d;
+
+    font-size:12px;
+}
+
+.stat-value{
+    margin-top:5px;
+
+    font-size:25px;
+    font-weight:800;
+}
+
+
+/* =========================================================
+   BIG DASHBOARD CARDS
+   EXACT 2 x 2
+========================================================= */
+
+.dashboard-cards{
+    width:100%;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+    grid-template-rows:
+        repeat(2,minmax(370px,1fr));
+
+    gap:22px;
+
+    margin-top:22px;
+}
+
+.dashboard-card{
+    width:100%;
+    min-width:0;
+
+    min-height:370px;
+
+    padding:27px;
+
+    border-radius:24px;
+
+    background:
+        radial-gradient(
+            circle at 90% 0%,
+            rgba(91,95,255,.10),
+            transparent 35%
+        ),
+        linear-gradient(
+            145deg,
+            #112538,
+            #0b1b2b
+        );
+
+    border:1px solid rgba(100,190,230,.13);
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.18);
+
+    position:relative;
+
+    overflow:hidden;
+
+    transition:.25s;
+}
+
+.dashboard-card:hover{
+    transform:translateY(-4px);
+
+    border-color:
+        rgba(70,205,255,.28);
+
+    box-shadow:
+        0 20px 45px rgba(0,0,0,.25);
+}
+
+.card-top{
+    display:flex;
+
+    align-items:flex-start;
+    justify-content:space-between;
+
+    gap:15px;
+}
+
+.card-label{
+    display:block;
+
+    color:#39d5ff;
+
+    font-size:11px;
+    font-weight:800;
+
+    letter-spacing:1.2px;
+
+    margin-bottom:8px;
+}
+
+.dashboard-card h2{
+    margin:0;
+
+    font-size:22px;
+
+    color:#f4f8ff;
+}
+
+.dashboard-card p{
+    margin:7px 0 0;
+
+    color:#7892a8;
+
+    font-size:13px;
+}
+
+.card-icon{
+    width:52px;
+    height:52px;
+
+    min-width:52px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(48,208,255,.20),
+            rgba(106,91,240,.24)
+        );
+
+    border:1px solid rgba(100,180,255,.12);
+
+    font-size:24px;
+}
+
+
+/* =========================================================
+   CAREER READINESS
+========================================================= */
+
+.readiness-score{
+    display:flex;
+
+    align-items:center;
+
+    gap:25px;
+
+    margin-top:38px;
+}
+
+.big-score{
+    font-size:52px;
+
+    line-height:1;
+
+    font-weight:900;
+
+    background:
+        linear-gradient(
+            90deg,
+            #43d8ff,
+            #8064ff
+        );
+
+    -webkit-background-clip:text;
+    background-clip:text;
+
+    color:transparent;
+}
+
+.readiness-score strong{
+    display:block;
+
+    font-size:15px;
+}
+
+.readiness-score small{
+    display:block;
+
+    margin-top:5px;
+
+    color:#728ba0;
+
+    font-size:12px;
+}
+
+.mini-progress{
+    margin-top:34px;
+}
+
+.progress-info{
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-bottom:7px;
+
+    color:#91a7b8;
+
+    font-size:12px;
+}
+
+.progress{
+    width:100%;
+
+    height:8px;
+
+    border-radius:20px;
+
+    background:#182f42;
+
+    overflow:hidden;
+
+    margin-bottom:18px;
+}
+
+.progress-bar{
+    height:100%;
+
+    border-radius:20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #35d7ff,
+            #765ef2
+        );
+}
+
+.card-link{
+    position:absolute;
+
+    left:27px;
+    bottom:25px;
+
+    color:#45d8ff;
+
+    font-size:13px;
+    font-weight:700;
+}
+
+
+/* =========================================================
+   TODAY'S GOAL
+========================================================= */
+
+.goal-list{
+    display:flex;
+
+    flex-direction:column;
+
+    gap:13px;
+
+    margin-top:30px;
+}
+
+.goal-item{
+    min-height:65px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    padding:14px 17px;
+
+    border-radius:15px;
+
+    background:
+        rgba(17,39,58,.75);
+
+    border:
+        1px solid rgba(100,180,220,.08);
+
+    color:#dce9f3;
+
+    font-size:13px;
+}
+
+.goal-item span{
+    width:30px;
+    height:30px;
+
+    min-width:30px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:
+        rgba(45,200,255,.10);
+
+    color:#43d8ff;
+
+    font-weight:800;
+}
+
+
+/* =========================================================
+   WEEKLY PROGRESS
+========================================================= */
+
+.week-chart{
+    height:245px;
+
+    display:flex;
+
+    align-items:flex-end;
+
+    justify-content:space-around;
+
+    gap:15px;
+
+    margin-top:28px;
+
+    padding:
+        10px 5px 0;
+
+    border-bottom:
+        1px solid rgba(120,180,220,.10);
+}
+
+.week-day{
+    height:100%;
+
+    flex:1;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:flex-end;
+
+    gap:8px;
+}
+
+.week-bar{
+    width:100%;
+
+    max-width:38px;
+
+    min-height:25px;
+
+    border-radius:
+        9px 9px 4px 4px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #43d7ff,
+            #705ce8
+        );
+
+    box-shadow:
+        0 5px 20px
+        rgba(62,190,255,.15);
+}
+
+.week-day small{
+    color:#71899e;
+
+    font-size:11px;
+}
+
+
+/* =========================================================
+   RECENT ACTIVITY
+========================================================= */
+
+.activity-list{
+    margin-top:25px;
+}
+
+.activity-item{
+    min-height:78px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    border-bottom:
+        1px solid rgba(120,180,220,.08);
+}
+
+.activity-item:last-child{
+    border-bottom:0;
+}
+
+.activity-icon{
+    width:44px;
+    height:44px;
+
+    min-width:44px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:13px;
+
+    background:
+        rgba(60,170,240,.10);
+
+    font-size:19px;
+}
+
+.activity-item div:nth-child(2){
+    flex:1;
+}
+
+.activity-item strong{
+    display:block;
+
+    font-size:13px;
+
+    color:#edf5fb;
+}
+
+.activity-item small{
+    display:block;
+
+    margin-top:4px;
+
+    color:#70889d;
+
+    font-size:11px;
+}
+
+.activity-time{
+    color:#70899e;
+
+    font-size:11px;
+
+    white-space:nowrap;
+}
+
+
+/* =========================================================
+   QUICK PREPARATION
+========================================================= */
+
+.section-title{
+    margin:30px 0 15px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+}
+
+.section-title h2{
+    margin:0;
+
+    font-size:19px;
+}
+
+.section-title span{
+    color:#6f879b;
+
+    font-size:12px;
+}
+
+.quick-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:14px;
+}
+
+.quick-card{
+    min-height:145px;
+
+    padding:20px;
+
+    text-decoration:none;
+
+    color:white;
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #102131,
+            #0b1927
+        );
+
+    border:
+        1px solid rgba(100,180,220,.09);
+
+    transition:.25s;
+}
+
+.quick-card:hover{
+    transform:translateY(-5px);
+
+    border-color:
+        rgba(70,205,255,.3);
+
+    box-shadow:
+        0 15px 35px rgba(0,0,0,.2);
+}
+
+.quick-icon{
+    width:44px;
+    height:44px;
+
+    border-radius:13px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(48,208,255,.18),
+            rgba(106,91,240,.18)
+        );
+
+    font-size:21px;
+
+    margin-bottom:15px;
+}
+
+.quick-card h3{
+    margin:0;
+
+    font-size:15px;
+}
+
+.quick-card p{
+    margin:6px 0 0;
+
+    color:#70889d;
+
+    font-size:12px;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.dashboard-footer{
+    margin-top:30px;
+
+    padding:20px;
+
+    text-align:center;
+
+    color:#60798d;
+
+    font-size:11px;
+
+    border-top:
+        1px solid rgba(120,180,220,.08);
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media(max-width:1100px){
+
+    .dashboard-grid{
+        width:100%;
+    }
+
+    .stat-grid{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .quick-grid{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:800px){
+
+    .sidebar{
+        width:68px;
+
+        padding:
+            18px 7px;
+    }
+
+    .sidebar-logo{
+        width:44px;
+        height:44px;
+
+        margin-bottom:25px;
+
+        font-size:15px;
+    }
+
+    .side-menu{
+        gap:10px;
+    }
+
+    .side-link{
+        width:40px;
+        height:40px;
+
+        font-size:16px;
+    }
+
+    .side-link::after{
+        display:none;
+    }
+
+    .dashboard-main{
+        width:calc(100% - 68px);
+
+        margin-left:68px;
+
+        padding:
+            22px 14px 45px;
+    }
+
+    .welcome h1{
+        font-size:21px;
+    }
+
+    .welcome p{
+        font-size:12px;
+    }
+
+    .notification-btn{
+        width:40px;
+        height:40px;
+    }
+
+    .profile-card{
+        padding:20px;
+
+        flex-direction:column;
+
+        align-items:flex-start;
+    }
+
+    .profile-action{
+        width:100%;
+    }
+
+    .profile-photo,
+    .default-avatar{
+        width:70px;
+        height:70px;
+    }
+
+    .default-avatar{
+        font-size:26px;
+    }
+
+    .profile-left{
+        gap:15px;
+    }
+
+    .profile-info h2{
+        font-size:18px;
+    }
+
+    .dashboard-cards{
+        grid-template-columns:1fr;
+
+        grid-template-rows:
+            repeat(4,auto);
+
+        gap:15px;
+    }
+
+    .dashboard-card{
+        min-height:340px;
+    }
+
+    .quick-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media(max-width:450px){
+
+    .dashboard-main{
+        padding-left:9px;
+        padding-right:9px;
+    }
+
+    .welcome h1{
+        font-size:18px;
+    }
+
+    .welcome p{
+        font-size:11px;
+    }
+
+    .stat-grid{
+        grid-template-columns:
+            repeat(2,1fr);
+
+        gap:9px;
+    }
+
+    .stat-card{
+        min-height:115px;
+
+        padding:15px;
+    }
+
+    .stat-value{
+        font-size:22px;
+    }
+
+    .dashboard-card{
+        min-height:320px;
+
+        padding:20px;
+
+        border-radius:20px;
+    }
+
+    .dashboard-card h2{
+        font-size:19px;
+    }
+
+    .card-icon{
+        width:44px;
+        height:44px;
+
+        min-width:44px;
+
+        font-size:20px;
+    }
+
+    .big-score{
+        font-size:42px;
+    }
+
+    .readiness-score{
+        gap:17px;
+    }
+
+    .week-chart{
+        height:210px;
+
+        gap:7px;
+    }
+
+    .week-bar{
+        max-width:27px;
+    }
+
+}
+
+</style>
+
+
+<!-- =========================================================
+     DASHBOARD LAYOUT
+========================================================= -->
+
+<div class="dashboard-page">
+
+<div class="dashboard-layout">
+
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+<aside class="sidebar">
+
+    <div class="sidebar-logo">
+        AI
+    </div>
+
+
+    <nav class="side-menu">
+
+        <!-- Dashboard -->
+        <a href="/dashboard"
+           class="side-link active"
+           data-tooltip="Dashboard">
+            🏠
+        </a>
+
+
+        <!-- My Profile -->
+        <a href="/profile"
+           class="side-link"
+           data-tooltip="My Profile">
+            👤
+        </a>
+
+
+        <!-- Company Preparation -->
+        <a href="/company_preparation"
+           class="side-link"
+           data-tooltip="Company Preparation">
+            🏢
+        </a>
+
+
+        <!-- Aptitude -->
+        <a href="/aptitude"
+           class="side-link"
+           data-tooltip="Aptitude">
+            🧠
+        </a>
+
+
+        <!-- Technical -->
+        <a href="/technical_mcq"
+           class="side-link"
+           data-tooltip="Technical MCQ">
+            💻
+        </a>
+
+
+        <!-- Coding -->
+        <a href="/coding_practice"
+           class="side-link"
+           data-tooltip="Coding Practice">
+            ⌨️
+        </a>
+
+
+        <!-- HR Interview -->
+        <a href="/hr_interview"
+           class="side-link"
+           data-tooltip="HR Interview">
+            🎤
+        </a>
+
+
+        <!-- Career Readiness -->
+        <a href="/career_readiness"
+           class="side-link"
+           data-tooltip="Career Readiness">
+            🎯
+        </a>
+
+
+        <!-- Certificate -->
+        <a href="/certificate"
+           class="side-link"
+           data-tooltip="Certificate">
+            🏆
+        </a>
+
+    </nav>
+
+
+    <div class="side-bottom">
+
+        <a href="/logout"
+           class="side-link"
+           data-tooltip="Logout">
+            🚪
+        </a>
+
+    </div>
+
+</aside>
+
+
+
+<!-- =========================================================
+     MAIN CONTENT
+========================================================= -->
+
+<main class="dashboard-main">
+
+<div class="dashboard-inner">
+
+
+<!-- =========================================================
+     TOP BAR
+========================================================= -->
+
+<div class="topbar">
+
+    <div class="welcome">
+
+        <h1>
+            Good Morning,
+            <span>{{ user["name"] }}</span> 👋
+        </h1>
+
+        <p>
+            Let's continue building your career.
+        </p>
+
+    </div>
+
+
+    <a href="/notifications"
+       class="notification-btn">
+        🔔
+    </a>
+
+</div>
+
+
+
+<!-- =========================================================
+     PROFILE CARD
+========================================================= -->
+
+<div class="profile-card">
+
+
+    <div class="profile-left">
+
+        {% if user["photo"] and user["photo"] != "default.png" %}
+
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename='uploads/profile/' + user['photo']
+                ) }}"
+                class="profile-photo"
+                alt="Profile">
+
+        {% else %}
+
+            <div class="default-avatar">
+                {{ user["name"][0]|upper }}
+            </div>
+
+        {% endif %}
+
+
+        <div class="profile-info">
+
+            <h2>
+                {{ user["name"] }}
+            </h2>
+
+            <p>
+                {{ profile["career_goal"] or "Career Explorer" }}
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- VIEW PROFILE -->
+
+    <a href="/profile"
+       class="profile-action">
+
+        👤 View My Profile →
+
+    </a>
+
+
+</div>
+
+
+
+<!-- =========================================================
+     STATS
+========================================================= -->
+
+<div class="stat-grid">
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            🎯
+        </div>
+
+        <div class="stat-title">
+            Active Goals
+        </div>
+
+        <div class="stat-value">
+            3
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            📈
+        </div>
+
+        <div class="stat-title">
+            Progress
+        </div>
+
+        <div class="stat-value">
+            40%
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            📝
+        </div>
+
+        <div class="stat-title">
+            Completed Tests
+        </div>
+
+        <div class="stat-value">
+            6
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            💼
+        </div>
+
+        <div class="stat-title">
+            Job Alerts
+        </div>
+
+        <div class="stat-value">
+            {{ jobs|length }}
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =========================================================
+     4 BIG DASHBOARD CARDS
+========================================================= -->
+
+<div class="dashboard-cards">
+
+
+<!-- =========================================================
+     CARD 1 — CAREER READINESS
+========================================================= -->
+
+<div class="dashboard-card">
+
+    <div class="card-top">
+
+        <div>
+
+            <span class="card-label">
+                PERFORMANCE
+            </span>
+
+            <h2>
+                Career Readiness
+            </h2>
+
+            <p>
+                Your overall preparation score
+            </p>
+
+        </div>
+
+
+        <div class="card-icon">
+            🎯
+        </div>
+
+    </div>
+
+
+    <div class="readiness-score">
+
+        <div class="big-score">
+            70%
+        </div>
+
+        <div>
+
+            <strong>
+                Good Progress
+            </strong>
+
+            <small>
+                Keep improving your skills
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <div class="mini-progress">
+
+
+        <div class="progress-info">
+
+            <span>
+                Technical Skills
+            </span>
+
+            <span>
+                75%
+            </span>
+
+        </div>
+
+
+        <div class="progress">
+
+            <div class="progress-bar"
+                 style="width:75%">
+            </div>
+
+        </div>
+
+
+
+        <div class="progress-info">
+
+            <span>
+                Aptitude
+            </span>
+
+            <span>
+                65%
+            </span>
+
+        </div>
+
+
+        <div class="progress">
+
+            <div class="progress-bar"
+                 style="width:65%">
+            </div>
+
+        </div>
+
+
+
+        <div class="progress-info">
+
+            <span>
+                Interview Skills
+            </span>
+
+            <span>
+                70%
+            </span>
+
+        </div>
+
+
+        <div class="progress">
+
+            <div class="progress-bar"
+                 style="width:70%">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <a href="/career_readiness"
+       class="card-link">
+
+        Open Career Readiness →
+
+    </a>
+
+</div>
+
+
+
+<!-- =========================================================
+     CARD 2 — TODAY'S GOAL
+========================================================= -->
+
+<div class="dashboard-card">
+
+    <div class="card-top">
+
+        <div>
+
+            <span class="card-label">
+                TODAY
+            </span>
+
+            <h2>
+                Today's Goal
+            </h2>
+
+            <p>
+                Complete your daily preparation
+            </p>
+
+        </div>
+
+
+        <div class="card-icon">
+            ⚡
+        </div>
+
+    </div>
+
+
+    <div class="goal-list">
+
+
+        <div class="goal-item">
+
+            <span>
+                ✓
+            </span>
+
+            <div>
+
+                <strong>
+                    Aptitude Practice
+                </strong>
+
+                <div class="goal-subtext">
+                    Daily aptitude practice
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="goal-item">
+
+            <span>
+                ○
+            </span>
+
+            <div>
+
+                <strong>
+                    Technical MCQs
+                </strong>
+
+                <div class="goal-subtext">
+                    Solve technical questions
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="goal-item">
+
+            <span>
+                ○
+            </span>
+
+            <div>
+
+                <strong>
+                    Interview Practice
+                </strong>
+
+                <div class="goal-subtext">
+                    Practice interview questions
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     CARD 3 — WEEKLY PROGRESS
+========================================================= -->
+
+<div class="dashboard-card">
+
+    <div class="card-top">
+
+        <div>
+
+            <span class="card-label">
+                PROGRESS
+            </span>
+
+            <h2>
+                Weekly Progress
+            </h2>
+
+            <p>
+                Your activity this week
+            </p>
+
+        </div>
+
+
+        <div class="card-icon">
+            📊
+        </div>
+
+    </div>
+
+
+    <div class="week-chart">
+
+
+        <div class="week-day">
+
+            <div class="week-bar"
+                 style="height:45%">
+            </div>
+
+            <small>
+                Mon
+            </small>
+
+        </div>
+
+
+        <div class="week-day">
+
+            <div class="week-bar"
+                 style="height:70%">
+            </div>
+
+            <small>
+                Tue
+            </small>
+
+        </div>
+
+
+        <div class="week-day">
+
+            <div class="week-bar"
+                 style="height:55%">
+            </div>
+
+            <small>
+                Wed
+            </small>
+
+        </div>
+
+
+        <div class="week-day">
+
+            <div class="week-bar"
+                 style="height:85%">
+            </div>
+
+            <small>
+                Thu
+            </small>
+
+        </div>
+
+
+        <div class="week-day">
+
+            <div class="week-bar"
+                 style="height:65%">
+            </div>
+
+            <small>
+                Fri
+            </small>
+
+        </div>
+
+
+        <div class="week-day">
+
+            <div class="week-bar"
+                 style="height:90%">
+            </div>
+
+            <small>
+                Sat
+            </small>
+
+        </div>
+
+
+        <div class="week-day">
+
+            <div class="week-bar"
+                 style="height:40%">
+            </div>
+
+            <small>
+                Sun
+            </small>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     CARD 4 — RECENT ACTIVITY
+========================================================= -->
+
+<div class="dashboard-card">
+
+    <div class="card-top">
+
+        <div>
+
+            <span class="card-label">
+                ACTIVITY
+            </span>
+
+            <h2>
+                Recent Activity
+            </h2>
+
+            <p>
+                Your latest preparation activities
+            </p>
+
+        </div>
+
+
+        <div class="card-icon">
+            🕘
+        </div>
+
+    </div>
+
+
+    <div class="activity-list">
+
+
+        <div class="activity-item">
+
+            <div class="activity-icon">
+                🧠
+            </div>
+
+            <div>
+
+                <strong>
+                    Aptitude Practice
+                </strong>
+
+                <small>
+                    Practice session completed
+                </small>
+
+            </div>
+
+            <span class="activity-time">
+                Today
+            </span>
+
+        </div>
+
+
+
+        <div class="activity-item">
+
+            <div class="activity-icon">
+                💻
+            </div>
+
+            <div>
+
+                <strong>
+                    Technical MCQ
+                </strong>
+
+                <small>
+                    Technical questions completed
+                </small>
+
+            </div>
+
+            <span class="activity-time">
+                Yesterday
+            </span>
+
+        </div>
+
+
+
+        <div class="activity-item">
+
+            <div class="activity-icon">
+                🎤
+            </div>
+
+            <div>
+
+                <strong>
+                    HR Interview
+                </strong>
+
+                <small>
+                    Interview practice completed
+                </small>
+
+            </div>
+
+            <span class="activity-time">
+                2 days ago
+            </span>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+
+<!-- =========================================================
+     QUICK ACTIONS
+========================================================= -->
+
+<div class="section-title">
+
+    <h2>
+        Quick Actions
+    </h2>
+
+    <span>
+        Explore CareerAI →
+    </span>
+
+</div>
+
+
+<!-- 4 x 2 QUICK ACTION GRID -->
+
+<div class="quick-grid quick-actions-grid">
+
+
+    <!-- Career Test -->
+
+    <a href="/career_test"
+       class="quick-card">
+
+        <div class="quick-icon">
+            🎯
+        </div>
+
+        <h3>
+            Career Test
+        </h3>
+
+        <p>
+            Discover suitable career paths
+        </p>
+
+    </a>
+
+
+
+    <!-- Career Guidance -->
+
+    <a href="/career_guidance"
+       class="quick-card">
+
+        <div class="quick-icon">
+            🧭
+        </div>
+
+        <h3>
+            Career Guidance
+        </h3>
+
+        <p>
+            Get guidance for your career journey
+        </p>
+
+    </a>
+
+
+
+    <!-- AI Interview -->
+
+    <a href="/ai_voice_interview"
+       class="quick-card">
+
+        <div class="quick-icon">
+            🤖
+        </div>
+
+        <h3>
+            AI Interview
+        </h3>
+
+        <p>
+            Practice an AI-powered interview
+        </p>
+
+    </a>
+
+
+
+    <!-- Notifications -->
+
+    <a href="/notifications"
+       class="quick-card">
+
+        <div class="quick-icon">
+            🔔
+        </div>
+
+        <h3>
+            Notifications
+        </h3>
+
+        <p>
+            Check your latest updates
+        </p>
+
+    </a>
+
+
+
+    <!-- Jobs -->
+
+    <a href="/jobs"
+       class="quick-card">
+
+        <div class="quick-icon">
+            💼
+        </div>
+
+        <h3>
+            Jobs
+        </h3>
+
+        <p>
+            Explore jobs and opportunities
+        </p>
+
+    </a>
+
+
+
+    <!-- Resume -->
+
+    <a href="/resume"
+       class="quick-card">
+
+        <div class="quick-icon">
+            📄
+        </div>
+
+        <h3>
+            Resume
+        </h3>
+
+        <p>
+            Create and manage your resume
+        </p>
+
+    </a>
+
+
+
+    <!-- E-Learning -->
+
+    <a href="/elearning"
+       class="quick-card">
+
+        <div class="quick-icon">
+            📚
+        </div>
+
+        <h3>
+            E-Learning
+        </h3>
+
+        <p>
+            Learn skills for your career
+        </p>
+
+    </a>
+
+
+
+    <!-- Feedback -->
+
+    <a href="/feedback"
+       class="quick-card">
+
+        <div class="quick-icon">
+            💬
+        </div>
+
+        <h3>
+            Feedback
+        </h3>
+
+        <p>
+            Share your experience with us
+        </p>
+
+    </a>
+
+
+</div>
+
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<div class="dashboard-footer">
+
+    CareerAI • Keep learning. Keep improving. 🚀
+
+</div>
+
+
+</div>
+</main>
+
+
+</div>
+</div>
+
+
+<!-- =========================================================
+     QUICK ACTION RESPONSIVE CSS
+========================================================= -->
+
+<style>
+
+.quick-actions-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap:16px;
+}
+
+.quick-actions-grid .quick-card{
+    min-height:155px;
+}
+
+
+/* Tablet */
+
+@media(max-width:1100px){
+
+    .quick-actions-grid{
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+/* Mobile */
+
+@media(max-width:600px){
+
+    .quick-actions-grid{
+        grid-template-columns:1fr;
+    }
+
+    .quick-actions-grid .quick-card{
+        min-height:135px;
+    }
+
+}
+
+</style>
+
+
+{% endblock %}

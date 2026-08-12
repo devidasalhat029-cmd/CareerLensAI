@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}CareerAI | Add Notification{% endblock %}
+
+{% block content %}
+
+<style>
+.notification-admin-page {
+    min-height: 100vh;
+    padding: 45px 20px;
+    background:
+        radial-gradient(circle at 10% 10%, #e5f6ff, transparent 30%),
+        radial-gradient(circle at 90% 10%, #eeeaff, transparent 30%),
+        #f8faff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.notification-form-card {
+    max-width: 700px;
+    margin: auto;
+    background: white;
+    padding: 35px;
+    border-radius: 25px;
+    border: 1px solid #e5e7f0;
+    box-shadow: 0 18px 45px rgba(50,60,120,.10);
+}
+
+.notification-form-card h1 {
+    margin-top: 0;
+    color: #2d334d;
+}
+
+.notification-form-card p {
+    color: #7b8297;
+}
+
+.form-group {
+    margin-top: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #3d4359;
+    font-weight: 700;
+}
+
+.form-group textarea {
+    width: 100%;
+    min-height: 130px;
+    padding: 14px;
+    box-sizing: border-box;
+    border: 1px solid #dfe2ec;
+    border-radius: 12px;
+    resize: vertical;
+    font-size: 15px;
+    outline: none;
+}
+
+.form-group textarea:focus {
+    border-color: #6358d8;
+    box-shadow: 0 0 0 3px #eeecff;
+}
+
+.submit-btn {
+    width: 100%;
+    margin-top: 25px;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    background: linear-gradient(90deg, #247edc, #6858df, #d4519b);
+}
+
+.back-btn {
+    display: block;
+    text-align: center;
+    margin-top: 18px;
+    color: #5c53d7;
+    text-decoration: none;
+    font-weight: 700;
+}
+</style><div class="notification-admin-page"><div class="notification-form-card">
+
+    <h1>🔔 Add Notification</h1>
+
+    <p>
+        Send a notification to a student.
+    </p>
+
+    <form method="POST">
+
+        <div class="form-group">
+
+            <label for="message">
+                Notification Message
+            </label>
+
+            <textarea
+                id="message"
+                name="message"
+                placeholder="Enter notification message..."
+                required
+            ></textarea>
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="submit-btn"
+        >
+            📢 Send Notification
+        </button>
+
+    </form>
+
+
+    <a
+        href="{{ url_for('admin_dashboard') }}"
+        class="back-btn"
+    >
+        ← Back to Admin Dashboard
+    </a>
+
+</div>
+
+</div>{% endblock %}

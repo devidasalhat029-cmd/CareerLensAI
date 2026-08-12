@@ -1,0 +1,1074 @@
+{% extends "base.html" %}
+
+{% block title %}Company Preparation | CareerLens.ai{% endblock %}
+
+{% block content %}
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+.company-page{
+    min-height:100vh;
+    padding:35px 5%;
+    background:
+        radial-gradient(circle at 10% 10%,rgba(80,210,255,.14),transparent 30%),
+        radial-gradient(circle at 90% 20%,rgba(120,100,255,.12),transparent 30%),
+        #071321;
+    color:#f4fbff;
+}
+
+
+/* ================= HERO ================= */
+
+.company-hero{
+    max-width:1100px;
+    margin:auto;
+    text-align:center;
+    padding:10px 10px 30px;
+}
+
+.company-badge{
+    display:inline-block;
+    padding:8px 18px;
+    border-radius:30px;
+    color:#65dcff;
+    background:rgba(80,210,255,.08);
+    border:1px solid rgba(80,210,255,.30);
+    font-size:13px;
+    font-weight:700;
+}
+
+.company-hero h1{
+    font-size:clamp(35px,5vw,58px);
+    margin:15px 0 10px;
+}
+
+.company-hero h1 span{
+    color:#55d8ff;
+}
+
+.company-hero p{
+    max-width:750px;
+    margin:auto;
+    color:#9db3c1;
+    line-height:1.7;
+}
+
+
+/* ================= SEARCH ================= */
+
+.search-box{
+    max-width:700px;
+    margin:0 auto 35px;
+}
+
+.search-box input{
+    width:100%;
+    padding:16px 20px;
+    border-radius:15px;
+    border:1px solid rgba(85,216,255,.20);
+    outline:none;
+    background:#0c2031;
+    color:white;
+    font-size:15px;
+}
+
+.search-box input:focus{
+    border-color:#55d8ff;
+    box-shadow:0 0 0 3px rgba(85,216,255,.07);
+}
+
+
+/* ================= COMPANY GRID ================= */
+
+.company-grid{
+    max-width:1100px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:
+        repeat(auto-fit,minmax(260px,1fr));
+    gap:20px;
+}
+
+
+/* ================= COMPANY CARD ================= */
+
+.company-card{
+    background:#0b1d2d;
+    border:1px solid rgba(85,216,255,.15);
+    border-radius:21px;
+    padding:24px;
+    transition:.3s;
+    position:relative;
+    overflow:hidden;
+}
+
+.company-card:hover{
+    transform:translateY(-7px);
+    border-color:rgba(85,216,255,.50);
+    box-shadow:0 18px 40px rgba(0,0,0,.30);
+}
+
+.company-logo{
+    width:60px;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:16px;
+    background:#12344b;
+    border:1px solid rgba(85,216,255,.25);
+    font-size:27px;
+    margin-bottom:17px;
+}
+
+.company-card h2{
+    margin:0 0 8px;
+    font-size:22px;
+}
+
+.company-card p{
+    color:#94aeba;
+    line-height:1.6;
+    font-size:13px;
+    min-height:45px;
+}
+
+.company-tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+    margin:16px 0;
+}
+
+.tag{
+    padding:6px 10px;
+    border-radius:8px;
+    background:#102d42;
+    color:#9fe8ff;
+    font-size:11px;
+}
+
+.prepare-btn{
+    width:100%;
+    padding:12px;
+    border:0;
+    border-radius:11px;
+    background:linear-gradient(135deg,#55d8ff,#159bd6);
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.prepare-btn:hover{
+    transform:scale(1.02);
+}
+
+
+/* ================= EMPTY ================= */
+
+.empty{
+    display:none;
+    max-width:600px;
+    margin:30px auto;
+    text-align:center;
+    padding:30px;
+    color:#8fa8b6;
+}
+
+
+/* ================= DETAILS ================= */
+
+.details{
+    display:none;
+    max-width:1100px;
+    margin:35px auto 0;
+    animation:slideDown .5s ease;
+}
+
+@keyframes slideDown{
+    from{
+        opacity:0;
+        transform:translateY(-15px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.details-card{
+    background:#0b1d2d;
+    border:1px solid rgba(85,216,255,.20);
+    border-radius:24px;
+    padding:30px;
+    box-shadow:0 20px 50px rgba(0,0,0,.25);
+}
+
+
+/* ================= HEADER ================= */
+
+.details-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.details-header h2{
+    margin:0;
+    font-size:30px;
+}
+
+.close-btn{
+    padding:9px 16px;
+    border:0;
+    border-radius:9px;
+    background:#162e40;
+    color:#b7d0dc;
+    cursor:pointer;
+}
+
+
+/* ================= COMPANY INFO ================= */
+
+.company-info{
+    display:grid;
+    grid-template-columns:
+        repeat(auto-fit,minmax(200px,1fr));
+    gap:12px;
+    margin-top:20px;
+}
+
+.info-box{
+    padding:16px;
+    border-radius:13px;
+    background:#10283a;
+    border:1px solid rgba(85,216,255,.10);
+}
+
+.info-box strong{
+    display:block;
+    color:#62ddff;
+    font-size:12px;
+    margin-bottom:5px;
+}
+
+.info-box span{
+    color:#b2c6d0;
+    font-size:13px;
+}
+
+
+/* ================= PROCESS ================= */
+
+.section-title{
+    margin-top:28px;
+    margin-bottom:15px;
+    color:#dff7ff;
+}
+
+.process{
+    display:grid;
+    grid-template-columns:
+        repeat(auto-fit,minmax(145px,1fr));
+    gap:12px;
+}
+
+.process-item{
+    padding:16px;
+    border-radius:14px;
+    background:#10283a;
+    border:1px solid rgba(85,216,255,.12);
+    text-align:center;
+    transition:.3s;
+}
+
+.process-item:hover{
+    transform:translateY(-3px);
+    border-color:#55d8ff;
+}
+
+.process-item span{
+    display:block;
+    font-size:27px;
+    margin-bottom:8px;
+}
+
+.process-item small{
+    color:#a7c0cc;
+    font-size:12px;
+}
+
+
+/* ================= PREPARATION MODULES ================= */
+
+.prep-grid{
+    display:grid;
+    grid-template-columns:
+        repeat(auto-fit,minmax(220px,1fr));
+    gap:18px;
+    margin-top:18px;
+}
+
+.prep-card{
+    background:#091827;
+    border:1px solid rgba(85,216,255,.15);
+    border-radius:18px;
+    padding:22px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.prep-card:hover{
+    transform:translateY(-6px);
+    border-color:#55d8ff;
+    box-shadow:0 15px 35px rgba(0,0,0,.25);
+}
+
+.prep-icon{
+    width:52px;
+    height:52px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:14px;
+    background:#10334a;
+    font-size:26px;
+    margin-bottom:13px;
+}
+
+.prep-card h3{
+    margin:0 0 8px;
+}
+
+.prep-card p{
+    color:#91aab8;
+    font-size:13px;
+    line-height:1.6;
+    min-height:62px;
+}
+
+.module-btn{
+    width:100%;
+    margin-top:10px;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:linear-gradient(135deg,#55d8ff,#159bd6);
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.module-btn:hover{
+    transform:scale(1.02);
+}
+
+
+/* ================= MOBILE ================= */
+
+@media(max-width:600px){
+
+    .company-page{
+        padding:25px 4%;
+    }
+
+    .details-card{
+        padding:20px;
+    }
+
+    .details-header h2{
+        font-size:24px;
+    }
+
+}
+
+</style>
+
+
+<div class="company-page">
+
+
+<!-- ================= HERO ================= -->
+
+<section class="company-hero">
+
+    <div class="company-badge">
+        🏢 PLACEMENT PREPARATION
+    </div>
+
+    <h1>
+        Company <span>Preparation</span>
+    </h1>
+
+    <p>
+        Select your target company and prepare
+        for aptitude, technical tests, coding,
+        interviews and HR rounds.
+    </p>
+
+</section>
+
+
+<!-- ================= SEARCH ================= -->
+
+<div class="search-box">
+
+    <input
+        id="companySearch"
+        type="text"
+        placeholder="🔎 Search your target company..."
+        onkeyup="searchCompanies()">
+
+</div>
+
+
+<!-- ================= COMPANY CARDS ================= -->
+
+<div id="companyGrid"
+     class="company-grid">
+
+
+    <!-- TCS -->
+
+    <div class="company-card"
+         data-company="tcs">
+
+        <div class="company-logo">🏢</div>
+
+        <h2>TCS</h2>
+
+        <p>
+            Prepare for aptitude, technical,
+            coding and interview rounds.
+        </p>
+
+        <div class="company-tags">
+            <span class="tag">Aptitude</span>
+            <span class="tag">Coding</span>
+            <span class="tag">Interview</span>
+        </div>
+
+        <button class="prepare-btn"
+                onclick="openCompany('TCS')">
+
+            Prepare Now →
+
+        </button>
+
+    </div>
+
+
+    <!-- INFOSYS -->
+
+    <div class="company-card"
+         data-company="infosys">
+
+        <div class="company-logo">💻</div>
+
+        <h2>Infosys</h2>
+
+        <p>
+            Practice reasoning, technical,
+            coding and interview preparation.
+        </p>
+
+        <div class="company-tags">
+            <span class="tag">Reasoning</span>
+            <span class="tag">Technical</span>
+            <span class="tag">HR</span>
+        </div>
+
+        <button class="prepare-btn"
+                onclick="openCompany('Infosys')">
+
+            Prepare Now →
+
+        </button>
+
+    </div>
+
+
+    <!-- ACCENTURE -->
+
+    <div class="company-card"
+         data-company="accenture">
+
+        <div class="company-logo">🚀</div>
+
+        <h2>Accenture</h2>
+
+        <p>
+            Prepare for cognitive, technical,
+            coding and communication rounds.
+        </p>
+
+        <div class="company-tags">
+            <span class="tag">Cognitive</span>
+            <span class="tag">Coding</span>
+            <span class="tag">Communication</span>
+        </div>
+
+        <button class="prepare-btn"
+                onclick="openCompany('Accenture')">
+
+            Prepare Now →
+
+        </button>
+
+    </div>
+
+
+    <!-- WIPRO -->
+
+    <div class="company-card"
+         data-company="wipro">
+
+        <div class="company-logo">🌐</div>
+
+        <h2>Wipro</h2>
+
+        <p>
+            Practice aptitude, coding,
+            technical and HR questions.
+        </p>
+
+        <div class="company-tags">
+            <span class="tag">Aptitude</span>
+            <span class="tag">Coding</span>
+            <span class="tag">HR</span>
+        </div>
+
+        <button class="prepare-btn"
+                onclick="openCompany('Wipro')">
+
+            Prepare Now →
+
+        </button>
+
+    </div>
+
+
+    <!-- CAPGEMINI -->
+
+    <div class="company-card"
+         data-company="capgemini">
+
+        <div class="company-logo">⚡</div>
+
+        <h2>Capgemini</h2>
+
+        <p>
+            Prepare for assessment,
+            technical and interview rounds.
+        </p>
+
+        <div class="company-tags">
+            <span class="tag">Assessment</span>
+            <span class="tag">Technical</span>
+            <span class="tag">Interview</span>
+        </div>
+
+        <button class="prepare-btn"
+                onclick="openCompany('Capgemini')">
+
+            Prepare Now →
+
+        </button>
+
+    </div>
+
+
+    <!-- COGNIZANT -->
+
+    <div class="company-card"
+         data-company="cognizant">
+
+        <div class="company-logo">🔷</div>
+
+        <h2>Cognizant</h2>
+
+        <p>
+            Practice aptitude, coding,
+            technical and communication rounds.
+        </p>
+
+        <div class="company-tags">
+            <span class="tag">Aptitude</span>
+            <span class="tag">Coding</span>
+            <span class="tag">Interview</span>
+        </div>
+
+        <button class="prepare-btn"
+                onclick="openCompany('Cognizant')">
+
+            Prepare Now →
+
+        </button>
+
+    </div>
+
+
+    <!-- IBM -->
+
+    <div class="company-card"
+         data-company="ibm">
+
+        <div class="company-logo">🧠</div>
+
+        <h2>IBM</h2>
+
+        <p>
+            Prepare technical, coding
+            and interview rounds.
+        </p>
+
+        <div class="company-tags">
+            <span class="tag">Technical</span>
+            <span class="tag">Coding</span>
+            <span class="tag">Interview</span>
+        </div>
+
+        <button class="prepare-btn"
+                onclick="openCompany('IBM')">
+
+            Prepare Now →
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- ================= EMPTY ================= -->
+
+<div id="empty"
+     class="empty">
+
+    🔎 No company found.
+
+</div>
+
+
+<!-- ================= COMPANY DETAILS ================= -->
+
+<section id="details"
+         class="details">
+
+    <div class="details-card">
+
+
+        <!-- HEADER -->
+
+        <div class="details-header">
+
+            <h2 id="companyName">
+                Company Preparation
+            </h2>
+
+            <button class="close-btn"
+                    onclick="closeDetails()">
+
+                ✕ Close
+
+            </button>
+
+        </div>
+
+
+        <p id="companyDescription"
+           style="
+           color:#94adbb;
+           line-height:1.7;
+           margin-top:10px;">
+
+            Select a company to start preparation.
+
+        </p>
+
+
+        <!-- INFO -->
+
+        <div class="company-info">
+
+            <div class="info-box">
+
+                <strong>🎯 Preparation</strong>
+
+                <span>
+                    Placement Ready
+                </span>
+
+            </div>
+
+            <div class="info-box">
+
+                <strong>🧠 Main Focus</strong>
+
+                <span>
+                    Aptitude + Technical
+                </span>
+
+            </div>
+
+            <div class="info-box">
+
+                <strong>💻 Coding</strong>
+
+                <span>
+                    Problem Solving
+                </span>
+
+            </div>
+
+            <div class="info-box">
+
+                <strong>🎤 Interview</strong>
+
+                <span>
+                    Technical + HR
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- SELECTION PROCESS -->
+
+        <h3 class="section-title">
+            📋 Selection Process
+        </h3>
+
+        <div class="process">
+
+            <div class="process-item">
+                <span>🧠</span>
+                <small>Aptitude</small>
+            </div>
+
+            <div class="process-item">
+                <span>💻</span>
+                <small>Technical MCQ</small>
+            </div>
+
+            <div class="process-item">
+                <span>⌨️</span>
+                <small>Coding</small>
+            </div>
+
+            <div class="process-item">
+                <span>👨‍💻</span>
+                <small>Technical Interview</small>
+            </div>
+
+            <div class="process-item">
+                <span>🎤</span>
+                <small>HR Interview</small>
+            </div>
+
+        </div>
+
+
+        <!-- ================= PREPARATION MODULES ================= -->
+
+        <h3 class="section-title">
+            🚀 Start Preparation
+        </h3>
+
+        <div class="prep-grid">
+
+
+            <!-- APTITUDE -->
+
+            <div class="prep-card"
+                 onclick="openModule('/aptitude')">
+
+                <div class="prep-icon">
+                    🧠
+                </div>
+
+                <h3>Aptitude</h3>
+
+                <p>
+                    Practice quantitative aptitude,
+                    logical reasoning and verbal ability.
+                </p>
+
+                <button class="module-btn"
+                        type="button">
+
+                    Start Aptitude →
+
+                </button>
+
+            </div>
+
+
+            <!-- TECHNICAL MCQ -->
+
+            <div class="prep-card"
+                 onclick="openModule('/technical_mcq')">
+
+                <div class="prep-icon">
+                    💻
+                </div>
+
+                <h3>Technical MCQ</h3>
+
+                <p>
+                    Practice programming, DBMS,
+                    OOP, OS and networking questions.
+                </p>
+
+                <button class="module-btn"
+                        type="button">
+
+                    Start Technical MCQ →
+
+                </button>
+
+            </div>
+
+
+            <!-- CODING -->
+
+            <div class="prep-card"
+                 onclick="openModule('/coding_practice')">
+
+                <div class="prep-icon">
+                    ⌨️
+                </div>
+
+                <h3>Coding Practice</h3>
+
+                <p>
+                    Solve coding problems and
+                    improve your problem-solving skills.
+                </p>
+
+                <button class="module-btn"
+                        type="button">
+
+                    Start Coding →
+
+                </button>
+
+            </div>
+
+
+            <!-- HR INTERVIEW -->
+
+            <div class="prep-card"
+                 onclick="openModule('/hr_interview')">
+
+                <div class="prep-icon">
+                    🎤
+                </div>
+
+                <h3>HR Interview</h3>
+
+                <p>
+                    Practice common HR questions
+                    and improve interview confidence.
+                </p>
+
+                <button class="module-btn"
+                        type="button">
+
+                    Start HR Interview →
+
+                </button>
+
+            </div>
+
+
+            <!-- TECHNICAL INTERVIEW -->
+
+            <div class="prep-card"
+                 onclick="openModule('/technical_interview')">
+
+                <div class="prep-icon">
+                    👨‍💻
+                </div>
+
+                <h3>Technical Interview</h3>
+
+                <p>
+                    Prepare programming, projects
+                    and CS fundamentals.
+                </p>
+
+                <button class="module-btn"
+                        type="button">
+
+                    Start Technical Interview →
+
+                </button>
+
+            </div>
+
+
+            <!-- MOCK TEST -->
+
+            <div class="prep-card"
+                 onclick="openModule('/mock_test')">
+
+                <div class="prep-icon">
+                    📝
+                </div>
+
+                <h3>Mock Test</h3>
+
+                <p>
+                    Take a complete company-style
+                    placement mock test.
+                </p>
+
+                <button class="module-btn"
+                        type="button">
+
+                    Start Mock Test →
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</div>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+/* ================= SEARCH ================= */
+
+function searchCompanies(){
+
+    const input =
+        document.getElementById("companySearch")
+        .value
+        .toLowerCase()
+        .trim();
+
+    const cards =
+        document.querySelectorAll(".company-card");
+
+    let found = 0;
+
+    cards.forEach(function(card){
+
+        const company =
+            card.dataset.company.toLowerCase();
+
+        if(company.includes(input)){
+
+            card.style.display = "block";
+            found++;
+
+        }else{
+
+            card.style.display = "none";
+
+        }
+
+    });
+
+    document.getElementById("empty").style.display =
+        found === 0 ? "block" : "none";
+
+}
+
+
+/* ================= OPEN COMPANY ================= */
+
+function openCompany(name){
+
+    const descriptions = {
+
+        "TCS":
+        "Prepare for TCS placement with aptitude, technical MCQs, coding and interview practice.",
+
+        "Infosys":
+        "Build your Infosys preparation through reasoning, technical questions, coding and interview practice.",
+
+        "Accenture":
+        "Prepare for Accenture cognitive, technical, coding and communication rounds.",
+
+        "Wipro":
+        "Practice Wipro aptitude, coding, technical and HR interview preparation.",
+
+        "Capgemini":
+        "Prepare for Capgemini assessment, technical and interview rounds.",
+
+        "Cognizant":
+        "Practice Cognizant aptitude, coding, technical and communication preparation.",
+
+        "IBM":
+        "Build IBM technical, coding and interview preparation."
+
+    };
+
+    document.getElementById("companyName").innerText =
+        name + " Preparation";
+
+    document.getElementById("companyDescription").innerText =
+        descriptions[name] ||
+        "Start your company-specific placement preparation.";
+
+    const details =
+        document.getElementById("details");
+
+    details.style.display = "block";
+
+    setTimeout(function(){
+
+        details.scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+        });
+
+    },100);
+
+}
+
+
+/* ================= OPEN MODULE ================= */
+
+function openModule(url){
+
+    if(!url){
+        return;
+    }
+
+    window.location.href = url;
+
+}
+
+
+/* ================= CLOSE ================= */
+
+function closeDetails(){
+
+    document.getElementById("details").style.display =
+        "none";
+
+}
+
+</script>
+{% endblock %}

@@ -1,0 +1,554 @@
+{% extends "base.html" %}
+
+{% block title %}
+About | CareerLens.ai
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .about-page {
+        min-height: 100vh;
+        padding: 70px 6%;
+        background:
+            radial-gradient(circle at 10% 10%, rgba(124, 92, 255, 0.18), transparent 30%),
+            radial-gradient(circle at 90% 20%, rgba(0, 212, 255, 0.14), transparent 30%),
+            #080b16;
+        color: #ffffff;
+    }
+
+    .about-hero {
+        max-width: 1100px;
+        margin: auto;
+        text-align: center;
+        padding: 45px 20px 65px;
+    }
+
+    .about-badge {
+        display: inline-block;
+        padding: 9px 18px;
+        border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 30px;
+        background: rgba(255,255,255,0.06);
+        color: #9ddcff;
+        font-size: 14px;
+        margin-bottom: 22px;
+    }
+
+    .about-hero h1 {
+        font-size: clamp(42px, 6vw, 76px);
+        line-height: 1;
+        margin: 0;
+        font-weight: 800;
+        letter-spacing: -2px;
+    }
+
+    .about-hero h1 span {
+        background: linear-gradient(
+            90deg,
+            #8b7cff,
+            #4ddcff,
+            #ff72c8
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .about-hero p {
+        max-width: 760px;
+        margin: 25px auto 0;
+        color: #aeb8cc;
+        font-size: 18px;
+        line-height: 1.8;
+    }
+
+    .about-section {
+        max-width: 1150px;
+        margin: auto;
+        padding: 30px 0 70px;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .section-title h2 {
+        font-size: 35px;
+        margin-bottom: 12px;
+    }
+
+    .section-title p {
+        color: #929cb0;
+        font-size: 16px;
+    }
+
+    .about-main-card {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 25px;
+    }
+
+    .glass-card {
+        background: rgba(255,255,255,0.055);
+        border: 1px solid rgba(255,255,255,0.10);
+        border-radius: 25px;
+        padding: 32px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+        backdrop-filter: blur(15px);
+    }
+
+    .glass-card h3 {
+        font-size: 25px;
+        margin-top: 0;
+    }
+
+    .glass-card p {
+        color: #aeb8cc;
+        line-height: 1.8;
+        font-size: 15px;
+    }
+
+    .mission-card {
+        background: linear-gradient(
+            145deg,
+            rgba(111, 92, 255, 0.22),
+            rgba(0, 212, 255, 0.09)
+        );
+    }
+
+    .mission-icon {
+        width: 65px;
+        height: 65px;
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+        margin-bottom: 20px;
+        background: rgba(255,255,255,0.08);
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    .feature-card {
+        padding: 28px;
+        border-radius: 22px;
+        background: rgba(255,255,255,0.045);
+        border: 1px solid rgba(255,255,255,0.09);
+        transition: 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-7px);
+        border-color: rgba(111, 220, 255, 0.35);
+        background: rgba(255,255,255,0.07);
+    }
+
+    .feature-icon {
+        width: 55px;
+        height: 55px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+        background: rgba(255,255,255,0.08);
+        font-size: 25px;
+        margin-bottom: 18px;
+    }
+
+    .feature-card h3 {
+        margin: 0 0 10px;
+        font-size: 19px;
+    }
+
+    .feature-card p {
+        color: #929cb0;
+        line-height: 1.7;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .why-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+    }
+
+    .why-card {
+        text-align: center;
+        padding: 28px 18px;
+        border-radius: 20px;
+        background: rgba(255,255,255,0.045);
+        border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .why-card strong {
+        display: block;
+        font-size: 18px;
+        margin-bottom: 9px;
+    }
+
+    .why-card span {
+        color: #8f99ad;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .vision-box {
+        text-align: center;
+        padding: 55px 30px;
+        border-radius: 28px;
+        background:
+            linear-gradient(
+                135deg,
+                rgba(127, 93, 255, 0.20),
+                rgba(0, 205, 255, 0.12)
+            );
+        border: 1px solid rgba(255,255,255,0.10);
+    }
+
+    .vision-box h2 {
+        font-size: 34px;
+        margin-top: 0;
+    }
+
+    .vision-box p {
+        max-width: 750px;
+        margin: auto;
+        color: #aab4c8;
+        line-height: 1.8;
+    }
+
+    .about-footer {
+        text-align: center;
+        padding: 45px 20px 15px;
+        color: #778197;
+        font-size: 13px;
+    }
+
+    @media (max-width: 900px) {
+
+        .about-main-card {
+            grid-template-columns: 1fr;
+        }
+
+        .features-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .why-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 600px) {
+
+        .about-page {
+            padding: 45px 20px;
+        }
+
+        .features-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .why-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .about-hero p {
+            font-size: 15px;
+        }
+    }
+
+</style>
+
+
+<div class="about-page">
+
+    <!-- HERO -->
+    <section class="about-hero">
+
+        <div class="about-badge">
+            ✦ AI-Powered Career & Placement Platform
+        </div>
+
+        <h1>
+            About <span>CareerLens.ai</span>
+        </h1>
+
+        <p>
+            CareerLens.ai is a smart career and placement guidance
+            platform designed to help students understand their skills,
+            prepare for opportunities, and build a confident career path.
+        </p>
+
+    </section>
+
+
+    <!-- ABOUT -->
+    <section class="about-section">
+
+        <div class="about-main-card">
+
+            <div class="glass-card">
+
+                <h3>🚀 What is CareerLens.ai?</h3>
+
+                <p>
+                    CareerLens.ai brings career guidance, placement
+                    preparation, interview practice, resume building,
+                    career analysis and learning support into one
+                    student-friendly platform.
+                </p>
+
+                <p>
+                    Instead of searching for different resources for
+                    different career needs, students can use CareerLens.ai
+                    as a central place to prepare themselves for their
+                    future.
+                </p>
+
+                <p>
+                    The platform combines modern web technology with
+                    AI-powered assistance to make career preparation
+                    easier, smarter and more organized.
+                </p>
+
+            </div>
+
+
+            <div class="glass-card mission-card">
+
+                <div class="mission-icon">
+                    🎯
+                </div>
+
+                <h3>Our Mission</h3>
+
+                <p>
+                    Our mission is to help students discover their
+                    potential, improve their career readiness and move
+                    toward suitable opportunities with confidence.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FEATURES -->
+    <section class="about-section">
+
+        <div class="section-title">
+
+            <h2>What CareerLens Offers</h2>
+
+            <p>
+                Everything students need to become career ready.
+            </p>
+
+        </div>
+
+
+        <div class="features-grid">
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🤖
+                </div>
+
+                <h3>AI Career Guidance</h3>
+
+                <p>
+                    Get personalized career direction based on interests,
+                    skills, education and career goals.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    📄
+                </div>
+
+                <h3>Resume Builder</h3>
+
+                <p>
+                    Create a professional resume and organize important
+                    academic and career information.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🎤
+                </div>
+
+                <h3>AI Interview Practice</h3>
+
+                <p>
+                    Practice interview questions and receive AI-powered
+                    feedback to improve your responses.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🧠
+                </div>
+
+                <h3>Aptitude Preparation</h3>
+
+                <p>
+                    Improve logical thinking, quantitative aptitude and
+                    placement-test readiness.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    💻
+                </div>
+
+                <h3>Technical Preparation</h3>
+
+                <p>
+                    Practice technical questions and strengthen your
+                    preparation for technical interviews.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    💼
+                </div>
+
+                <h3>Job Opportunities</h3>
+
+                <p>
+                    Explore career opportunities and understand what
+                    skills and eligibility employers expect.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- WHY CAREERLENS -->
+    <section class="about-section">
+
+        <div class="section-title">
+
+            <h2>Why CareerLens.ai?</h2>
+
+            <p>
+                Built with students and career preparation in mind.
+            </p>
+
+        </div>
+
+
+        <div class="why-grid">
+
+            <div class="why-card">
+
+                <strong>🎓 Student Focused</strong>
+
+                <span>
+                    Designed around common student career needs.
+                </span>
+
+            </div>
+
+
+            <div class="why-card">
+
+                <strong>🤖 AI Powered</strong>
+
+                <span>
+                    Smart assistance for guidance and preparation.
+                </span>
+
+            </div>
+
+
+            <div class="why-card">
+
+                <strong>📚 All-in-One</strong>
+
+                <span>
+                    Career guidance, preparation and resources together.
+                </span>
+
+            </div>
+
+
+            <div class="why-card">
+
+                <strong>🚀 Career Ready</strong>
+
+                <span>
+                    Focused on building practical placement readiness.
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- VISION -->
+    <section class="about-section">
+
+        <div class="vision-box">
+
+            <h2>Our Vision 🌟</h2>
+
+            <p>
+                We envision a future where every student can easily
+                understand their career options, identify their strengths,
+                develop the right skills and confidently prepare for
+                opportunities.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <div class="about-footer">
+
+        © 2026 CareerLens.ai • AI Career & Placement Guidance Platform
+
+    </div>
+
+</div>
+
+{% endblock %}

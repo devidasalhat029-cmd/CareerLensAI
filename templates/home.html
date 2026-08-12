@@ -1,0 +1,893 @@
+{% extends "base.html" %}
+
+{% block title %}CareerLens.ai | AI Career & Placement{% endblock %}
+
+{% block content %}
+<style>
+/* =========================================================
+   CAREERLENS.AI — PREMIUM DARK BLUE / ELECTRIC BLUE
+   Clean single stylesheet — responsive + sequential reveal
+========================================================= */
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#020b18;
+    color:#eaf6ff;
+    overflow-x:hidden;
+}
+a{text-decoration:none;color:inherit}
+:root{
+    --blue:#0a8bea;
+    --blue2:#075db2;
+    --cyan:#55c5ff;
+    --dark:#020b18;
+    --dark2:#082746;
+    --muted:#a9c1d5;
+}
+
+/* TOP STRIP */
+.top-strip{
+    height:58px;
+    background:#010814;
+    border-bottom:1px solid rgba(48,174,255,.35);
+    box-shadow:0 0 25px rgba(0,126,234,.16);
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    white-space:nowrap;
+    position:relative;
+}
+.marquee-track{
+    display:flex;
+    width:max-content;
+    animation:careerMarquee 25s linear infinite;
+}
+.marquee-track span{
+    flex:0 0 auto;
+    padding-right:100px;
+    color:#e8f8ff;
+    font-size:16px;
+    font-weight:800;
+    letter-spacing:.6px;
+    text-shadow:0 0 12px rgba(79,194,255,.65);
+}
+@keyframes careerMarquee{
+    from{transform:translateX(0)}
+    to{transform:translateX(-50%)}
+}
+
+/* NAVBAR */
+.navbar{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    height:72px;
+    background:rgba(2,17,34,.97);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(58,180,255,.24);
+}
+.nav-inner{
+    max-width:1180px;
+    height:100%;
+    margin:auto;
+    padding:0 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+}
+.logo{
+    font-size:23px;
+    font-weight:800;
+    color:#fff;
+    white-space:nowrap;
+}
+.logo span{
+    color:#35adff;
+    text-shadow:0 0 15px rgba(53,173,255,.55);
+}
+.nav-links{
+    display:flex;
+    align-items:center;
+    gap:22px;
+    font-size:14px;
+    color:#c7dced;
+}
+.nav-links a{transition:.2s}
+.nav-links a:hover{color:#4dc1ff}
+.nav-actions{display:flex;gap:10px;align-items:center}
+.btn{
+    border:0;
+    border-radius:11px;
+    padding:12px 19px;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+    display:inline-block;
+    transition:.25s;
+}
+.btn-outline{
+    background:transparent;
+    color:#e8f6ff;
+    border:1px solid rgba(69,184,255,.45);
+}
+.btn-outline:hover{border-color:#55c5ff;color:#55c5ff}
+.btn-blue{
+    color:#fff;
+    background:linear-gradient(135deg,#0a8bea,#075db2);
+    border:1px solid rgba(114,207,255,.45);
+    box-shadow:0 0 25px rgba(0,126,234,.25);
+}
+.btn-blue:hover{
+    transform:translateY(-2px);
+    box-shadow:0 0 35px rgba(0,151,255,.45);
+}
+.menu-btn{
+    display:none;
+    font-size:25px;
+    border:0;
+    background:none;
+    color:#fff;
+}
+
+/* HERO WITH BACKGROUND IMAGE */
+.hero{
+    min-height:calc(100vh - 130px);
+    display:flex;
+    align-items:center;
+    position:relative;
+    overflow:hidden;
+    /* Background Image + Dark Blue Overlay */
+    background:
+      linear-gradient(rgba(2,11,24,0.85), rgba(6,40,74,0.85)),
+      url('{{ url_for("static", filename="images/hero-bg.jpg") }}') no-repeat center / cover;
+}
+.hero:before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      linear-gradient(rgba(52,184,255,.035) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(52,184,255,.035) 1px,transparent 1px);
+    background-size:42px 42px;
+    mask-image:linear-gradient(to bottom,rgba(0,0,0,.9),transparent);
+    pointer-events:none;
+}
+.hero-inner{
+    max-width:1180px;
+    width:100%;
+    margin:auto;
+    padding:70px 20px;
+    text-align:center;
+    position:relative;
+    z-index:1;
+}
+.badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:9px 14px;
+    border-radius:30px;
+    background:rgba(17,129,220,.13);
+    color:#6dcbff;
+    border:1px solid rgba(73,190,255,.35);
+    font-weight:700;
+    font-size:13px;
+    margin-bottom:22px;
+}
+.hero h1{
+    font-size:clamp(42px,6vw,72px);
+    line-height:1.03;
+    letter-spacing:-2px;
+    color:#fff;
+    margin-bottom:20px;
+    text-shadow:0 0 35px rgba(32,159,255,.18);
+}
+.hero h1 span{
+    color:#48baff;
+    text-shadow:0 0 24px rgba(72,186,255,.5);
+}
+.hero p{
+    max-width:780px;
+    margin:0 auto;
+    color:#b9cee1;
+    font-size:18px;
+    line-height:1.7;
+}
+.hero-buttons{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    margin-top:30px;
+    flex-wrap:wrap;
+}
+.hero-note{
+    margin-top:18px;
+    color:#8facbf;
+    font-size:12px;
+}
+
+/* AI PANEL */
+.ai-panel{
+    max-width:760px;
+    margin:40px auto 0;
+    padding:24px;
+    border-radius:28px;
+    background:linear-gradient(145deg,rgba(11,47,82,.96),rgba(5,27,50,.98));
+    border:1px solid rgba(69,183,255,.28);
+    box-shadow:0 25px 70px rgba(0,50,100,.28);
+}
+.panel-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+.panel-title{font-weight:800;color:#fff}
+.live{
+    font-size:11px;
+    padding:6px 10px;
+    border-radius:20px;
+    background:rgba(27,170,94,.15);
+    color:#6ee7a5;
+    border:1px solid rgba(110,231,165,.25);
+    font-weight:700;
+}
+.profile-card{
+    display:flex;
+    gap:14px;
+    align-items:center;
+    padding:17px;
+    border-radius:18px;
+    background:rgba(10,43,75,.82);
+    border:1px solid rgba(69,183,255,.18);
+    text-align:left;
+}
+.avatar{
+    width:52px;height:52px;border-radius:16px;
+    display:grid;place-items:center;
+    background:linear-gradient(135deg,#0a8bea,#075db2);
+    color:white;font-size:22px;font-weight:800;
+    flex-shrink:0;
+}
+.profile-card h3{font-size:16px;margin-bottom:5px;color:#fff}
+.profile-card p{font-size:12px;color:#9eb7cb}
+.progress-box{
+    margin-top:18px;
+    padding:17px;
+    border-radius:18px;
+    background:rgba(10,43,75,.82);
+    border:1px solid rgba(69,183,255,.18);
+}
+.progress-row{
+    display:flex;
+    justify-content:space-between;
+    color:#eaf6ff;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:9px;
+}
+.progress{
+    height:9px;
+    background:#173b5e;
+    border-radius:20px;
+    overflow:hidden;
+}
+.progress i{
+    display:block;
+    height:100%;
+    width:78%;
+    background:linear-gradient(90deg,#087eea,#55c5ff);
+    border-radius:20px;
+}
+.mini-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    margin-top:14px;
+}
+.mini{
+    padding:16px;
+    border:1px solid rgba(69,183,255,.18);
+    border-radius:17px;
+    background:rgba(10,43,75,.82);
+    text-align:left;
+}
+.mini strong{font-size:21px;color:#fff}
+.mini small{display:block;margin-top:5px;color:#9eb7cb}
+
+/* COMMON SECTIONS */
+.section{
+    min-height:100vh;
+    padding:90px 20px;
+    display:flex;
+    align-items:center;
+    position:relative;
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 80% 10%,rgba(0,130,240,.10),transparent 25%),
+      linear-gradient(145deg,#031326,#062645);
+    scroll-margin-top:72px;
+}
+.section:nth-of-type(even){
+    background:
+      radial-gradient(circle at 15% 75%,rgba(0,165,255,.10),transparent 28%),
+      linear-gradient(145deg,#020f21,#082f52);
+}
+.section:before{
+    content:"";
+    position:absolute;
+    width:420px;height:420px;
+    border-radius:50%;
+    background:rgba(0,126,234,.07);
+    filter:blur(12px);
+    top:-220px;
+    right:-150px;
+    pointer-events:none;
+}
+.section-inner{
+    max-width:1180px;
+    width:100%;
+    margin:auto;
+    position:relative;
+    z-index:1;
+}
+.section-head{
+    text-align:center;
+    max-width:720px;
+    margin:0 auto 45px;
+}
+.eyebrow{
+    color:#55c5ff;
+    font-weight:800;
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+}
+.section-head h2{
+    font-size:clamp(30px,4vw,42px);
+    color:#fff;
+    margin:10px 0 13px;
+}
+.section-head p{
+    color:#a9c0d5;
+    line-height:1.7;
+}
+
+/* FEATURE CARDS */
+.feature-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+.card{
+    background:linear-gradient(145deg,rgba(9,47,79,.96),rgba(4,28,51,.98));
+    border:1px solid rgba(63,180,255,.20);
+    border-radius:21px;
+    padding:27px;
+    transition:.3s;
+    box-shadow:0 16px 50px rgba(0,0,0,.20);
+}
+.card:hover{
+    transform:translateY(-7px);
+    border-color:rgba(72,191,255,.62);
+    box-shadow:0 18px 55px rgba(0,126,234,.20);
+}
+.icon{
+    width:52px;height:52px;
+    border-radius:15px;
+    display:grid;place-items:center;
+    background:rgba(0,140,235,.13);
+    color:#5cc4ff;
+    border:1px solid rgba(70,190,255,.2);
+    font-size:24px;
+    margin-bottom:20px;
+}
+.card h3{
+    font-size:19px;
+    color:#fff;
+    margin-bottom:10px;
+}
+.card p{
+    color:#a9c1d5;
+    line-height:1.65;
+    font-size:14px;
+}
+.card a{
+    display:inline-block;
+    margin-top:18px;
+    color:#58c1ff;
+    font-weight:800;
+    font-size:13px;
+}
+
+/* ROADMAP */
+.roadmap{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+}
+.step{
+    padding:23px;
+    border-radius:18px;
+    background:linear-gradient(145deg,rgba(9,47,79,.96),rgba(4,28,51,.98));
+    border:1px solid rgba(63,180,255,.20);
+    box-shadow:0 16px 50px rgba(0,0,0,.20);
+}
+.step-number{
+    width:35px;height:35px;
+    border-radius:50%;
+    background:#0a8bea;
+    color:#fff;
+    display:grid;
+    place-items:center;
+    font-weight:800;
+    margin-bottom:16px;
+}
+.step:nth-child(2) .step-number{background:#075db2}
+.step:nth-child(3) .step-number{background:#0a8bea}
+.step:nth-child(4) .step-number{background:#1590e8}
+.step h3{font-size:16px;margin-bottom:8px;color:#fff}
+.step p{font-size:13px;line-height:1.55;color:#a9c1d5}
+
+/* PLACEMENT */
+.placement-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+}
+.prep-box{
+    background:linear-gradient(145deg,rgba(9,47,79,.96),rgba(4,28,51,.98));
+    border:1px solid rgba(63,180,255,.20);
+    border-radius:22px;
+    padding:28px;
+    box-shadow:0 16px 50px rgba(0,0,0,.20);
+}
+.prep-box h3{color:#fff;margin-bottom:8px}
+.prep-box p{color:#a9c1d5;line-height:1.6}
+.prep-list{display:grid;gap:12px;margin-top:18px}
+.prep-item{
+    padding:15px;
+    border-radius:14px;
+    background:rgba(8,48,82,.72);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-weight:700;
+    font-size:14px;
+    color:#e9f7ff;
+    border:1px solid rgba(67,181,255,.15);
+}
+.prep-item span{color:#5bc4ff}
+
+/* CTA */
+.cta-wrap{
+    padding:80px 20px;
+    background:#020b18;
+}
+.cta{
+    max-width:1140px;
+    margin:auto;
+    border-radius:28px;
+    padding:55px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:25px;
+    color:#fff;
+    background:
+      radial-gradient(circle at 80% 20%,rgba(73,197,255,.25),transparent 30%),
+      linear-gradient(120deg,#020e20,#075a9e,#087eea);
+    border:1px solid rgba(99,204,255,.38);
+    box-shadow:0 20px 70px rgba(0,94,180,.3);
+}
+.cta h2{font-size:34px;margin-bottom:8px}
+.cta p{color:#c8d9ea}
+
+/* FOOTER */
+footer{
+    background:#010914;
+    color:#9fb8cc;
+    padding:60px 20px 25px;
+}
+.footer-grid{
+    max-width:1180px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:1.4fr 1fr 1fr;
+    gap:45px;
+}
+.footer-brand h2{color:#fff;margin-bottom:15px}
+.footer-brand h2 span{color:#55b4ff}
+.footer-brand p{line-height:1.7;font-size:14px;max-width:430px}
+footer h4{color:#fff;margin-bottom:17px}
+footer a{display:block;margin:11px 0;font-size:14px;color:#9fb8cc}
+footer a:hover{color:#59c5ff}
+.copyright{
+    max-width:1180px;
+    margin:40px auto 0;
+    border-top:1px solid #17304b;
+    padding-top:20px;
+    font-size:12px;
+}
+
+/* CHAT */
+.chat{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    z-index:1500;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+.chat-label{
+    background:#061d35;
+    border:1px solid rgba(75,190,255,.3);
+    padding:13px 18px;
+    border-radius:14px;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+    color:#55c5ff;
+    font-size:13px;
+    font-weight:800;
+}
+.chat-btn{
+    width:48px;height:48px;
+    border:0;border-radius:50%;
+    background:linear-gradient(135deg,#0a8bea,#075db2);
+    color:#fff;
+    font-size:20px;
+    cursor:pointer;
+    box-shadow:0 10px 25px rgba(8,120,209,.35);
+}
+
+/* REVEAL */
+.reveal{
+    opacity:0;
+    transform:translateY(55px) scale(.985);
+    transition:opacity .85s ease,transform .85s cubic-bezier(.2,.75,.25,1);
+}
+.reveal.visible{
+    opacity:1;
+    transform:translateY(0) scale(1);
+}
+
+/* MOBILE */
+@media(max-width:900px){
+    .nav-links{display:none}
+    .menu-btn{display:block}
+    .feature-grid{grid-template-columns:1fr 1fr}
+    .roadmap{grid-template-columns:1fr 1fr}
+    .placement-grid{grid-template-columns:1fr}
+    .footer-grid{grid-template-columns:1fr 1fr}
+    .hero{min-height:auto}
+    .section{min-height:auto;padding:75px 20px}
+@media(max-width:600px){
+    .top-strip{height:48px}
+    .marquee-track span{font-size:13px;padding-right:70px}
+    .navbar{height:68px}
+    .logo{font-size:21px}
+    .nav-actions .btn-outline{display:none}
+    .nav-actions .btn{padding:10px 14px}
+    .hero-inner{padding:52px 16px}
+    .hero h1{font-size:42px;letter-spacing:-1.5px}
+    .hero p{font-size:15px}
+    .ai-panel{padding:17px;border-radius:22px}
+    .feature-grid,.roadmap{grid-template-columns:1fr}
+    .section{padding:65px 16px}
+    .section-head{margin-bottom:30px}
+    .cta-wrap{padding:55px 16px}
+    .cta{padding:35px 25px;display:block}
+    .cta .btn{margin-top:20px}
+    .footer-grid{grid-template-columns:1fr}
+    .chat-label{display:none}
+    .chat{right:15px;bottom:15px}
+}
+</style>
+
+<!-- TOP ANNOUNCEMENT -->
+<div class="top-strip">
+    <div class="marquee-track">
+        <span>🚀 CareerLens.ai — AI Career Guidance • Placement Preparation • Interview Practice • Skill Roadmap • Smart Career Growth</span>
+        <span>🚀 CareerLens.ai — AI Career Guidance • Placement Preparation • Interview Practice • Skill Roadmap • Smart Career Growth</span>
+    </div>
+</div>
+
+<main>
+
+<!-- HERO -->
+<section class="hero reveal">
+    <div class="hero-inner">
+        <div>
+            <div class="badge">✦ AI-Powered Career & Placement Platform</div>
+
+            <h1>
+                Build Your Career<br>
+                With <span>AI Intelligence</span>
+            </h1>
+
+            <p>
+                CareerLens.ai helps students discover suitable career paths,
+                improve technical skills, prepare for interviews and become
+                placement-ready with smart AI assistance.
+            </p>
+
+            <div class="hero-buttons">
+                <a class="btn btn-blue" href="{{ url_for('register') }}">Start Your Journey →</a>
+                <a href="{{ url_for('feature') }}" class="btn btn-blue">
+                    Explore Feature →
+                </a>
+            </div>
+
+            <div class="hero-note">Designed for students • Career guidance • Placement preparation</div>
+
+            <div class="ai-panel">
+                <div class="panel-head">
+                    <div class="panel-title">AI Career Readiness</div>
+                    <div class="live">● AI ACTIVE</div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="avatar">CL</div>
+                    <div>
+                        <h3>Student Career Profile</h3>
+                        <p>AI is analyzing skills, preparation and placement readiness.</p>
+                    </div>
+                </div>
+
+                <div class="progress-box">
+                    <div class="progress-row">
+                        <span>Placement Readiness</span>
+                        <span>78%</span>
+                    </div>
+                    <div class="progress"><i></i></div>
+                </div>
+
+                <div class="mini-grid">
+                    <div class="mini">
+                        <strong>24+</strong>
+                        <small>Skills to practice</small>
+                    </div>
+                    <div class="mini">
+                        <strong>AI</strong>
+                        <small>Interview assistance</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="section reveal">
+    <div class="section-inner">
+        <div class="section-head">
+            <div class="eyebrow">Smart Features</div>
+            <h2>Everything You Need For Career Growth</h2>
+            <p>One platform to plan your career, strengthen your skills and prepare confidently for placements.</p>
+        </div>
+
+        <div class="feature-grid">
+            <div class="card">
+                <div class="icon">🤖</div>
+                <h3>AI Career Guidance</h3>
+                <p>Get intelligent career suggestions based on your interests, skills and goals.</p>
+                <a href="{{ url_for('register') }}">Explore →</a>
+            </div>
+
+            <div class="card">
+                <div class="icon">🎯</div>
+                <h3>Career Roadmap</h3>
+                <p>Follow a structured roadmap that helps you understand what to learn next.</p>
+                <a href="#roadmap">View Roadmap →</a>
+            </div>
+
+            <div class="card">
+                <div class="icon">💼</div>
+                <h3>Placement Preparation</h3>
+                <p>Prepare aptitude, technical concepts, HR questions and interview skills.</p>
+                <a href="#placement">Prepare Now →</a>
+            </div>
+
+            <div class="card">
+                <div class="icon">🧠</div>
+                <h3>AI Interview Practice</h3>
+                <p>Practice random interview questions and improve your confidence before the real interview.</p>
+                <a href="{{ url_for('register') }}">Practice →</a>
+            </div>
+
+            <div class="card">
+                <div class="icon">📊</div>
+                <h3>Progress Tracking</h3>
+                <p>Track preparation progress and identify areas where you need more practice.</p>
+                <a href="{{ url_for('register') }}">Track Progress →</a>
+            </div>
+
+            <div class="card">
+                <div class="icon">🚀</div>
+                <h3>Skill Development</h3>
+                <p>Build technical and professional skills that support your academic and career goals.</p>
+                <a href="{{ url_for('register') }}">Build Skills →</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap" class="section reveal">
+    <div class="section-inner">
+        <div class="section-head">
+            <div class="eyebrow">Career Roadmap</div>
+            <h2>One Step At A Time</h2>
+            <p>Career preparation becomes easier when your journey is organized into clear stages.</p>
+        </div>
+
+        <div class="roadmap">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Discover</h3>
+                <p>Understand your interests, strengths and suitable career opportunities.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Learn</h3>
+                <p>Develop technical, aptitude and communication skills required for your target role.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Practice</h3>
+                <p>Practice questions, coding concepts and AI-powered interview sessions.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3>Get Placement Ready</h3>
+                <p>Build confidence and prepare for real placement and interview situations.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PLACEMENT -->
+<section id="placement" class="section reveal">
+    <div class="section-inner">
+        <div class="section-head">
+            <div class="eyebrow">Placement Preparation</div>
+            <h2>Prepare Smarter. Perform Better.</h2>
+            <p>Focus on the most important areas before entering your placement process.</p>
+        </div>
+
+        <div class="placement-grid">
+            <div class="prep-box">
+                <h3>Placement Preparation Areas</h3>
+                <p>Practice the major areas commonly required during campus placements.</p>
+
+                <div class="prep-list">
+                    <div class="prep-item">Aptitude & Reasoning <span>→</span></div>
+                    <div class="prep-item">Technical Questions <span>→</span></div>
+                    <div class="prep-item">Coding & Problem Solving <span>→</span></div>
+                    <div class="prep-item">HR & Communication <span>→</span></div>
+                </div>
+            </div>
+
+            <div class="prep-box">
+                <h3>AI Interview Preparation</h3>
+                <p>Practice with randomly selected questions so your preparation is not limited to a fixed sequence.</p>
+
+                <div class="prep-list">
+                    <div class="prep-item">Random Interview Questions <span>AI</span></div>
+                    <div class="prep-item">Technical Interview Practice <span>AI</span></div>
+                    <div class="prep-item">HR Interview Practice <span>AI</span></div>
+                    <div class="prep-item">Instant Preparation Feedback <span>AI</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- RESOURCES -->
+<section id="resources" class="section reveal">
+    <div class="section-inner">
+        <div class="section-head">
+            <div class="eyebrow">Career Resources</div>
+            <h2>Your Career Toolkit</h2>
+            <p>Use CareerLens.ai as your central place for career planning, preparation and progress tracking.</p>
+        </div>
+
+        <div class="feature-grid">
+            <div class="card">
+                <div class="icon">📚</div>
+                <h3>Learning Resources</h3>
+                <p>Organize the concepts and skills you need to learn for your target career.</p>
+            </div>
+
+            <div class="card">
+                <div class="icon">📝</div>
+                <h3>Interview Questions</h3>
+                <p>Practice a broad collection of technical and HR questions for better preparation.</p>
+            </div>
+
+            <div class="card">
+                <div class="icon">📈</div>
+                <h3>Progress Dashboard</h3>
+                <p>Keep track of your learning and preparation journey from one dashboard.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<!-- CTA -->
+<div class="cta-wrap reveal">
+    <div class="cta">
+        <div>
+            <h2>Ready To Start Your Career Journey?</h2>
+            <p>Join CareerLens.ai and start preparing smarter with AI.</p>
+        </div>
+        <a class="btn btn-blue" href="{{ url_for('register') }}">Create Your Profile →</a>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <h2>CareerLens<span>.ai</span></h2>
+            <p>AI-powered platform to guide students for career growth and placement preparation.</p>
+        </div>
+        <div>
+            <h4>Platform</h4>
+            <a href="#features">Features</a>
+            <a href="#roadmap">Roadmap</a>
+            <a href="#placement">Placement</a>
+            <a href="#resources">Resources</a>
+        </div>
+        <div>
+            <h4>Get Started</h4>
+            <a href="{{ url_for('register') }}">Register</a>
+            <a href="{{ url_for('ai_assistant') }}">AI Assistant</a>
+        </div>
+    </div>
+
+    <div class="copyright">
+        © 2026 CareerLens.ai — AI Career & Placement Platform
+    </div>
+</footer>
+
+<!-- FLOATING CHAT -->
+<div class="chat">
+    <div class="chat-label">Need Career Help?</div>
+    <button class="chat-btn" type="button" onclick="window.location.href='{{ url_for('ai_assistant') }}'">🤖</button>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+    const sections = document.querySelectorAll(".reveal");
+
+    if(!("IntersectionObserver" in window)){
+        sections.forEach(s => s.classList.add("visible"));
+        return;
+    }
+
+    const observer = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+            if(entry.isIntersecting){
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {threshold:0.12});
+
+    sections.forEach(section=>observer.observe(section));
+
+    const first = document.querySelector(".reveal");
+    if(first) first.classList.add("visible");
+});
+</script>
+
+{% endblock %}
